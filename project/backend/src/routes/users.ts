@@ -2,25 +2,33 @@ import express from "express"
 import jwt from "jsonwebtoken"
 import bcrypt from "bcrypt"
 import {UserModel} from "../models/users"
+import e from "express";
 const router = express.Router();
 
 router.post("/signup", async (req, res) => {
-    const {username, password, email} = req.body;
-    const existingUserWithEmail = await UserModel.findOne({email});
+    const { username, password, email } = req.body;
 
-    if(existingUserWithEmail){
-        res.json({message: "Email already exists"})
+  try {
+    const existingUserWithEmail = await UserModel.findOne({ email });
+
+    if (existingUserWithEmail) {
+      return res.status(400).json({ message: "Email already exist" });
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
+    const newUser = new UserModel({ username, email, password: hashedPassword });
+    await newUser.save();
 
-    const newUser = new UserModel({
-        username, email, password: hashedPassword
-    })
-    newUser.save();
-    res.json({message: "User created"})
+    res.json({ message: "User created" });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "Internal server error" });
+  }
 
 })
+
+
+
 router.post("/signin", async (req, res) => {
     const {email, password} = req.body;
     const existingUserWithEmail = await UserModel.findOne({email});
