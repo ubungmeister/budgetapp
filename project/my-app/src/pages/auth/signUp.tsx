@@ -1,4 +1,3 @@
-import React, { useEffect } from 'react';
 import Logo from '../../compnents/auth/logo';
 import withAuthLayout from './layout';
 import { Link } from 'react-router-dom';
@@ -35,7 +34,7 @@ const SignUp = () => {
 
     const onSubmit: SubmitHandler<FormSchemaType> = async(data) =>{
         try{
-            await axios.post('http://localhost:8080/auth/signup', data);
+            await axios.post('http://localhost:2323/auth/signup', data);
             alert('User created successfully');
             setError('');
         } catch (error: any){

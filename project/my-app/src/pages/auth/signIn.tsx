@@ -1,13 +1,13 @@
 import React from 'react';
 import Logo from '../../compnents/auth/logo';
 import withAuthLayout from './layout';
-import { Link } from 'react-router-dom';
+import {Link, useNavigate} from 'react-router-dom';
 import {z} from 'zod';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import axios from 'axios';
-import { useCookies } from 'react-cookie';
-import { useNavigate } from 'react-router-dom';
+import {useCookies} from "react-cookie";
+
 
 const FormSchema = z.object({
         email: z.string().email({message: 'Please enter a valid email'}),
