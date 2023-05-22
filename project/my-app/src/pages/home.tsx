@@ -11,9 +11,8 @@ export const Home = () => {
         window.localStorage.removeItem('userID');
         navigate('/auth/signin');
     }
-    
   useEffect(() => {
-        if (!cookies.token) {
+        if (!cookies.token || cookies.token === 'undefined' || cookies.token === 'null') {
             navigate('/auth/signin');
         }
     }, []);

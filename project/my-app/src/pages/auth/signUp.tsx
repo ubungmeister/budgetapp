@@ -34,7 +34,7 @@ const SignUp = () => {
 
     const onSubmit: SubmitHandler<FormSchemaType> = async(data) =>{
         try{
-            await axios.post('http://localhost:2323/auth/signup', data);
+            await axios.post('http://localhost:1000/auth/signup', data);
             alert('User created successfully');
             setError('');
         } catch (error: any){

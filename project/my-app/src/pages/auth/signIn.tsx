@@ -30,7 +30,7 @@ const SignIn = () => {
 
       const onSubmit: SubmitHandler<FormSchemaType> = async(data) =>{
         try{
-            const response = await axios.post('http://localhost:8080/auth/signin', data);
+            const response = await axios.post('http://localhost:1000/auth/signin', data);
             setCookie("token", response.data.token)
             window.localStorage.setItem('userID', response.data.userID);
             navigate('/')
