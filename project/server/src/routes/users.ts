@@ -55,7 +55,7 @@ router.post("/signin", async (req, res) => {
     console.log(existingUserWithEmail)
     const token =  jwt.sign({email: existingUserWithEmail.email, id: existingUserWithEmail.id}, "test", {expiresIn: "1h"})
 
-    res.json({userID:existingUserWithEmail.id, token})
+    res.json({userID:existingUserWithEmail.id, userRole:existingUserWithEmail.role, token})
 
 })
 
@@ -86,7 +86,6 @@ router.post('/create-user', async (req, res) => {
     });
 
     // Send email to the newly created user
-
     const transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
