@@ -33,6 +33,7 @@ const SignIn = () => {
             const response = await axios.post('http://localhost:1000/auth/signin', data);
             setCookie("token", response.data.token)
             window.localStorage.setItem('userID', response.data.userID);
+            window.localStorage.setItem('userRole', response.data.userRole)
             navigate('/')
 
         } catch (error: any){

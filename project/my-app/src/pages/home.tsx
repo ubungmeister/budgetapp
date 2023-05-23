@@ -1,25 +1,11 @@
-import { useCookies } from 'react-cookie';
-import { useNavigate } from 'react-router-dom';
-import { useEffect } from 'react';
+ import UseAuth from './../compnents/helpers/UseAuth';
 
 
 export const Home = () => {
-    const [cookies, setCookie] = useCookies(['token']);
-    const navigate = useNavigate();
-    const logout = () => {
-        setCookie('token', '');
-        window.localStorage.removeItem('userID');
-        navigate('/auth/signin');
-    }
-  useEffect(() => {
-        if (!cookies.token || cookies.token === 'undefined' || cookies.token === 'null') {
-            navigate('/auth/signin');
-        }
-    }, []);
+  UseAuth();
 
     return(
         <div>
         <div>Home</div>
-        {cookies.token &&  <button onClick={logout}>LogOut</button>}
         </div>)
 }
