@@ -7,7 +7,7 @@ import { useForm, SubmitHandler } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import axios from 'axios';
 import {useCookies} from "react-cookie";
-
+import UseRedirect from '../../compnents/helpers/UseRedirect';
 
 const FormSchema = z.object({
         email: z.string().email({message: 'Please enter a valid email'}),
@@ -17,9 +17,12 @@ const FormSchema = z.object({
 type FormSchemaType = z.infer<typeof FormSchema>;
 
 const SignIn = () => {
-    const navigate = useNavigate();
-     const[cookies, setCookie] = useCookies(['token']);
+    
+    UseRedirect()
 
+    const navigate = useNavigate();
+    const[cookies, setCookie] = useCookies(['token']);
+     
     const {
     register, 
     handleSubmit, 

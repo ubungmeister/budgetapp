@@ -6,6 +6,8 @@ import { useForm, SubmitHandler } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import axios from 'axios';
 import { useState } from 'react';
+import UseRedirect from '../../compnents/helpers/UseRedirect';
+
 
 const FormSchema = z.object({
         username: z.string().min(3, {message: 'Name must be at least 3 characters long'}),
@@ -20,6 +22,8 @@ type FormSchemaType = z.infer<typeof FormSchema>;
 
 
 const SignUp = () => {
+
+UseRedirect()
 
  const [error, setError] = useState('');
 
