@@ -2,15 +2,15 @@ import { useEffect } from 'react';
 import { useCookies } from 'react-cookie';
 import { useNavigate } from 'react-router-dom';
 
-const UseAuth = () => {
+const UseRedirect = () => {
   const [cookies] = useCookies(['token']);
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (!cookies.token || cookies.token === 'undefined' || cookies.token === 'null') {
-      navigate('/auth/signin');
+    if (cookies.token) {
+      navigate('/');
     }
   }, [cookies.token, navigate]);
 };
 
-export default UseAuth;
+export default UseRedirect;

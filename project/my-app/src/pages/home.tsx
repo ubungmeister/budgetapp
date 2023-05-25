@@ -1,5 +1,4 @@
- import UseAuth from './../compnents/helpers/UseAuth';
-
+import UseAuth from "../compnents/helpers/UseAuth";
 
 export const Home = () => {
   UseAuth();
