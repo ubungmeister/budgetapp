@@ -16,6 +16,7 @@ code {
     monospace;
 }
 
+
 .auth {
     @apply md:max-w-[30rem] max-w-min relative top-7 flex w-auto min-w-[20rem] flex-col rounded-xl bg-white p-8 shadow-xl font-mono ;
   }
