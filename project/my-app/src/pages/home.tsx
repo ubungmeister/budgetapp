@@ -4,7 +4,18 @@ export const Home = () => {
   UseAuth();
 
     return(
-        <div>
+        <div className="">
         <div>Home</div>
+        <div>Home</div>
+        <div>Home</div>
+        <div>Home</div>
+        <div>Home</div>
+        <div>Home</div>
+        <div>Home</div>
+        <div>Home</div>
+        <div>Home</div>
+        <div>Home</div>
+        <div>Home</div>
+
         </div>)
 }

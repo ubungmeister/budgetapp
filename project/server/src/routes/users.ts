@@ -109,5 +109,17 @@ router.post('/create-user', async (req, res) => {
   }
 });
 
+router.get('/get-user', async (req, res) => {
+  const userID = req.query.userID as string;
+  if (!userID) {
+    return res.json({ message: 'No user ID provided' });
+  }
+  try {
+    const user = await prisma.user.findUnique({ where: { id: userID } });
+    res.json({ user });
+  } catch (error) {
+    console.log(error);
+  }
+});
 
 export {router as usersRouter}
