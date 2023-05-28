@@ -1,6 +1,6 @@
 import UseAuth from "../compnents/helpers/UseAuth";
 
-export const Home = () => {
+const HomePage = () => {
   UseAuth();
 
     return(
@@ -19,3 +19,4 @@ export const Home = () => {
 
         </div>)
 }
+export default HomePage;

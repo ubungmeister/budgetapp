@@ -1,5 +1,5 @@
 import React from 'react';
-import useAuth from '../compnents/helpers/UseAuth';
+import useAuth from '../../compnents/helpers/UseAuth';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
