@@ -65,7 +65,7 @@ router.post('/create-user', async (req, res) => {
     const existingUser = await prisma.user.findUnique({ where: { email } });
 
     if (existingUser) {
-      return res.json({ message: 'Email already exists' });
+      return res.status(400).json({ message: 'Email already exists' });
     }
 
     const admin = await prisma.user.findUnique({ where: { id: adminID } });
@@ -102,7 +102,7 @@ router.post('/create-user', async (req, res) => {
 
     await transporter.sendMail(mailOptions);
 
-    res.json({ message: 'User created and email sent' });
+    res.status(200).json({ message: 'User created and email sent' });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: 'An error occurred' });
@@ -112,12 +112,71 @@ router.post('/create-user', async (req, res) => {
 router.get('/get-user', async (req, res) => {
   const userID = req.query.userID as string;
   if (!userID) {
-    return res.json({ message: 'No user ID provided' });
+    return res.status(400).json({ message: 'No user ID provided' });
   }
   try {
     const user = await prisma.user.findUnique({ where: { id: userID } });
     res.json({ user });
   } catch (error) {
+    console.log(error);
+  }
+});
+
+// router.put('/edit-user', async (req, res) => {
+//    const {userForm } = req.query.data ;
+//    console.log(userForm)
+//    const {id, username, email} = userForm;
+//     if (id || !username || !email) {
+//     return res.status(400).json({ message: 'Some data missing' });
+//     }
+//     try{
+//         const user = await prisma.user.update({
+//             where: { id: id },
+//             data: {
+//                 username,
+//                 email
+//             }
+//         })
+//         res.status(200).json({ user });
+//     } catch (error) {
+//         res.status(500).json({ message: 'An error occurred' });
+//         console.log(error);
+//     }
+// });
+router.put('/edit-user/:id', async (req, res) => {
+   const { userForm } = req.body;
+   console.log(userForm);
+   const { id, username, email } = userForm;
+   if (!id || !username || !email) {
+      return res.status(400).json({ message: 'Some data missing' });
+   }
+   try {
+      const user = await prisma.user.update({
+         where: { id: String(id) },
+         data: {
+            username,
+            email
+         }
+      });
+      res.status(200).json({ user });
+   } catch (error) {
+      res.status(500).json({ message: 'An error occurred' });
+      console.log(error);
+   }
+});
+
+
+router.get('/get-users', async (req, res) => {
+  const adminID = req.query.userID as string;
+  if (!adminID) {
+    return res.status(400).json({ message: 'No admin ID provided' });
+  }
+  try {
+    const admin = await prisma.user.findUnique({ where: { id: adminID } });
+    const users = await prisma.user.findMany({ where: { familyID: admin.familyID , role: "USER"}});
+    res.json({ users });
+  } catch (error) {
+    res.status(500).json({ message: 'An error occurred' });
     console.log(error);
   }
 });

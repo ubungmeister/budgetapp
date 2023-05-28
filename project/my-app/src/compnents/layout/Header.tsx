@@ -3,19 +3,13 @@ import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
-import { UserData } from '../helpers/types';
+import { UserData, initialUserData } from '../helpers/types';
 
 
 const Header = () => {
       const [cookies, setCookie] = useCookies(['token']);
       const navigate = useNavigate();
-      const initialUserData = {
-        id: '',
-        username: '',
-        email: '',
-        role: '',
-        familtyID:'',
-      }
+
       const [userData, setUserData] = useState<UserData>(initialUserData);
 
 const logout = () => {

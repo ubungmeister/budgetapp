@@ -6,3 +6,11 @@ export interface UserData {
   username:string
   role:string
 }   
+
+export const initialUserData = {
+        id: '',
+        username: '',
+        email: '',
+        role: '',
+        familtyID:'',
+      }
