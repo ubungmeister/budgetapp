@@ -1,88 +1,94 @@
 import React from 'react'
 import { UserData } from '../../compnents/helpers/types'
-import axios from 'axios'
-
+import { updateUser, createUser, deleteUser } from './api'
 type EditUserProps = {
-    userForm: UserData
-    formOpen: boolean
-    setUserForm: (userForm: UserData) => void
-    setFormOpen: (formOpen: boolean) => void
+  userForm: UserData
+  formOpen: boolean
+  setUserForm: (userForm: UserData) => void
+  setFormOpen: (formOpen: boolean) => void
 }
 
-const EditUser = ({
-    userForm,
-    formOpen,
-    setUserForm,
-    setFormOpen,
+const EditUser: React.FC<EditUserProps> = ({
+  userForm,
+  formOpen,
+  setUserForm,
+  setFormOpen,
 }: EditUserProps) => {
-    const formHandler = async (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault()
-        try {
-            const response = await axios.put(
-                `http://localhost:1000/auth/edit-user/${userForm.id}`,
-                {
-                    userForm,
-                }
-            )
-        } catch (error) {
-            console.log(error)
-        }
+  const userID = window.localStorage.getItem('userID')
+
+  const formHandler = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    if (userForm.id) {
+      await updateUser(userForm)
+      setFormOpen(false)
+    } else {
+      if (userID) {
+        await createUser(userForm, userID)
         setFormOpen(false)
+      }
     }
+  }
 
-    if (!formOpen) {
-        return null
+  if (!formOpen) {
+    return null
+  }
+
+  const onDelete = async (userID: string) => {
+    if (userID) {
+      await deleteUser(userID)
     }
+    setFormOpen(false)
+  }
 
-    return (
-        <div>
-            <form
-                onSubmit={(e) => {
-                    formHandler(e)
-                }}
+  return (
+    <div>
+      <form
+        onSubmit={e => {
+          formHandler(e)
+        }}
+      >
+        <div>{userForm.id}</div>
+        <input
+          type="text"
+          value={userForm.username}
+          onChange={e => {
+            setUserForm({ ...userForm, username: e.target.value })
+          }}
+        />
+        <input
+          type="text"
+          value={userForm.email}
+          onChange={e => {
+            setUserForm({ ...userForm, email: e.target.value })
+          }}
+        />
+        {userForm.id ? (
+          <div>
+            <button onClick={() => onDelete(userForm.id)}>Delete</button>
+            <button type="submit">Edit</button>
+            <button
+              onClick={() => {
+                setFormOpen(false)
+              }}
             >
-                <div>{userForm.id}</div>
-                <input
-                    type="text"
-                    value={userForm.username}
-                    onChange={(e) => {
-                        setUserForm({ ...userForm, username: e.target.value })
-                    }}
-                />
-                <input
-                    type="text"
-                    value={userForm.email}
-                    onChange={(e) => {
-                        setUserForm({ ...userForm, email: e.target.value })
-                    }}
-                />
-                {userForm.id ? (
-                    <div>
-                        <button onClick={() => {}}>Delete</button>
-                        <button type="submit">Edit</button>
-                        <button
-                            onClick={() => {
-                                setFormOpen(false)
-                            }}
-                        >
-                            Cancel
-                        </button>
-                    </div>
-                ) : (
-                    <div>
-                        <button type="submit">Create</button>
-                        <button
-                            onClick={() => {
-                                setFormOpen(false)
-                            }}
-                        >
-                            Cancel
-                        </button>
-                    </div>
-                )}
-            </form>
-        </div>
-    )
+              Cancel
+            </button>
+          </div>
+        ) : (
+          <div>
+            <button type="submit">Create</button>
+            <button
+              onClick={() => {
+                setFormOpen(false)
+              }}
+            >
+              Cancel
+            </button>
+          </div>
+        )}
+      </form>
+    </div>
+  )
 }
 
 export default EditUser

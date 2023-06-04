@@ -10,57 +10,11 @@ const prisma = new PrismaClient();
 const router = express.Router();
 
 
-router.post("/signup", async (req, res) => {
-    const {username, password, email} = req.body;
-    const existingUserWithEmail = await prisma.user.findUnique({where: {email}})
-
-    if(existingUserWithEmail){
-        res.json({message: "Email already exists"})
-    }
-
-    const hashedPassword = await bcrypt.hash(password, 10);
-
-    const createUniqID = Math.random().toString(36).slice(-8);
-
-    const createdUser = await prisma.user.create({
-        data: {
-            username: username,
-            email, 
-            password: hashedPassword,
-            role: "ADMIN",
-            familyID: createUniqID
-        }
-    })
-
-    res.json({message: "User created"})
-})
-
-router.post("/signin", async (req, res) => {
-    const {email, password} = req.body;
-
-    const existingUserWithEmail = await prisma.user.findUnique({where: {email}});
-
-    if (!existingUserWithEmail) {
-    res.status(400).json({message: "Email or password is incorrect"})
-    return;
-}
-
-    const isPasswordCorrect = await bcrypt.compare(password, existingUserWithEmail.password);
-
-    if (!isPasswordCorrect) {
-    res.status(400).json({message: "Email or password is incorrect"})
-    return;
-}
-    console.log(existingUserWithEmail)
-    const token =  jwt.sign({email: existingUserWithEmail.email, id: existingUserWithEmail.id}, "test", {expiresIn: "1h"})
-
-    res.json({userID:existingUserWithEmail.id, userRole:existingUserWithEmail.role, token})
-
-})
 
 router.post('/create-user', async (req, res) => {
-  const { username, email, adminID } = req.body;
-
+  const { userForm, userID } = req.body;
+  const { username, email } = userForm;
+  const adminID = userID;
   try {
     const existingUser = await prisma.user.findUnique({ where: { email } });
 
@@ -122,27 +76,6 @@ router.get('/get-user', async (req, res) => {
   }
 });
 
-// router.put('/edit-user', async (req, res) => {
-//    const {userForm } = req.query.data ;
-//    console.log(userForm)
-//    const {id, username, email} = userForm;
-//     if (id || !username || !email) {
-//     return res.status(400).json({ message: 'Some data missing' });
-//     }
-//     try{
-//         const user = await prisma.user.update({
-//             where: { id: id },
-//             data: {
-//                 username,
-//                 email
-//             }
-//         })
-//         res.status(200).json({ user });
-//     } catch (error) {
-//         res.status(500).json({ message: 'An error occurred' });
-//         console.log(error);
-//     }
-// });
 router.put('/edit-user/:id', async (req, res) => {
    const { userForm } = req.body;
    console.log(userForm);
@@ -165,6 +98,20 @@ router.put('/edit-user/:id', async (req, res) => {
    }
 });
 
+router.delete('/delete-user/:id', async (req, res) => {
+  console.log(req.params);
+    const { id } = req.params;
+    if (!id) {
+        return res.status(400).json({ message: 'No user ID provided' });
+    }
+    try {
+        await prisma.user.delete({ where: { id: String(id) } });
+        res.status(200).json({ message: 'User deleted' });
+    } catch (error) {
+        res.status(500).json({ message: 'An error occurred' });
+        console.log(error);
+    }
+})
 
 router.get('/get-users', async (req, res) => {
   const adminID = req.query.userID as string;
