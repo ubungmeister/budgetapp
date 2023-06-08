@@ -120,12 +120,14 @@ router.get('/get-users', async (req, res) => {
   }
   try {
     const admin = await prisma.user.findUnique({ where: { id: adminID } });
-    const users = await prisma.user.findMany({ where: { familyID: admin.familyID , role: "USER"}});
+    const users = await prisma.user.findMany({ where: { familyID: admin.familyID }});
     res.json({ users });
   } catch (error) {
     res.status(500).json({ message: 'An error occurred' });
     console.log(error);
   }
 });
+
+router.get('')
 
 export {router as usersRouter}

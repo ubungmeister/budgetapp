@@ -1,22 +1,22 @@
 import UseAuth from '../compnents/helpers/UseAuth'
 
 const HomePage = () => {
-    UseAuth()
+  UseAuth()
 
-    return (
-        <div className="">
-            <div>Home</div>
-            <div>Home</div>
-            <div>Home</div>
-            <div>Home</div>
-            <div>Home</div>
-            <div>Home</div>
-            <div>Home</div>
-            <div>Home</div>
-            <div>Home</div>
-            <div>Home</div>
-            <div>Home</div>
-        </div>
-    )
+  return (
+    <div className="">
+      <div>Home</div>
+      <div>Home</div>
+      <div>Home</div>
+      <div>Home</div>
+      <div>Home</div>
+      <div>Home</div>
+      <div>Home</div>
+      <div>Home</div>
+      <div>Home</div>
+      <div>Home</div>
+      <div>Home</div>
+    </div>
+  )
 }
 export default HomePage

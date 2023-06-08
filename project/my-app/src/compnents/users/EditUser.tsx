@@ -1,6 +1,7 @@
 import React from 'react'
 import { UserData } from '../../compnents/helpers/types'
-import { updateUser, createUser, deleteUser } from './api'
+import { updateUser, createUser, deleteUser, getUsers } from './api'
+
 type EditUserProps = {
   userForm: UserData
   formOpen: boolean
@@ -16,16 +17,44 @@ const EditUser: React.FC<EditUserProps> = ({
 }: EditUserProps) => {
   const userID = window.localStorage.getItem('userID')
 
+  const userValidation = async (userForm: UserData) => {
+    if (!userForm.username.trim()) {
+      alert('Please enter a username')
+      return false
+    }
+    if (!userForm.email.trim() || !userForm.email.includes('@')) {
+      alert('Please enter a valid email')
+      return false
+    }
+
+    const allUsers = await getUsers()
+
+    if (allUsers.some((user: UserData) => user.email === userForm.email)) {
+      if (userForm.id) {
+        const user = allUsers.find((user: UserData) => user.id === userForm.id)
+        if (user && user.email === userForm.email) {
+          return true
+        }
+      }
+      alert('Email already exists')
+      return false
+    }
+    return true
+  }
+
   const formHandler = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
+
+    const isValid = await userValidation(userForm)
     if (userForm.id) {
       await updateUser(userForm)
-      setFormOpen(false)
     } else {
       if (userID) {
         await createUser(userForm, userID)
-        setFormOpen(false)
       }
+    }
+    if (isValid) {
+      setFormOpen(false)
     }
   }
 

@@ -3,6 +3,8 @@ import axios from 'axios'
 import { UserData, initialUserData } from '../../compnents/helpers/types'
 import UsersList from '../../compnents/users/UsersList'
 import EditUser from '../../compnents/users/EditUser'
+import { getUsers } from '../../compnents/users/api'
+
 const Users = () => {
   const [users, setUsers] = useState<UserData[]>([initialUserData])
   const [search, setSearch] = useState<string>('')
@@ -12,26 +14,19 @@ const Users = () => {
   const [selectedUser, setSetSelectedUser] = useState<string>('')
   const [userForm, setUserForm] = useState<UserData>(initialUserData)
   const [formOpen, setFormOpen] = useState<boolean>(false)
-  console.log('userForm', userForm)
+
+  const userId = window.localStorage.getItem('userID')
 
   useEffect(() => {
     const fetchData = async () => {
-      try {
-        const userID = window.localStorage.getItem('userID')
-        const response = await axios.get(
-          'http://localhost:1000/users/get-users',
-          {
-            params: {
-              userID: userID,
-            },
-          }
+      if (userId) {
+        const allUsers = await getUsers()
+        const filteredUsers = allUsers.filter(
+          (user: UserData) => user.id !== userId
         )
-        setUsers([...response.data.users])
-      } catch (error) {
-        console.log('Error fetching users:', error)
+        setUsers(filteredUsers)
       }
     }
-
     fetchData()
   }, [formOpen])
 
