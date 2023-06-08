@@ -36,3 +36,18 @@ export const deleteUser = async (userID: string) => {
     console.log(error)
   }
 }
+
+export const getUsers = async () => {
+  try {
+    const userID = window.localStorage.getItem('userID')
+    const response = await axios.get('http://localhost:1000/users/get-users', {
+      params: {
+        userID: userID,
+      },
+    })
+    const users = response.data.users
+    return users
+  } catch (error) {
+    console.log('Error fetching users:', error)
+  }
+}
