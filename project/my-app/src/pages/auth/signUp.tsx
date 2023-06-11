@@ -30,6 +30,7 @@ const FormSchema = z
         },
         { message: 'Email already exists' }
       ),
+    familyName: z.string(),
     password: z
       .string()
       .min(6, { message: 'Password must be at least 6 characters long' }),
@@ -83,6 +84,12 @@ const SignUp = () => {
             className="auth-input"
             placeholder="Emial"
             {...register('email')}
+          />
+          <input
+            className="auth-input"
+            type="text"
+            placeholder="Family Name"
+            {...register('familyName')}
           />
           {errors.email && <p className="auth-error">{errors.email.message}</p>}
           <input

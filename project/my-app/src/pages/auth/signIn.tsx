@@ -1,4 +1,3 @@
-import React from 'react'
 import Logo from '../../compnents/auth/logo'
 import withAuthLayout from './layout'
 import { Link, useNavigate } from 'react-router-dom'
@@ -43,7 +42,7 @@ const SignIn = () => {
       window.localStorage.setItem('userRole', response.data.userRole)
       navigate('/')
     } catch (error: any) {
-      console.log(error.response.data.message)
+      alert(error.response.data.message)
     }
   }
 

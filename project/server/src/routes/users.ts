@@ -15,6 +15,7 @@ router.post('/create-user', async (req, res) => {
   const { userForm, userID } = req.body;
   const { username, email } = userForm;
   const adminID = userID;
+  
   try {
     const existingUser = await prisma.user.findUnique({ where: { email } });
 
@@ -27,6 +28,7 @@ router.post('/create-user', async (req, res) => {
 
     const randomPassword = Math.random().toString(36).slice(-8); // Generate a random password
     const hashedPassword = await bcrypt.hash(randomPassword, 10);
+
 
     const createdUser = await prisma.user.create({
       data: {

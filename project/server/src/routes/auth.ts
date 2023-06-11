@@ -12,7 +12,7 @@ const router = express.Router();
 
 
 router.post("/signup", async (req, res) => {
-    const {username, password, email} = req.body;
+    const {username, password, email, familyName} = req.body;
     const existingUserWithEmail = await prisma.user.findUnique({where: {email}})
 
     if(existingUserWithEmail){
@@ -22,6 +22,13 @@ router.post("/signup", async (req, res) => {
     const hashedPassword = await bcrypt.hash(password, 10);
 
     const createUniqID = Math.random().toString(36).slice(-8);
+
+    const createFamily = await prisma.family.create({
+        data: {
+            id: createUniqID,
+            name: familyName
+        }
+    })
 
     const createdUser = await prisma.user.create({
         data: {

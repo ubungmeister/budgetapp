@@ -12,15 +12,6 @@ app.use(cors());
 app.use('/auth', authRouter);
 app.use('/users', usersRouter);
 
-// const server = http.createServer(app);
-
-//   const port = server.address().port;
-
-
-// server.listen(port, () => {
-//   console.log('Server running on http://localhost:1000/');
-// });
-
 const server: Server = http.createServer(app);
 
 server.listen(1000, () => {

@@ -10,14 +10,68 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model User {
+model Family {
   id        String  @id @default(uuid())
+  name      String  
+  budget    Budget[]
+  users     User[]
+}
+
+model Budget {
+  id          String     @id @default(uuid())
+  start_date DateTime
+  end_date   DateTime
+  amount      Float
+  familyID    String
+  family      Family     @relation(fields: [familyID], references: [id])
+ }
+
+
+model User {
+  id        String   @id @default(uuid())
   email     String   @unique 
   username  String   @unique 
   password  String
   familyID  String  
   role      Role     @default(USER)
+  pocketMoney PoketMoney[]
+  incomeOutcome  IncomeOutcome[]
+  savingGoal   SavingGoal[]
+  family    Family?  @relation(fields: [familyID], references: [id])
 }
+
+ model PoketMoney {
+  id         String     @id @default(uuid())
+  amount     Float
+  start_date DateTime
+  end_date   DateTime?
+  userId     String
+  user       User       @relation(fields: [userId], references: [id])
+}
+
+model IncomeOutcome {
+  id         String     @id @default(uuid())
+  category   String
+  start_date DateTime
+  description String
+  amount     Float
+  userId     String
+  user       User       @relation(fields: [userId], references: [id])
+} 
+
+model SavingGoal {
+  id         String     @id @default(uuid())
+  description String
+  goalAmount     Float
+  currentAmount     Float
+  userId     String
+  start_date    DateTime
+  end_date      DateTime?
+  isActive    Boolean
+  user       User       @relation(fields: [userId], references: [id])
+
+}
+
 
 enum Role {
   ADMIN
