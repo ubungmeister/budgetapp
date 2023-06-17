@@ -5,15 +5,19 @@ const router = express.Router();
 
 const prisma = new PrismaClient();
 
-// create or update months and budget for a family 
 
 router.get('/get-budget', async (req, res) => {
 
-    const { monthYear } = req.query 
+    const { monthYear, userID } = req.query 
+    const adminID = userID as string;
+
+    const admin = await prisma.user.findUnique({ where: { id: adminID } });
+    const familyID =  admin.familyID;
+    console.log(familyID)
 
     if (!monthYear) return res.status(400).json({ message: 'No monthYear provided' });
 
-        // need to have an array of months a years to loop + 1 month
+    // need to have an array of months a years to loop + 1 month
     const date = new Date(monthYear as string);
     const year = date.getFullYear();
     const month = date.getMonth()+1;
@@ -36,9 +40,11 @@ router.get('/get-budget', async (req, res) => {
           const dates = await createAllMonths()
             //look in DB if the Budget with this monthYear exist
             const budget = await prisma.budget.findMany({
-                where: {month: {in: dates}}
+                where: {
+                 month: {in: dates},
+                 familyID: familyID
+                }
             })
-            console.log('budget', budget)   
             res.status(200).json({budget})
     }catch(error){}
 

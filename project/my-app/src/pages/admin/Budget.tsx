@@ -42,6 +42,7 @@ const Budget = () => {
           {
             params: {
               monthYear: date,
+              userID,
             },
           }
         )
