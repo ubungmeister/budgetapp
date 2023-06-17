@@ -19,8 +19,7 @@ model Family {
 
 model Budget {
   id          String     @id @default(uuid())
-  start_date DateTime
-  end_date   DateTime
+  month       DateTime
   amount      Float
   familyID    String
   family      Family     @relation(fields: [familyID], references: [id])

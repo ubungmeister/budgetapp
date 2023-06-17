@@ -130,6 +130,6 @@ router.get('/get-users', async (req, res) => {
   }
 });
 
-router.get('')
+
 
 export {router as usersRouter}

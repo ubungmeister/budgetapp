@@ -19,6 +19,7 @@ const Sidebar = () => {
 
   const adminMenu = [
     { title: 'Admin', src: <FiHome />, navigate: '/admin' },
+    { title: 'Budget', src: <FiCreditCard />, navigate: '/budget' },
     { title: 'Users', src: <FiUserPlus />, navigate: '/users' },
     { title: 'Cash flow', src: <FiCreditCard />, navigate: '/cashflow' },
     { title: 'Overview', src: <FiBarChart2 />, navigate: '/overview' },

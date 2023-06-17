@@ -3,6 +3,7 @@ import http, { Server } from 'http';
 import cors from 'cors';
 import { usersRouter } from './routes/users';
 import { authRouter } from './routes/auth';
+import { budgetRouter } from './routes/budget';
 import { AddressInfo } from 'net';
 
 const app = express();
@@ -11,6 +12,7 @@ app.use(cors());
 
 app.use('/auth', authRouter);
 app.use('/users', usersRouter);
+app.use('/budget', budgetRouter)
 
 const server: Server = http.createServer(app);
 

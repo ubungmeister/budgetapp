@@ -9,8 +9,7 @@ CREATE TABLE `Family` (
 -- CreateTable
 CREATE TABLE `Budget` (
     `id` VARCHAR(191) NOT NULL,
-    `start_date` DATETIME(3) NOT NULL,
-    `end_date` DATETIME(3) NOT NULL,
+    `month` DATETIME(3) NOT NULL,
     `amount` DOUBLE NOT NULL,
     `familyID` VARCHAR(191) NOT NULL,
 

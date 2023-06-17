@@ -38,7 +38,9 @@ const UsersList: React.FC<UsersListProps> = ({
         />
         <div>
           {filteredUsers.map(user => (
-            <div onClick={() => selectedUserHandler(user)}>{user.username}</div>
+            <div key={user.id} onClick={() => selectedUserHandler(user)}>
+              {user.username}
+            </div>
           ))}
         </div>
         <button onClick={onAddUser}>Add User</button>
