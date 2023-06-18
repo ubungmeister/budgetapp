@@ -1,17 +1,14 @@
-import axios from 'axios'
+import React from 'react'
 import { useEffect, useState } from 'react'
-import { BudgetData } from '../../compnents/budget/types'
-import BudgetList from '../../compnents/budget/BudgetList'
-import BudgetControls from '../../compnents/budget/BudgetControls'
-import { updateBudgets } from '../../compnents/budget/api'
+import axios from 'axios'
+import PocketMoneyList from '../../compnents/pocket-money/PocketMoneyList'
 
-const Budget = () => {
-  const [isMonthChange, setIsMonthChange] = useState('')
+const PocketMoney = () => {
   const [currentMonth, setCurrentMonth] = useState('')
-  const [monthsAndBudget, setMonthsAndBudget] = useState<Array<BudgetData>>([])
-  const [isChangeCancel, setChangeCancel] = useState<boolean>(false)
-
+  const [isMonthChange, setIsMonthChange] = useState('')
+  const [monthsAndBudget, setMonthsAndBudget] = useState<Array<any>>([])
   const userID = window.localStorage.getItem('userID')
+  console.log('monthsAndBudget', monthsAndBudget)
 
   useEffect(() => {
     const getData = async () => {
@@ -68,32 +65,30 @@ const Budget = () => {
       } catch (error) {
         console.error(error)
       }
+      try {
+        const result = await axios.get(
+          'http://localhost:1000/pocketmoney/get-pocket-money',
+          {
+            params: {
+              monthYear: date,
+              userID,
+            },
+          }
+        )
+      } catch (error) {}
     }
 
     getData()
     setIsMonthChange('')
-  }, [isMonthChange, isChangeCancel])
-
-  const handleSaveBudget = async () => {
-    if (!userID) return
-    await updateBudgets(monthsAndBudget, userID)
-  }
+  }, [isMonthChange])
 
   return (
     <div>
       <div>
-        <BudgetControls
-          setIsMonthChange={setIsMonthChange}
-          handleSaveBudget={handleSaveBudget}
-          setChangeCancel={setChangeCancel}
-        />
-        <BudgetList
-          monthsAndBudget={monthsAndBudget}
-          setMonthsAndBudget={setMonthsAndBudget}
-        />
+        <PocketMoneyList monthsAndBudget={monthsAndBudget} />
       </div>
     </div>
   )
 }
 
-export default Budget
+export default PocketMoney

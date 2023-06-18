@@ -21,10 +21,11 @@ const Sidebar = () => {
     { title: 'Admin', src: <FiHome />, navigate: '/admin' },
     { title: 'Budget', src: <FiCreditCard />, navigate: '/budget' },
     { title: 'Users', src: <FiUserPlus />, navigate: '/users' },
-    { title: 'Cash flow', src: <FiCreditCard />, navigate: '/cashflow' },
-    { title: 'Overview', src: <FiBarChart2 />, navigate: '/overview' },
-    { title: 'Goals', src: <FiCrosshair />, navigate: '/goals' },
-    { title: 'Tasks', src: <FiCoffee />, navigate: '/tasks' },
+    {
+      title: 'Pocket money planning',
+      src: <FiCreditCard />,
+      navigate: '/pocket-money',
+    },
   ]
   const userMenu = [
     { title: 'Cash flow', src: <FiCreditCard />, navigate: '/cashflow' },

@@ -33,17 +33,16 @@ model User {
   password  String
   familyID  String  
   role      Role     @default(USER)
-  pocketMoney PoketMoney[]
+  pocketMoney PocketMoney[]
   incomeOutcome  IncomeOutcome[]
   savingGoal   SavingGoal[]
   family    Family?  @relation(fields: [familyID], references: [id])
 }
 
- model PoketMoney {
+ model PocketMoney {
   id         String     @id @default(uuid())
   amount     Float
-  start_date DateTime
-  end_date   DateTime?
+  month      DateTime
   userId     String
   user       User       @relation(fields: [userId], references: [id])
 }
