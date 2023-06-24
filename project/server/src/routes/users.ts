@@ -122,7 +122,13 @@ router.get('/get-users', async (req, res) => {
   }
   try {
     const admin = await prisma.user.findUnique({ where: { id: adminID } });
-    const users = await prisma.user.findMany({ where: { familyID: admin.familyID }});
+    const users = await prisma.user.findMany(
+      { where: 
+        { familyID: admin.familyID ,
+          id: { not: adminID }
+        }
+      }
+      );
     res.json({ users });
   } catch (error) {
     res.status(500).json({ message: 'An error occurred' });

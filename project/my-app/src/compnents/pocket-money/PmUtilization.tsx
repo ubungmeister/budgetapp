@@ -1,8 +1,12 @@
-import React from 'react'
 import { BudgetListProps } from './types'
-const PocketMoneyList = ({ monthsAndBudget }: BudgetListProps) => {
+const PmUtilization = ({ monthsAndBudget }: BudgetListProps) => {
   return (
     <div className="flex space-x-10">
+      <div className="flex flex-col">
+        <div>Month</div>
+        <div>Budget</div>
+      </div>
+
       {monthsAndBudget.map((item, index) => {
         const date = new Date(item.month)
         return (
@@ -18,4 +22,4 @@ const PocketMoneyList = ({ monthsAndBudget }: BudgetListProps) => {
   )
 }
 
-export default PocketMoneyList
+export default PmUtilization

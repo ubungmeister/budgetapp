@@ -1,15 +1,14 @@
+import { PmType } from './types'
 import axios from 'axios'
-import { BudgetData } from './types'
-
-export const updateBudgets = async (
-  monthsAndBudget: Array<BudgetData>,
+export const editPocketMoney = async (
+  pocketMoney: Array<PmType>,
   userID: string
 ) => {
   try {
     const result = await axios.post(
-      `http://localhost:1000/budget/update-budget`,
+      `http://localhost:1000/pocketmoney/add-pocket-money`,
       {
-        budget: monthsAndBudget,
+        pocketMoney,
         userID,
       }
     )
