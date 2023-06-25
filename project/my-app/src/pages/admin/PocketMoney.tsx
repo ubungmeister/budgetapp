@@ -4,17 +4,20 @@ import axios from 'axios'
 import PmControls from '../../compnents/pocket-money/PmControls'
 import { PmType } from '../../compnents/pocket-money/types'
 import { editPocketMoney } from '../../compnents/pocket-money/api'
+import { UserData } from '../../compnents/users/types'
 import { v4 as uuidv4 } from 'uuid'
+import { BudgetData } from '../../compnents/budget/types'
+import PmTable from '../../compnents/pocket-money/PmTable'
 
 const PocketMoney = () => {
   const [currentMonth, setCurrentMonth] = useState('')
   const [isMonthChange, setIsMonthChange] = useState('')
-  const [monthsAndBudget, setMonthsAndBudget] = useState<Array<any>>([])
+  const [monthsAndBudget, setMonthsAndBudget] = useState<Array<BudgetData>>([])
   const [pocketMoney, setPocketMoney] = useState<Array<PmType>>([])
   const [isChangeCancel, setChangeCancel] = useState<boolean>(false)
-  const [users, setUsers] = useState<Array<any>>([])
+  const [users, setUsers] = useState<Array<UserData>>([])
 
-  console.log('pocketMoney', pocketMoney)
+  console.log('monthsAndBudget', monthsAndBudget)
 
   const userID = window.localStorage.getItem('userID')
 
@@ -104,73 +107,6 @@ const PocketMoney = () => {
     setIsMonthChange('')
   }, [isMonthChange, isChangeCancel])
 
-  const renderPocketMoneyInputs = () => {
-    const userInputs = users.map(user => {
-      const userPocketMoney = pocketMoney.filter(
-        entry => entry.userId === user.id
-      )
-
-      const inputs = monthsAndBudget.map((monthEntry, index) => {
-        const pocketMoneyEntry = userPocketMoney.find(
-          entry => entry.month === monthEntry.month
-        )
-        const amount = pocketMoneyEntry ? pocketMoneyEntry.amount : 0
-
-        return (
-          <input
-            key={index}
-            value={amount}
-            type="number"
-            min={0}
-            max={1000000}
-            onChange={e =>
-              handleInputChange(
-                e.target.value,
-                monthEntry.month,
-                user.id,
-                pocketMoneyEntry?.id
-              )
-            }
-          />
-        )
-      })
-
-      return (
-        <div className="flex  flex-row justify-between pr-60">
-          <h3 className="px-5 max-w-[20%] overflow-hidden ">{user.username}</h3>
-          <div className="flex items-center">{inputs}</div>
-        </div>
-      )
-    })
-
-    return userInputs
-  }
-
-  const handleInputChange = (
-    value: string,
-    month: any,
-    userId: any,
-    pocketMoneyID?: string
-  ) => {
-    if (pocketMoneyID === undefined) {
-      const newPocketMoneyEntry = {
-        id: uuidv4(),
-        amount: parseFloat(value),
-        month,
-        userId,
-      }
-      setPocketMoney([...pocketMoney, newPocketMoneyEntry])
-    } else {
-      const updatedPocketMoney = pocketMoney.map(entry => {
-        if (entry.userId === userId && entry.month === month) {
-          return { ...entry, amount: parseFloat(value) }
-        }
-        return entry
-      })
-      setPocketMoney(updatedPocketMoney)
-    }
-  }
-
   const handleSavePm = async () => {
     if (!userID) return
     await editPocketMoney(pocketMoney, userID)
@@ -184,31 +120,12 @@ const PocketMoney = () => {
           handleSavePm={handleSavePm}
           setChangeCancel={setChangeCancel}
         />
-      </div>
-      <div className="flex flex-col">
-        <div className="flex flex-row">
-          <div className="px-5">
-            <p>Month</p>
-            <p>Budget</p>
-          </div>
-          <div className="flex flex-row space-x-4">
-            {monthsAndBudget.map((monthEntry, index) => {
-              const month = new Date(monthEntry.month)
-              return (
-                <div
-                  className="flex flex-col space-x-4 items-center pl-14"
-                  key={index}
-                >
-                  <div>
-                    {month.toLocaleString('default', { month: 'long' })}
-                  </div>
-                  <div> {monthEntry.amount} </div>
-                </div>
-              )
-            })}
-          </div>
-        </div>
-        <div>{renderPocketMoneyInputs()}</div>
+        <PmTable
+          monthsAndBudget={monthsAndBudget}
+          pocketMoney={pocketMoney}
+          users={users}
+          setPocketMoney={setPocketMoney}
+        />
       </div>
     </div>
   )

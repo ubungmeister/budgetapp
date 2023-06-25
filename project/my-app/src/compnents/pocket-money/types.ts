@@ -1,16 +1,8 @@
 import { BudgetData } from '../budget/types'
+import { UserData } from '../users/types'
 
-export interface BudgetListProps {
-  monthsAndBudget: Array<BudgetData>
-}
-
-export interface PmTableType {
-  [month: string]: {
-    [userId: string]: PmData
-  }
-}
 export interface PmType {
-  month: string
+  month: Date
   amount: number
   userId: string
   id?: string
@@ -24,8 +16,19 @@ export interface PmData {
   month?: string
 }
 
+export interface PmTableProps {
+  users: Array<UserData>
+  monthsAndBudget: Array<BudgetData>
+  pocketMoney: Array<PmType>
+  setPocketMoney: React.Dispatch<React.SetStateAction<PmType[]>>
+}
+
 export interface PmControlsProps {
   handleSavePm: () => void
   setChangeCancel: (value: React.SetStateAction<boolean>) => void
   setIsMonthChange: React.Dispatch<React.SetStateAction<string>>
+}
+
+export interface PmListProps {
+  monthsAndBudget: Array<BudgetData>
 }

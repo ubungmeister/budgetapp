@@ -1,5 +1,5 @@
 import React from 'react'
-import { UserData } from '../../compnents/helpers/types'
+import { UserData } from './types'
 import { updateUser, createUser, deleteUser, getUsers } from './api'
 
 type EditUserProps = {
