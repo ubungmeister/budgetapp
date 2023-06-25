@@ -1,5 +1,6 @@
 import React from 'react'
-import { UserData, initialUserData } from '../../compnents/helpers/types'
+
+import { UserData, initialUserData } from '../../compnents/users/types'
 
 interface UsersListProps {
   filteredUsers: UserData[]

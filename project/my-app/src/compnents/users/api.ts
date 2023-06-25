@@ -1,4 +1,4 @@
-import { UserData } from '../../compnents/helpers/types'
+import { UserData } from './types'
 import axios from 'axios'
 
 export const updateUser = async (userForm: UserData) => {

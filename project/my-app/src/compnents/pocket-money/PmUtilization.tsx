@@ -1,5 +1,6 @@
-import { BudgetListProps } from './types'
-const PmUtilization = ({ monthsAndBudget }: BudgetListProps) => {
+import { PmListProps } from './types'
+
+const PmUtilization = ({ monthsAndBudget }: PmListProps) => {
   return (
     <div className="flex space-x-10">
       <div className="flex flex-col">

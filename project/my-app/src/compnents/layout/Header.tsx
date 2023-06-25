@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import { useEffect, useState } from 'react'
-import { UserData, initialUserData } from '../helpers/types'
+import { UserData, initialUserData } from '../users/types'
 import { set } from 'zod'
 
 const Header = () => {
