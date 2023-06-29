@@ -12,7 +12,6 @@ const Budget = () => {
   const [isChangeCancel, setChangeCancel] = useState<boolean>(false)
 
   const userID = window.localStorage.getItem('userID')
-
   useEffect(() => {
     const getData = async () => {
       const date = new Date(currentMonth || new Date())

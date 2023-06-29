@@ -10,6 +10,7 @@ import Home from './pages/Home'
 import Users from './pages/users/Users'
 import Budget from './pages/admin/Budget'
 import PocketMoney from './pages/admin/PocketMoney'
+import CashFlow from './pages/cash-flow/CashFlow'
 
 function App() {
   const [cookies, setCookie] = useCookies(['token'])
@@ -30,6 +31,7 @@ function App() {
                   <Route path="/budget" element={<Budget />} />
                   <Route path="/users" element={<Users />} />
                   <Route path="/pocket-money" element={<PocketMoney />} />
+                  <Route path="/cash-flow" element={<CashFlow />} />
                 </Routes>
               </div>
             </div>
