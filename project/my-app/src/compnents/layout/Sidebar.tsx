@@ -28,7 +28,7 @@ const Sidebar = () => {
     },
   ]
   const userMenu = [
-    { title: 'Cash flow', src: <FiCreditCard />, navigate: '/cashflow' },
+    { title: 'Cash flow', src: <FiCreditCard />, navigate: '/cash-flow' },
     { title: 'Overview', src: <FiBarChart2 />, navigate: '/overview' },
     { title: 'Goals', src: <FiCrosshair />, navigate: '/goals' },
     { title: 'Tasks', src: <FiCoffee />, navigate: '/tasks' },

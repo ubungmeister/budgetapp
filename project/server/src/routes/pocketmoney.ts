@@ -25,6 +25,34 @@ router.get('/get-pocket-money', async (req, res) => {
    res.status(200).json({pocketMoney})
 })
 
+router.get('/get-pocket-money-user', async (req, res) => {
+
+    const { monthYear, userID } = req.query;
+    console.log(monthYear, userID)
+    if(!userID) return res.status(400).json({ message: 'No userId provided' });
+    console.log('monthYear', monthYear)
+    const date = new Date(monthYear as string);
+    console.log('date', date)
+    const year = date.getFullYear();
+    const month = date.getMonth()+1;
+
+    const newDate = new Date(year, month, 1);
+    newDate.setUTCHours(0, 0, 0, 0);
+
+    const pocketMoney = await prisma.pocketMoney.findFirst({
+        where: {
+            userId: userID as string,
+            month: newDate,
+        }
+    })
+
+    console.log(pocketMoney)
+  
+
+    res.status(200).json({ pocketMoney});
+
+})
+
 router.post('/add-pocket-money', async (req, res) => {
     const {pocketMoney, userID} = req.body
     const adminID = userID;
