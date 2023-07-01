@@ -7,7 +7,6 @@ const prisma = new PrismaClient();
 
 router.get('/get-cash-flow', async (req, res) => {
     const { monthYear, userID } = req.query;
-    console.log(monthYear, userID)
     if(!userID) return res.status(400).json({ message: 'No userId provided' });
     
     const date = new Date(monthYear as string);
@@ -23,7 +22,6 @@ router.get('/get-cash-flow', async (req, res) => {
   const endOfMonth = new Date(nextYear, nextMonth - 1, 1);
   endOfMonth.setUTCHours(0, 0, 0, 0);
 
-  console.log('endOfMonth',endOfMonth)
 
     const pocketMoney = await prisma.pocketMoney.findFirst({
         where: {
@@ -44,9 +42,24 @@ router.get('/get-cash-flow', async (req, res) => {
             
         }
     })
-    console.log(pocketMoney)
-    res.status(200).json({ pocketMoney});
+    console.log('cashFlow: ', cashFlow);
+    res.status(200).json({ cashFlow});
 
+})
+
+router.post('/add-cash-flow', async (req, res) => {
+    const { amount, category, description, start_date, userId } = req.body;
+    console.log('req.body: ', req.body);
+    const newCashFlow = await prisma.incomeOutcome.create({
+        data: {
+            amount: amount,
+            category: category,
+            description: description,
+            start_date: start_date,
+            userId: userId,
+        }
+    })
+    res.status(200).json({ newCashFlow });
 })
 
 
