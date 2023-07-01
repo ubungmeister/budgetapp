@@ -1,14 +1,21 @@
 import React from 'react'
 import { CashFlowControlsProps } from './types'
 
-const CfControls = ({ setIsMonthChange }: CashFlowControlsProps) => {
+const CfControls = ({
+  setIsMonthChange,
+  pocketMoney,
+}: CashFlowControlsProps) => {
   return (
-    <div>
-      <div className="flex flex-row justify-between">
-        <div className="flex space-x-10">
-          <button onClick={() => setIsMonthChange('prev')}>Previous</button>
-          <button onClick={() => setIsMonthChange('next')}>Next</button>
+    <div className="">
+      <div className="flex space-x-10 justify-center items-center mt-10">
+        <button onClick={() => setIsMonthChange('prev')}>Previous</button>
+        <div>
+          {pocketMoney?.month.toLocaleString('en-US', {
+            month: 'long',
+            year: 'numeric',
+          })}
         </div>
+        <button onClick={() => setIsMonthChange('next')}>Next</button>
       </div>
     </div>
   )
