@@ -34,7 +34,6 @@ const CategorySelector = ({
   const onChangeHandler = useCallback(
     (selectedOption: any) => {
       setCategory(selectedOption.value)
-      // props.category(e.value, e.src)
     },
     [category]
   )

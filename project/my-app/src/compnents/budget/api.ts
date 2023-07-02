@@ -18,3 +18,17 @@ export const updateBudgets = async (
     console.error(error)
   }
 }
+
+export const getBudget = async (date: Date, userID: string) => {
+  try {
+    const result = await axios.get('http://localhost:1000/budget/get-budget', {
+      params: {
+        monthYear: date,
+        userID,
+      },
+    })
+    return result
+  } catch (error) {
+    console.error(error)
+  }
+}

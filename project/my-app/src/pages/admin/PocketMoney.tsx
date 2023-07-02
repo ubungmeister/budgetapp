@@ -1,13 +1,13 @@
-import React from 'react'
 import { useEffect, useState } from 'react'
-import axios from 'axios'
 import PmControls from '../../compnents/pocket-money/PmControls'
 import { PmType } from '../../compnents/pocket-money/types'
 import { editPocketMoney } from '../../compnents/pocket-money/api'
 import { UserData } from '../../compnents/users/types'
-import { v4 as uuidv4 } from 'uuid'
 import { BudgetData } from '../../compnents/budget/types'
 import PmTable from '../../compnents/pocket-money/PmTable'
+import { getPocketMoney } from '../../compnents/pocket-money/api'
+import { getBudget } from '../../compnents/budget/api'
+import { getUsers } from '../../compnents/users/api'
 
 const PocketMoney = () => {
   const [currentMonth, setCurrentMonth] = useState('')
@@ -17,11 +17,11 @@ const PocketMoney = () => {
   const [isChangeCancel, setChangeCancel] = useState<boolean>(false)
   const [users, setUsers] = useState<Array<UserData>>([])
 
-  console.log('monthsAndBudget', monthsAndBudget)
-
   const userID = window.localStorage.getItem('userID')
 
   useEffect(() => {
+    if (!userID) return
+
     const getData = async () => {
       const date = new Date(currentMonth || new Date())
 
@@ -47,19 +47,11 @@ const PocketMoney = () => {
       }
 
       try {
-        const result = await axios.get(
-          `http://localhost:1000/budget/get-budget`,
-          {
-            params: {
-              monthYear: date,
-              userID,
-            },
-          }
-        )
+        const budget = await getBudget(date, userID)
         //compare arrayofMonth and result.data and if there is no data for that month,
         // then create an object contains that date and amount 0
 
-        const data = result.data.budget
+        const data = budget?.data.budget
 
         const monthsAndBudgetArray = [] as Array<any>
 
@@ -76,34 +68,17 @@ const PocketMoney = () => {
       } catch (error) {
         console.error(error)
       }
-      try {
-        const pocketMoney = await axios.get(
-          'http://localhost:1000/pocketmoney/get-pocket-money',
-          {
-            params: {
-              monthYear: date,
-              userID,
-            },
-          }
-        )
-        setPocketMoney(pocketMoney.data.pocketMoney)
-      } catch (error) {}
-      try {
-        const result = await axios.get(
-          `http://localhost:1000/users/get-users`,
-          {
-            params: {
-              userID,
-            },
-          }
-        )
-        setUsers(result.data.users)
-      } catch (error) {
-        console.error(error)
-      }
+
+      const pocketMoney = await getPocketMoney(userID, date)
+      setPocketMoney(pocketMoney?.data.pocketMoney)
+
+      const users = await getUsers()
+      console.log('users', users)
+      setUsers(users)
     }
 
     getData()
+
     setIsMonthChange('')
   }, [isMonthChange, isChangeCancel])
 

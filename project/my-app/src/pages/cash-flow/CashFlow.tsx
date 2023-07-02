@@ -5,6 +5,8 @@ import { PmType } from '../../compnents/pocket-money/types'
 import { CashFlowProps } from '../../compnents/cash-flow/types'
 import CfList from '../../compnents/cash-flow/CfList'
 import CfForm from '../../compnents/cash-flow/CfForm'
+import { getPocketMoney } from '../../compnents/pocket-money/api'
+import { getCashFlow } from '../../compnents/cash-flow/api'
 
 const CashFlow = () => {
   const [currentMonth, setCurrentMonth] = useState<Date>(new Date())
@@ -16,11 +18,14 @@ const CashFlow = () => {
   const [selectedCashFlow, setSelectedCashFlow] = useState<CashFlowProps | ''>(
     ''
   )
+  const [totalIncome, setTotalIncome] = useState(0)
+  const [totalSpendings, setTotalSpendings] = useState(0)
 
-  console.log('pocketMoney', pocketMoney)
   const userID = window.localStorage.getItem('userID')
 
   useEffect(() => {
+    if (!userID) return
+
     const date = new Date(currentMonth || new Date())
 
     if (isMonthChange) {
@@ -34,54 +39,37 @@ const CashFlow = () => {
     }
     setIsMonthChange('')
     const fetchData = async () => {
-      try {
-        const result = await axios.get(
-          'http://localhost:1000/pocketmoney/get-pocket-money-user',
-          {
-            params: {
-              monthYear: date,
-              userID,
-            },
-          }
-        )
-        const data = result.data.pocketMoney
-        if (!result.data.pocketMoney) {
-          const year = currentMonth.getFullYear()
-          const month = currentMonth.getMonth() + 1
+      const pocketMoney = await getPocketMoney(userID, date)
+      const data = await pocketMoney?.data.pocketMoney
+      console.log('data', data)
+      //bug here
+      if (!data) {
+        const year = currentMonth.getFullYear()
+        const month = currentMonth.getMonth() + 1
 
-          const newDate = new Date(year, month, 1)
-          newDate.setUTCHours(0, 0, 0, 0)
+        const newDate = new Date(year, month, 1)
+        newDate.setUTCHours(0, 0, 0, 0)
 
-          const formattedDate = newDate.toISOString()
-          console.log('formattedDate', formattedDate)
+        const formattedDate = newDate.toISOString()
+        console.log('formattedDate', formattedDate)
 
-          setPocketMoney({
-            amount: 0,
-            month: newDate,
-            userId: userID as string,
-          })
-        } else {
-          setPocketMoney({
-            id: data.id,
-            amount: data.amount,
-            month: new Date(data.month),
-            userId: data.userId,
-          })
-        }
-      } catch (error) {}
-      try {
-        const result = await axios.get(
-          'http://localhost:1000/cashflow/get-cash-flow',
-          {
-            params: {
-              monthYear: date,
-              userID,
-            },
-          }
-        )
-        const data = result.data.cashFlow
-        setCashFlow(data)
-      } catch (error) {}
+        setPocketMoney({
+          amount: 0,
+          month: newDate,
+          userId: userID as string,
+        })
+      } else {
+        setPocketMoney({
+          id: data.id,
+          amount: data.amount,
+          month: new Date(data.month),
+          userId: data.userId,
+        })
+      }
+
+      const cashFlow = await getCashFlow(userID, date)
+      // const cashFlowData = await cashFlow
+      setCashFlow(cashFlow || [])
     }
 
     fetchData()
