@@ -1,3 +1,4 @@
+import exp from 'constants'
 import { PmType } from './types'
 import axios from 'axios'
 export const editPocketMoney = async (
@@ -13,6 +14,23 @@ export const editPocketMoney = async (
       }
     )
     console.log(result)
+  } catch (error) {
+    console.error(error)
+  }
+}
+
+export const getPocketMoney = async (userID: string, date: Date) => {
+  try {
+    const pocketMoney = await axios.get(
+      'http://localhost:1000/pocketmoney/get-pocket-money-user',
+      {
+        params: {
+          monthYear: date,
+          userID,
+        },
+      }
+    )
+    return pocketMoney
   } catch (error) {
     console.error(error)
   }

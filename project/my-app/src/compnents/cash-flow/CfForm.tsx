@@ -1,13 +1,14 @@
 import axios from 'axios'
 import { CashFlowFormProps } from './types'
 import CategorySelector from './CategorySelector'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useForm, Controller } from 'react-hook-form'
 import { SubmitHandler } from 'react-hook-form/dist/types/form'
 import DatePicker from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { FaWindowClose } from 'react-icons/fa'
 
 const FormSchema = z.object({
   amount: z.number(),
@@ -34,6 +35,19 @@ const CfForm = ({
     resolver: zodResolver(FormSchema),
   })
 
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        setFormOpen(false)
+      }
+    }
+
+    window.addEventListener('keydown', handleKeyDown)
+
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown)
+    }
+  }, [setFormOpen])
   const expenseHandler = () => {
     //Change Button
     setIsExpense(!isExpense)
@@ -41,18 +55,23 @@ const CfForm = ({
   const buttonNameChange = isExpense ? 'Expense' : 'Income'
 
   const onSubmit: SubmitHandler<FormSchemaType> = async data => {
-    console.log('ok')
     try {
+      if (!category) {
+        setError('Please select a category')
+        return
+      }
       const formData = {
         ...data,
         amount: isExpense ? -data.amount : data.amount,
         category: category,
         userId: window.localStorage.getItem('userID'),
       }
-      console.log('formData', formData)
+      // category === '' && setError('Please select a category')
       await axios.post('http://localhost:1000/cashflow/add-cash-flow', formData)
+      setFormOpen(false)
       alert('User created successfully')
       setError('')
+      setCategory('')
     } catch (error: any) {
       setError(error.response.data.message)
     }
@@ -64,6 +83,9 @@ const CfForm = ({
         onSubmit={handleSubmit(onSubmit)}
         className="fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 flex justify-center items-center"
       >
+        <div>
+          <FaWindowClose onClick={() => setFormOpen(false)} />
+        </div>
         <div className="bg-white max-w-md w-90 p-8 flex flex-col gap-4 rounded-md relative">
           <div className="border-b pb-2">Add transaction</div>
           <div onClick={expenseHandler}>{buttonNameChange}</div>
@@ -72,6 +94,8 @@ const CfForm = ({
             setCategory={setCategory}
             isExpense={isExpense}
           />
+          {error && <p className="auth-error mb-5">{error}</p>}
+
           <div>Amount</div>
           <input
             className="auth-input"
@@ -108,7 +132,6 @@ const CfForm = ({
           <button className="auth-button" type="submit" disabled={isSubmitting}>
             Submit
           </button>
-          {error && <p className="auth-error mb-5">{error}</p>}
         </div>
       </form>
     </>

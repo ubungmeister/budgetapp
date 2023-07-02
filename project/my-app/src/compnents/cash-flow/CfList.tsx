@@ -8,7 +8,6 @@ const CfList = ({
   setSelectedCashFlow,
   selectedCashFlow,
 }: CashFlowListProps) => {
-  console.log('cashFloWWWw', cashFlow)
   return (
     <div>
       <h2>Cash Flow</h2>
@@ -16,7 +15,6 @@ const CfList = ({
         {cashFlow.map(item => {
           const options = item.amount < 0 ? optionsExpense : optionsIncome
           const selectedOption = options.find(el => el.value === item.category)
-          console.log('selectedOption', selectedOption)
           return (
             <div key={item.id} className="flex flex-row space-x-5">
               {selectedOption && (

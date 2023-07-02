@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react'
 import { BudgetData } from '../../compnents/budget/types'
 import BudgetList from '../../compnents/budget/BudgetList'
 import BudgetControls from '../../compnents/budget/BudgetControls'
-import { updateBudgets } from '../../compnents/budget/api'
+import { updateBudgets, getBudget } from '../../compnents/budget/api'
 
 const Budget = () => {
   const [isMonthChange, setIsMonthChange] = useState('')
@@ -13,6 +13,7 @@ const Budget = () => {
 
   const userID = window.localStorage.getItem('userID')
   useEffect(() => {
+    if (!userID) return
     const getData = async () => {
       const date = new Date(currentMonth || new Date())
 
@@ -38,19 +39,11 @@ const Budget = () => {
       }
 
       try {
-        const result = await axios.get(
-          `http://localhost:1000/budget/get-budget`,
-          {
-            params: {
-              monthYear: date,
-              userID,
-            },
-          }
-        )
+        const budget = await getBudget(date, userID)
         //compare arrayofMonth and result.data and if there is no data for that month,
         // then create an object contains that date and amount 0
 
-        const data = result.data.budget
+        const data = await budget?.data.budget
 
         const monthsAndBudgetArray = [] as Array<any>
 
