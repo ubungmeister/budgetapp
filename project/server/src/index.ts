@@ -7,6 +7,7 @@ import { budgetRouter } from './routes/budget';
 import { AddressInfo } from 'net';
 import { pocketMoneyRouter } from './routes/pocketmoney';
 import { cashFlowRouter } from './routes/cashflow';
+import { savingGoalRouter } from './routes/savinggoal';
 const app = express();
 app.use(express.json());
 app.use(cors());
@@ -16,6 +17,7 @@ app.use('/users', usersRouter);
 app.use('/budget', budgetRouter)
 app.use('/pocketmoney', pocketMoneyRouter)
 app.use('/cashflow', cashFlowRouter)
+app.use('/savinggoal', savingGoalRouter)
 
 const server: Server = http.createServer(app);
 

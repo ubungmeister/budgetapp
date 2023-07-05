@@ -17,14 +17,10 @@ const FormSchema = z.object({
 })
 type FormSchemaType = z.infer<typeof FormSchema>
 
-const CfForm = ({
-  formOpen,
-  setFormOpen,
-  category,
-  setCategory,
-}: CashFlowFormProps) => {
-  const [isExpense, setIsExpense] = useState(false)
+const CfForm = ({ formOpen, setFormOpen }: CashFlowFormProps) => {
+  const [isExpense, setIsExpense] = useState('')
   const [error, setError] = useState('')
+  const [category, setCategory] = useState({ category: '', goalId: '' })
 
   const {
     control,
@@ -48,11 +44,10 @@ const CfForm = ({
       window.removeEventListener('keydown', handleKeyDown)
     }
   }, [setFormOpen])
-  const expenseHandler = () => {
-    //Change Button
-    setIsExpense(!isExpense)
-  }
-  const buttonNameChange = isExpense ? 'Expense' : 'Income'
+
+  useEffect(() => {
+    setCategory({ category: '', goalId: '' })
+  }, [isExpense, setIsExpense])
 
   const onSubmit: SubmitHandler<FormSchemaType> = async data => {
     try {
@@ -62,16 +57,35 @@ const CfForm = ({
       }
       const formData = {
         ...data,
-        amount: isExpense ? -data.amount : data.amount,
-        category: category,
+        amount: isExpense === 'Expense' ? -data.amount : data.amount,
+        category: category.category,
+        goalId: category.goalId,
         userId: window.localStorage.getItem('userID'),
       }
-      // category === '' && setError('Please select a category')
-      await axios.post('http://localhost:1000/cashflow/add-cash-flow', formData)
+
+      if (isExpense === 'Goals') {
+        const result = await axios.post(
+          'http://localhost:1000/savinggoal/update-goal',
+          formData
+        )
+        if (result.status === 400) {
+          setError(result.data.message)
+          return
+        }
+        await axios.post(
+          'http://localhost:1000/cashflow/add-cash-flow',
+          formData
+        )
+      } else {
+        await axios.post(
+          'http://localhost:1000/cashflow/add-cash-flow',
+          formData
+        )
+      }
       setFormOpen(false)
       alert('User created successfully')
       setError('')
-      setCategory('')
+      setCategory({ category: '', goalId: '' })
     } catch (error: any) {
       setError(error.response.data.message)
     }
@@ -88,7 +102,27 @@ const CfForm = ({
         </div>
         <div className="bg-white max-w-md w-90 p-8 flex flex-col gap-4 rounded-md relative">
           <div className="border-b pb-2">Add transaction</div>
-          <div onClick={expenseHandler}>{buttonNameChange}</div>
+          <div className="flex flex-row space-x-5">
+            <div
+              onClick={() => setIsExpense('Income')}
+              className="border-2 rounded-md px-1 border-cyan-400"
+            >
+              Income
+            </div>
+            <div
+              onClick={() => setIsExpense('Expense')}
+              className="border-2 rounded-md px-1 border-cyan-400"
+            >
+              Expense
+            </div>
+            <div
+              onClick={() => setIsExpense('Goals')}
+              className="border-2 rounded-md px-1 border-cyan-400"
+            >
+              Goals
+            </div>
+          </div>
+
           <CategorySelector
             category={category}
             setCategory={setCategory}

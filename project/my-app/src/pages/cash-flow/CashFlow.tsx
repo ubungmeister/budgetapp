@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react'
-import axios from 'axios'
 import CfControls from '../../compnents/cash-flow/CfControls'
 import { PmType } from '../../compnents/pocket-money/types'
 import { CashFlowProps } from '../../compnents/cash-flow/types'
@@ -12,12 +11,12 @@ const CashFlow = () => {
   const [currentMonth, setCurrentMonth] = useState<Date>(new Date())
   const [isMonthChange, setIsMonthChange] = useState('')
   const [pocketMoney, setPocketMoney] = useState<PmType | undefined>()
-  const [category, setCategory] = useState('')
   const [formOpen, setFormOpen] = useState(false)
   const [cashFlow, setCashFlow] = useState<Array<CashFlowProps>>([])
   const [selectedCashFlow, setSelectedCashFlow] = useState<CashFlowProps | ''>(
     ''
   )
+
   const [totalIncome, setTotalIncome] = useState(0)
   const [totalSpendings, setTotalSpendings] = useState(0)
 
@@ -41,7 +40,6 @@ const CashFlow = () => {
     const fetchData = async () => {
       const pocketMoney = await getPocketMoney(userID, date)
       const data = await pocketMoney?.data.pocketMoney
-      console.log('data', data)
       //bug here
       if (!data) {
         const year = currentMonth.getFullYear()
@@ -51,7 +49,6 @@ const CashFlow = () => {
         newDate.setUTCHours(0, 0, 0, 0)
 
         const formattedDate = newDate.toISOString()
-        console.log('formattedDate', formattedDate)
 
         setPocketMoney({
           amount: 0,
@@ -75,6 +72,22 @@ const CashFlow = () => {
     fetchData()
   }, [isMonthChange])
 
+  const formatDecimals = (item: number) => {
+    return Number(item.toFixed(2))
+  }
+
+  const amounts = cashFlow.map(item => item.amount)
+
+  const expense = formatDecimals(
+    amounts.filter(el => el < 0).reduce((acc, el) => acc + el, 0)
+  )
+  const income = formatDecimals(
+    amounts.filter(el => el > 0).reduce((acc, el) => acc + el, 0)
+  )
+  const otherIncome = income - (pocketMoney?.amount || 0)
+
+  const total = formatDecimals(Number(income) - Number(-expense))
+
   return (
     <div className="space-y-10 ">
       <CfControls
@@ -84,22 +97,16 @@ const CashFlow = () => {
       <div className="flex flex-row justify-center space-x-20">
         <div>
           <div>Pocket money: {pocketMoney?.amount || 0}</div>
-          <div>Other income: </div>
-          <div>Total income:</div>
+          <div>Other income: {otherIncome}</div>
+          <div>Total income:{income}</div>
         </div>
         <div>
           <div>Spendings:</div>
           <div>Savings on goals:</div>
-          <div>Total spendings:</div>
+          <div>Total spendings:{expense}</div>
         </div>
-        {formOpen && (
-          <CfForm
-            setFormOpen={setFormOpen}
-            formOpen={formOpen}
-            category={category}
-            setCategory={setCategory}
-          />
-        )}
+        <div>Total:{total}</div>
+        {formOpen && <CfForm setFormOpen={setFormOpen} formOpen={formOpen} />}
         <div onClick={() => setFormOpen(true)}>Add +</div>
       </div>
       <CfList

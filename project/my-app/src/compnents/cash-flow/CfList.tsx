@@ -8,11 +8,23 @@ const CfList = ({
   setSelectedCashFlow,
   selectedCashFlow,
 }: CashFlowListProps) => {
+  const sortedCashFlowByDate = cashFlow.sort(function (a, b) {
+    const dateA = new Date(a.start_date)
+    const dateB = new Date(b.start_date)
+
+    if (isNaN(dateA.getTime()) || isNaN(dateB.getTime())) {
+      // Handle invalid dates
+      return 0
+    }
+
+    return dateB.getTime() - dateA.getTime()
+  })
+
   return (
     <div>
       <h2>Cash Flow</h2>
       <div className="flex flex-col">
-        {cashFlow.map(item => {
+        {sortedCashFlowByDate.map(item => {
           const options = item.amount < 0 ? optionsExpense : optionsIncome
           const selectedOption = options.find(el => el.value === item.category)
           return (

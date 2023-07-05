@@ -16,16 +16,17 @@ export interface CashFlowProps {
 }
 
 export interface CategotyTypeProps {
-  category: string
-  setCategory: React.Dispatch<React.SetStateAction<string>>
-  isExpense: boolean
+  category: { category: string; goalId: string }
+  // set object {category: string, goalId: string}
+  setCategory: React.Dispatch<
+    React.SetStateAction<{ category: string; goalId: string }>
+  >
+  isExpense: string
 }
 
 export interface CashFlowFormProps {
   formOpen: boolean
   setFormOpen: React.Dispatch<React.SetStateAction<boolean>>
-  category: string
-  setCategory: React.Dispatch<React.SetStateAction<string>>
 }
 
 export interface CashFlowListProps {

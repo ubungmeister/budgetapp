@@ -1,7 +1,8 @@
 import { CategotyTypeProps } from './types'
-import { useCallback } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import Select, { OptionProps } from 'react-select'
 import { optionsExpense, optionsIncome } from './options'
+import { getAllGoals } from '../../compnents/cash-flow/api'
 
 interface CustomOptionProps extends OptionProps<any> {
   data: {
@@ -25,27 +26,55 @@ const CategorySelector = ({
   setCategory,
   isExpense,
 }: CategotyTypeProps) => {
+  const [optionsGoals, setOptionsGoals] = useState()
+
+  useEffect(() => {
+    const getGoals = async () => {
+      const goals = await getAllGoals()
+      const golasWithLabel = goals?.map((goal: any) => {
+        return {
+          label: goal.name,
+          id: goal.id,
+          src: '',
+          currentAmount: goal.currentAmount,
+          goalAmount: goal.goalAmount,
+          isActive: goal.isActive,
+        }
+      })
+      setOptionsGoals(golasWithLabel)
+    }
+    getGoals()
+  }, [])
+
   const getValue = useCallback(() => {
-    return category
-      ? optionsExpense.find(c => c.value === category)
-      : optionsIncome.find(c => c.value === category)
+    return category.category
+      ? optionsExpense.find(c => c.value === category.category)
+      : optionsIncome.find(c => c.value === category.category)
   }, [setCategory])
 
   const onChangeHandler = useCallback(
     (selectedOption: any) => {
-      setCategory(selectedOption.value)
+      setCategory({
+        category: selectedOption.label,
+        goalId: selectedOption.id || '',
+      })
     },
     [category]
   )
 
-  const options = isExpense ? optionsExpense : optionsIncome
+  const options =
+    isExpense === 'Income'
+      ? optionsIncome
+      : isExpense === 'Expense'
+      ? optionsExpense
+      : optionsGoals
 
   return (
     <div>
       <Select
         placeholder="Category"
         classNamePrefix="Select"
-        value={getValue()}
+        value={category ? getValue() : null}
         isSearchable={false}
         onChange={onChangeHandler}
         options={options}

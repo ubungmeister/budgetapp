@@ -13,7 +13,6 @@ router.get('/get-budget', async (req, res) => {
 
     const admin = await prisma.user.findUnique({ where: { id: adminID } });
     const familyID =  admin.familyID;
-    console.log(familyID)
 
     if (!monthYear) return res.status(400).json({ message: 'No monthYear provided' });
 

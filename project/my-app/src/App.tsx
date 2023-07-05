@@ -11,7 +11,6 @@ import Users from './pages/users/Users'
 import Budget from './pages/admin/Budget'
 import PocketMoney from './pages/admin/PocketMoney'
 import CashFlow from './pages/cash-flow/CashFlow'
-
 function App() {
   const [cookies, setCookie] = useCookies(['token'])
   console.log(cookies)

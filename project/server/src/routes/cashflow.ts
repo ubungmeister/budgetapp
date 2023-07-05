@@ -42,14 +42,12 @@ router.get('/get-cash-flow', async (req, res) => {
             
         }
     })
-    console.log('cashFlow: ', cashFlow);
     res.status(200).json({ cashFlow});
 
 })
 
 router.post('/add-cash-flow', async (req, res) => {
     const { amount, category, description, start_date, userId } = req.body;
-    console.log('req.body: ', req.body);
     const newCashFlow = await prisma.incomeOutcome.create({
         data: {
             amount: amount,
