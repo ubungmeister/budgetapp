@@ -17,7 +17,7 @@ export const optionsExpense = [
   },
   {
     value: 'Lunch',
-    label: 'lunch',
+    label: 'Lunch',
     src: ic_Food,
   },
   {
@@ -53,17 +53,17 @@ export const optionsExpense = [
 ]
 export const optionsIncome = [
   {
+    value: 'Part-time',
+    label: 'Part-time',
+    src: ic_working,
+  },
+  {
     value: 'Gifts',
     label: 'Gifts',
     src: ic_gift,
   },
   {
-    value: 'Part-time ',
-    label: 'Part-time',
-    src: ic_working,
-  },
-  {
-    value: 'business',
+    value: 'Business',
     label: 'Business',
     src: business,
   },

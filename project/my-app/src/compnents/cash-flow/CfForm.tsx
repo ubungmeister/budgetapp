@@ -9,6 +9,7 @@ import 'react-datepicker/dist/react-datepicker.css'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { FaWindowClose } from 'react-icons/fa'
+import { getAllGoals } from '../../compnents/cash-flow/api'
 
 const FormSchema = z.object({
   amount: z.number(),
@@ -17,7 +18,11 @@ const FormSchema = z.object({
 })
 type FormSchemaType = z.infer<typeof FormSchema>
 
-const CfForm = ({ formOpen, setFormOpen }: CashFlowFormProps) => {
+const CfForm = ({
+  formOpen,
+  setFormOpen,
+  selectedCashFlow,
+}: CashFlowFormProps) => {
   const [isExpense, setIsExpense] = useState('')
   const [error, setError] = useState('')
   const [category, setCategory] = useState({ category: '', goalId: '' })
@@ -49,15 +54,39 @@ const CfForm = ({ formOpen, setFormOpen }: CashFlowFormProps) => {
     setCategory({ category: '', goalId: '' })
   }, [isExpense, setIsExpense])
 
+  useEffect(() => {
+    const findCategory = async () => {
+      const goals = await getAllGoals()
+      const goalName = goals?.find(
+        (el: any) => el.id === selectedCashFlow?.saving_goal_Id
+      )
+      if (goalName) {
+        setCategory({ category: goalName.name, goalId: goalName.id })
+      } else {
+        setCategory({
+          category: selectedCashFlow?.category || '',
+          goalId: '',
+        })
+      }
+    }
+    findCategory()
+  }, [selectedCashFlow])
+
   const onSubmit: SubmitHandler<FormSchemaType> = async data => {
     try {
       if (!category) {
         setError('Please select a category')
         return
       }
+
+      let amount = data.amount
+      if (isExpense === 'Expense') {
+        amount = -amount
+      }
+
       const formData = {
         ...data,
-        amount: isExpense === 'Expense' ? -data.amount : data.amount,
+        amount: amount,
         category: category.category,
         goalId: category.goalId,
         userId: window.localStorage.getItem('userID'),
@@ -91,10 +120,67 @@ const CfForm = ({ formOpen, setFormOpen }: CashFlowFormProps) => {
     }
   }
 
+  const handleUpdate: SubmitHandler<FormSchemaType> = async data => {
+    try {
+      if (!category) {
+        setError('Please select a category')
+        return
+      }
+
+      let amount = data.amount
+      if (isExpense === 'Expense') {
+        amount = -amount
+      }
+
+      const formData = {
+        ...data,
+        amount: amount,
+        category: category.category,
+        goalId: category.goalId,
+        userId: window.localStorage.getItem('userID'),
+        id: selectedCashFlow?.id,
+      }
+
+      if (isExpense === 'Goals') {
+        const result = await axios.post(
+          'http://localhost:1000/savinggoal/update-goal',
+          formData
+        )
+        if (result.status === 400) {
+          setError(result.data.message)
+          return
+        }
+        await axios.post(
+          'http://localhost:1000/cashflow/update-cash-flow',
+          formData
+        )
+      } else {
+        await axios.post(
+          'http://localhost:1000/cashflow/update-cash-flow',
+          formData
+        )
+      }
+      setFormOpen(false)
+      alert('User created successfully')
+      setError('')
+      setCategory({ category: '', goalId: '' })
+    } catch (error: any) {
+      setError(error.response.data.message)
+    }
+  }
+
+  //  date format for date picker
+  const startDate = selectedCashFlow?.start_date
+    ? new Date(selectedCashFlow.start_date)
+    : null
+
+  console.log('selectedCashFlow', selectedCashFlow)
   return (
     <>
       <form
-        onSubmit={handleSubmit(onSubmit)}
+        onSubmit={
+          selectedCashFlow ? handleSubmit(handleUpdate) : handleSubmit(onSubmit)
+        }
         className="fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 flex justify-center items-center"
       >
         <div>
@@ -132,6 +218,7 @@ const CfForm = ({ formOpen, setFormOpen }: CashFlowFormProps) => {
 
           <div>Amount</div>
           <input
+            defaultValue={selectedCashFlow?.amount || ''}
             className="auth-input"
             type="number"
             {...register('amount', { valueAsNumber: true })}
@@ -141,6 +228,7 @@ const CfForm = ({ formOpen, setFormOpen }: CashFlowFormProps) => {
           )}
           <div>Description</div>
           <input
+            defaultValue={selectedCashFlow?.description || ''}
             className="auth-input"
             type="text"
             {...register('description')}
@@ -151,11 +239,13 @@ const CfForm = ({ formOpen, setFormOpen }: CashFlowFormProps) => {
           <div>Date</div>
           <Controller
             control={control}
+            defaultValue={startDate || undefined}
             name="start_date"
             render={({ field }) => (
               <DatePicker
                 placeholderText="Select date"
                 onChange={date => field.onChange(date)}
+                dateFormat="dd/MM/yyyy"
                 selected={field.value}
               />
             )}

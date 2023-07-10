@@ -10,6 +10,7 @@ export interface CashFlowProps {
   amount: number
   category: string
   description: string
+  saving_goal_Id?: string | ''
   id: string
   start_date: Date
   userId: string
@@ -27,11 +28,23 @@ export interface CategotyTypeProps {
 export interface CashFlowFormProps {
   formOpen: boolean
   setFormOpen: React.Dispatch<React.SetStateAction<boolean>>
+  selectedCashFlow: CashFlowProps | null
 }
 
 export interface CashFlowListProps {
   setFormOpen: React.Dispatch<React.SetStateAction<boolean>>
   cashFlow: CashFlowProps[]
-  setSelectedCashFlow: React.Dispatch<React.SetStateAction<CashFlowProps | ''>>
-  selectedCashFlow: CashFlowProps | ''
+  setSelectedCashFlow: React.Dispatch<
+    React.SetStateAction<CashFlowProps | null>
+  >
+  selectedCashFlow: CashFlowProps | null
+}
+
+export interface optionsGoalsProps {
+  label: string
+  id: string
+  src: string
+  currentAmount: number
+  goalAmount: number
+  isActive: boolean
 }

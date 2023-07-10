@@ -20,6 +20,12 @@ const CfList = ({
     return dateB.getTime() - dateA.getTime()
   })
 
+  const onProjectSelect = (item: any) => {
+    setSelectedCashFlow(item)
+    setFormOpen(true)
+  }
+  console.log('cashFlow', cashFlow)
+
   return (
     <div>
       <h2>Cash Flow</h2>
@@ -40,6 +46,8 @@ const CfList = ({
               <div>{new Date(item.start_date).toLocaleDateString('en-DE')}</div>
               <div>{item.description}</div>
               <div>{item.amount}</div>
+              <div>Delete</div>
+              <div onClick={() => onProjectSelect(item)}>Edit</div>
             </div>
           )
         })}

@@ -13,12 +13,8 @@ const CashFlow = () => {
   const [pocketMoney, setPocketMoney] = useState<PmType | undefined>()
   const [formOpen, setFormOpen] = useState(false)
   const [cashFlow, setCashFlow] = useState<Array<CashFlowProps>>([])
-  const [selectedCashFlow, setSelectedCashFlow] = useState<CashFlowProps | ''>(
-    ''
-  )
-
-  const [totalIncome, setTotalIncome] = useState(0)
-  const [totalSpendings, setTotalSpendings] = useState(0)
+  const [selectedCashFlow, setSelectedCashFlow] =
+    useState<CashFlowProps | null>(null)
 
   const userID = window.localStorage.getItem('userID')
 
@@ -48,8 +44,6 @@ const CashFlow = () => {
         const newDate = new Date(year, month, 1)
         newDate.setUTCHours(0, 0, 0, 0)
 
-        const formattedDate = newDate.toISOString()
-
         setPocketMoney({
           amount: 0,
           month: newDate,
@@ -70,7 +64,7 @@ const CashFlow = () => {
     }
 
     fetchData()
-  }, [isMonthChange])
+  }, [isMonthChange, formOpen])
 
   const formatDecimals = (item: number) => {
     return Number(item.toFixed(2))
@@ -106,8 +100,21 @@ const CashFlow = () => {
           <div>Total spendings:{expense}</div>
         </div>
         <div>Total:{total}</div>
-        {formOpen && <CfForm setFormOpen={setFormOpen} formOpen={formOpen} />}
-        <div onClick={() => setFormOpen(true)}>Add +</div>
+        {formOpen && (
+          <CfForm
+            setFormOpen={setFormOpen}
+            formOpen={formOpen}
+            selectedCashFlow={selectedCashFlow}
+          />
+        )}
+        <div
+          onClick={() => {
+            setFormOpen(true)
+            setSelectedCashFlow(null)
+          }}
+        >
+          Add +
+        </div>
       </div>
       <CfList
         setFormOpen={setFormOpen}

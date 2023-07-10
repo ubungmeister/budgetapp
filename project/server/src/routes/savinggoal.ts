@@ -37,11 +37,24 @@ router.post('/update-goal', async (req, res) => {
     }
 
     const currentAmount = goal.currentAmount || 0;
-    const updatedAmount = currentAmount + amount;
+    const updatedAmount = currentAmount + Number(amount * -1);
 
     const goalAmount = goal.goalAmount || 0;
     if (updatedAmount > goalAmount) {
       return res.status(400).json({ message: `Goal amount exceeded, you can add max ${goalAmount-currentAmount}` });
+    }
+
+    if(updatedAmount === goalAmount){
+        const update = await prisma.savingGoal.update({
+            where: {
+            id: goalId,
+            },
+            data: {
+            currentAmount: updatedAmount,
+            isActive: false,
+            },
+        });
+        return res.status(222).json({ message: 'Goal reached!' });
     }
 
     const update = await prisma.savingGoal.update({
@@ -50,6 +63,7 @@ router.post('/update-goal', async (req, res) => {
       },
       data: {
         currentAmount: updatedAmount,
+        isActive: true
       },
     });
 
@@ -60,6 +74,7 @@ router.post('/update-goal', async (req, res) => {
   }
 
 })
+
 
 
 export { router as savingGoalRouter }

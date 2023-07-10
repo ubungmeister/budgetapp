@@ -3,6 +3,7 @@ import { useCallback, useEffect, useState } from 'react'
 import Select, { OptionProps } from 'react-select'
 import { optionsExpense, optionsIncome } from './options'
 import { getAllGoals } from '../../compnents/cash-flow/api'
+import { optionsGoalsProps } from './types'
 
 interface CustomOptionProps extends OptionProps<any> {
   data: {
@@ -10,6 +11,7 @@ interface CustomOptionProps extends OptionProps<any> {
   }
 }
 
+// custom option for select component, to add icon
 const customOption = ({ innerProps, label, data }: CustomOptionProps) => (
   <div {...innerProps} className="flex flex-row px-3 my-2 hover:bg-slate-50">
     <img
@@ -26,7 +28,8 @@ const CategorySelector = ({
   setCategory,
   isExpense,
 }: CategotyTypeProps) => {
-  const [optionsGoals, setOptionsGoals] = useState()
+  const [optionsGoals, setOptionsGoals] =
+    useState<Array<optionsGoalsProps> | null>(null)
 
   useEffect(() => {
     const getGoals = async () => {
@@ -46,11 +49,18 @@ const CategorySelector = ({
     getGoals()
   }, [])
 
+  // get value for select component
   const getValue = useCallback(() => {
-    return category.category
-      ? optionsExpense.find(c => c.value === category.category)
-      : optionsIncome.find(c => c.value === category.category)
-  }, [setCategory])
+    const optionIncome = optionsIncome.find(c => c.label === category.category)
+    const optionExpense = optionsExpense.find(
+      c => c.label === category.category
+    )
+    const optionGoals = optionsGoals?.find(
+      (c: any) => c.label === category.category
+    )
+
+    return optionIncome || optionExpense || optionGoals
+  }, [setCategory, category])
 
   const onChangeHandler = useCallback(
     (selectedOption: any) => {
@@ -59,7 +69,7 @@ const CategorySelector = ({
         goalId: selectedOption.id || '',
       })
     },
-    [category]
+    [setCategory]
   )
 
   const options =
@@ -74,10 +84,10 @@ const CategorySelector = ({
       <Select
         placeholder="Category"
         classNamePrefix="Select"
-        value={category ? getValue() : null}
+        value={getValue() || null}
         isSearchable={false}
         onChange={onChangeHandler}
-        options={options}
+        options={options || []}
         components={{ Option: customOption }}
       />
     </div>

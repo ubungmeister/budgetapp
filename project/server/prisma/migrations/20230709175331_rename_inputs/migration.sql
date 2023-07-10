@@ -31,11 +31,10 @@ CREATE TABLE `User` (
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
-CREATE TABLE `PoketMoney` (
+CREATE TABLE `PocketMoney` (
     `id` VARCHAR(191) NOT NULL,
     `amount` DOUBLE NOT NULL,
-    `start_date` DATETIME(3) NOT NULL,
-    `end_date` DATETIME(3) NULL,
+    `month` DATETIME(3) NOT NULL,
     `userId` VARCHAR(191) NOT NULL,
 
     PRIMARY KEY (`id`)
@@ -45,6 +44,7 @@ CREATE TABLE `PoketMoney` (
 CREATE TABLE `IncomeOutcome` (
     `id` VARCHAR(191) NOT NULL,
     `category` VARCHAR(191) NOT NULL,
+    `saving_goal_Id` VARCHAR(191) NULL,
     `start_date` DATETIME(3) NOT NULL,
     `description` VARCHAR(191) NOT NULL,
     `amount` DOUBLE NOT NULL,
@@ -56,6 +56,7 @@ CREATE TABLE `IncomeOutcome` (
 -- CreateTable
 CREATE TABLE `SavingGoal` (
     `id` VARCHAR(191) NOT NULL,
+    `name` VARCHAR(191) NOT NULL,
     `description` VARCHAR(191) NOT NULL,
     `goalAmount` DOUBLE NOT NULL,
     `currentAmount` DOUBLE NOT NULL,
@@ -74,7 +75,7 @@ ALTER TABLE `Budget` ADD CONSTRAINT `Budget_familyID_fkey` FOREIGN KEY (`familyI
 ALTER TABLE `User` ADD CONSTRAINT `User_familyID_fkey` FOREIGN KEY (`familyID`) REFERENCES `Family`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `PoketMoney` ADD CONSTRAINT `PoketMoney_userId_fkey` FOREIGN KEY (`userId`) REFERENCES `User`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE `PocketMoney` ADD CONSTRAINT `PocketMoney_userId_fkey` FOREIGN KEY (`userId`) REFERENCES `User`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `IncomeOutcome` ADD CONSTRAINT `IncomeOutcome_userId_fkey` FOREIGN KEY (`userId`) REFERENCES `User`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
