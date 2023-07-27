@@ -1,4 +1,3 @@
-import axios from 'axios'
 import { CashFlowFormProps } from './types'
 import CategorySelector from './CategorySelector'
 import { useState, useEffect } from 'react'
@@ -9,7 +8,13 @@ import 'react-datepicker/dist/react-datepicker.css'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { FaWindowClose } from 'react-icons/fa'
-import { getAllGoals } from '../../compnents/cash-flow/api'
+
+import {
+  getAllGoals,
+  updateGoals,
+  updateCashFlow,
+  createCashFlow,
+} from '../../compnents/cash-flow/api'
 
 const FormSchema = z.object({
   amount: z.number(),
@@ -25,7 +30,7 @@ const CfForm = ({
 }: CashFlowFormProps) => {
   const [categoryType, setCategoryType] = useState('')
   const [error, setError] = useState('')
-  const [category, setCategory] = useState({ category: '', goalId: '' })
+  const [category, setCategory] = useState({ category: '', saving_goal_Id: '' })
 
   const {
     control,
@@ -57,18 +62,20 @@ const CfForm = ({
         (el: any) => el.id === selectedCashFlow?.saving_goal_Id
       )
       if (goalName) {
-        setCategory({ category: goalName.name, goalId: goalName.id })
+        setCategory({ category: goalName.name, saving_goal_Id: goalName.id })
         setCategoryType(selectedCashFlow?.category_type || '')
       } else {
         setCategory({
           category: selectedCashFlow?.category || '',
-          goalId: '',
+          saving_goal_Id: '',
         })
         setCategoryType(selectedCashFlow?.category_type || '')
       }
     }
     findCategory()
   }, [selectedCashFlow])
+
+  const defaultselectedCashFlow = selectedCashFlow?.amount || 0
 
   const onSubmit: SubmitHandler<FormSchemaType> = async data => {
     try {
@@ -93,34 +100,27 @@ const CfForm = ({
         ...data,
         amount: amount,
         category: category.category,
-        goalId: category.goalId,
-        userId: window.localStorage.getItem('userID'),
+        saving_goal_Id: category.saving_goal_Id,
+        userId: window.localStorage.getItem('userID') || '',
         category_type: categoryType,
       }
 
       if (categoryType === 'Goals') {
-        const result = await axios.post(
-          'http://localhost:1000/savinggoal/update-goal',
-          formData
-        )
-        if (result.status === 400) {
+        const formDataAmount = { ...formData, amount: data.amount }
+
+        const result = await updateGoals(formDataAmount)
+        if (result?.status === 400) {
           setError(result.data.message)
           return
         }
-        await axios.post(
-          'http://localhost:1000/cashflow/add-cash-flow',
-          formData
-        )
+        await createCashFlow(formData)
       } else {
-        await axios.post(
-          'http://localhost:1000/cashflow/add-cash-flow',
-          formData
-        )
+        await createCashFlow(formData)
       }
       setFormOpen(false)
       alert('User created successfully')
       setError('')
-      setCategory({ category: '', goalId: '' })
+      setCategory({ category: '', saving_goal_Id: '' })
     } catch (error: any) {
       setError(error.response.data.message)
     }
@@ -134,45 +134,39 @@ const CfForm = ({
       }
 
       let amount = data.amount
-      if (categoryType === 'Expense') {
-        amount = -amount
+      if (categoryType === 'Expense' || categoryType === 'Goals') {
+        amount > 0 && (amount = -amount)
       }
 
       const formData = {
         ...data,
         amount: amount,
         category: category.category,
-        goalId: category.goalId,
-        userId: window.localStorage.getItem('userID'),
+        saving_goal_Id: category.saving_goal_Id,
+        userId: window.localStorage.getItem('userID') || '',
         id: selectedCashFlow?.id,
         category_type: categoryType,
       }
 
       if (categoryType === 'Goals') {
-        console.log('formDat222a', formData)
-        let formDataamount = { ...formData, amount: -amount }
-        const result = await axios.post(
-          'http://localhost:1000/savinggoal/update-goal',
-          formData
-        )
-        if (result.status === 400) {
+        const calcAmount = defaultselectedCashFlow - amount
+
+        let formDataAmount = { ...formData, amount: calcAmount }
+
+        const result = await updateGoals(formDataAmount)
+        if (result?.status === 400) {
           setError(result.data.message)
           return
         }
-        await axios.post(
-          'http://localhost:1000/cashflow/update-cash-flow',
-          formDataamount
-        )
+
+        await updateCashFlow(formData)
       } else {
-        await axios.post(
-          'http://localhost:1000/cashflow/update-cash-flow',
-          formData
-        )
+        await updateCashFlow(formData)
       }
       setFormOpen(false)
       alert('User created successfully')
       setError('')
-      setCategory({ category: '', goalId: '' })
+      setCategory({ category: '', saving_goal_Id: '' })
     } catch (error: any) {
       setError(error.response.data.message)
     }
@@ -200,7 +194,7 @@ const CfForm = ({
             <div
               onClick={() => {
                 setCategoryType('Income')
-                setCategory({ category: '', goalId: '' })
+                setCategory({ category: '', saving_goal_Id: '' })
               }}
               className="border-2 rounded-md px-1 border-cyan-400"
             >
@@ -209,7 +203,7 @@ const CfForm = ({
             <div
               onClick={() => {
                 setCategoryType('Expense')
-                setCategory({ category: '', goalId: '' })
+                setCategory({ category: '', saving_goal_Id: '' })
               }}
               className="border-2 rounded-md px-1 border-cyan-400"
             >
@@ -218,7 +212,7 @@ const CfForm = ({
             <div
               onClick={() => {
                 setCategoryType('Goals')
-                setCategory({ category: '', goalId: '' })
+                setCategory({ category: '', saving_goal_Id: '' })
               }}
               className="border-2 rounded-md px-1 border-cyan-400"
             >

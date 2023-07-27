@@ -47,7 +47,7 @@ router.get('/get-cash-flow', async (req, res) => {
 })
 
 router.post('/add-cash-flow', async (req, res) => {
-    const { amount, category, description, start_date, userId, goalId,category_type} = req.body;
+    const { amount, category, description, start_date, userId, saving_goal_Id,category_type} = req.body;
    
     const newCashFlow = await prisma.incomeOutcome.create({
         data: {
@@ -56,7 +56,7 @@ router.post('/add-cash-flow', async (req, res) => {
             description: description,
             start_date: start_date,
             userId: userId,
-            saving_goal_Id: goalId as string,
+            saving_goal_Id: saving_goal_Id as string,
             category_type: category_type as string,
         }
     })
@@ -64,8 +64,8 @@ router.post('/add-cash-flow', async (req, res) => {
 })
 
 router.post('/update-cash-flow', async (req, res) => {
-    const { id, amount, category, description, start_date, userId, goalId,category_type } = req.body;
-    console.log("category_type", category_type, goalId)
+    const { id, amount, category, description, start_date, userId, saving_goal_Id,category_type } = req.body;
+    console.log("category_type", category_type, saving_goal_Id)
     const updatedCashFlow = await prisma.incomeOutcome.update({
         where: {id: id as string},
         data: {
@@ -74,13 +74,20 @@ router.post('/update-cash-flow', async (req, res) => {
             description: description,
             start_date: start_date,
             userId: userId,
-            saving_goal_Id: goalId as string,
+            saving_goal_Id: saving_goal_Id as string,
             category_type: category_type as string,
         }
     })
     res.status(200).json({ updatedCashFlow })
 })
 
+router.delete('/delete-cash-flow', async (req, res) => {
+    const { id } = req.body;
+    const deletedCashFlow = await prisma.incomeOutcome.delete({
+        where: {id: id as string}
+    })
+    res.status(200).json({ deletedCashFlow })
+})
 
 
 export { router as cashFlowRouter };

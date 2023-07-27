@@ -66,7 +66,7 @@ const CategorySelector = ({
     (selectedOption: any) => {
       setCategory({
         category: selectedOption.label,
-        goalId: selectedOption.id || '',
+        saving_goal_Id: selectedOption.id || '',
       })
     },
     [setCategory]
