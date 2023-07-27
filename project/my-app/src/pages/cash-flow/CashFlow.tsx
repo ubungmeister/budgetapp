@@ -12,6 +12,7 @@ const CashFlow = () => {
   const [isMonthChange, setIsMonthChange] = useState('')
   const [pocketMoney, setPocketMoney] = useState<PmType | undefined>()
   const [formOpen, setFormOpen] = useState(false)
+  const [cashFlowDeleted, setCashFlowDeleted] = useState(false)
   const [cashFlow, setCashFlow] = useState<Array<CashFlowProps>>([])
   const [selectedCashFlow, setSelectedCashFlow] =
     useState<CashFlowProps | null>(null)
@@ -61,10 +62,11 @@ const CashFlow = () => {
       const cashFlow = await getCashFlow(userID, date)
       // const cashFlowData = await cashFlow
       setCashFlow(cashFlow || [])
+      setCashFlowDeleted(false)
     }
 
     fetchData()
-  }, [isMonthChange, formOpen])
+  }, [isMonthChange, formOpen, cashFlowDeleted])
 
   const formatDecimals = (item: number) => {
     return Number(item.toFixed(2))
@@ -121,6 +123,7 @@ const CashFlow = () => {
         cashFlow={cashFlow}
         setSelectedCashFlow={setSelectedCashFlow}
         selectedCashFlow={selectedCashFlow}
+        setCashFlowDeleted={setCashFlowDeleted}
       />
     </div>
   )

@@ -1,12 +1,14 @@
 import React from 'react'
-import { CashFlowListProps } from './types'
+import { CashFlowListProps, CashFlowProps } from './types'
 import { optionsExpense, optionsIncome } from './options'
+import { deleteCashFlow, updateGoals } from './api'
 
 const CfList = ({
   setFormOpen,
   cashFlow,
   setSelectedCashFlow,
   selectedCashFlow,
+  setCashFlowDeleted,
 }: CashFlowListProps) => {
   const sortedCashFlowByDate = cashFlow.sort(function (a, b) {
     const dateA = new Date(a.start_date)
@@ -20,11 +22,19 @@ const CfList = ({
     return dateB.getTime() - dateA.getTime()
   })
 
-  const onProjectSelect = (item: any) => {
+  const onProjectSelect = (item: CashFlowProps) => {
     setSelectedCashFlow(item)
     setFormOpen(true)
   }
   console.log('cashFlow', cashFlow)
+
+  const onProjectDelete = async (item: CashFlowProps) => {
+    if (item.category_type === 'Goals') {
+      await updateGoals(item)
+    }
+    await deleteCashFlow(item.id as string)
+    setCashFlowDeleted(true)
+  }
 
   return (
     <div>
@@ -46,7 +56,7 @@ const CfList = ({
               <div>{new Date(item.start_date).toLocaleDateString('en-DE')}</div>
               <div>{item.description}</div>
               <div>{item.amount}</div>
-              <div>Delete</div>
+              <div onClick={() => onProjectDelete(item)}>Delete</div>
               <div onClick={() => onProjectSelect(item)}>Edit</div>
             </div>
           )

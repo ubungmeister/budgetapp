@@ -1,5 +1,6 @@
 import { PmType } from '../../compnents/pocket-money/types'
 import { set } from 'zod'
+import CashFlow from './../../pages/cash-flow/CashFlow'
 
 export interface CashFlowControlsProps {
   setIsMonthChange: React.Dispatch<React.SetStateAction<string>>
@@ -11,17 +12,17 @@ export interface CashFlowProps {
   category: string
   description: string
   saving_goal_Id?: string | ''
-  id: string
+  id?: string
   start_date: Date
   userId: string
   category_type: string
 }
 
 export interface CategotyTypeProps {
-  category: { category: string; goalId: string }
+  category: { category: string; saving_goal_Id: string }
   // set object {category: string, goalId: string}
   setCategory: React.Dispatch<
-    React.SetStateAction<{ category: string; goalId: string }>
+    React.SetStateAction<{ category: string; saving_goal_Id: string }>
   >
   categoryType: string
 }
@@ -39,6 +40,7 @@ export interface CashFlowListProps {
     React.SetStateAction<CashFlowProps | null>
   >
   selectedCashFlow: CashFlowProps | null
+  setCashFlowDeleted: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 export interface optionsGoalsProps {
@@ -49,3 +51,10 @@ export interface optionsGoalsProps {
   goalAmount: number
   isActive: boolean
 }
+
+// export interface updateProps {
+//   amount
+//   category
+//   description
+//   cate
+// }

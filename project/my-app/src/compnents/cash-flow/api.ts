@@ -1,4 +1,5 @@
 import axios from 'axios'
+import { CashFlowProps } from './types'
 
 export const getCashFlow = async (userID: string, date: Date) => {
   try {
@@ -29,6 +30,54 @@ export const getAllGoals = async () => {
     )
     console.log('goals: ', goals)
     return goals.data
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+export const updateGoals = async (data: CashFlowProps) => {
+  try {
+    const result = await axios.post(
+      'http://localhost:1000/savinggoal/update-goal',
+      data
+    )
+    return result
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+export const createCashFlow = async (data: CashFlowProps) => {
+  try {
+    const result = await axios.post(
+      'http://localhost:1000/cashflow/add-cash-flow',
+      data
+    )
+    return result
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+export const updateCashFlow = async (data: CashFlowProps) => {
+  try {
+    const result = await axios.post(
+      'http://localhost:1000/cashflow/update-cash-flow',
+      data
+    )
+    return result
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+export const deleteCashFlow = async (id: string) => {
+  try {
+    const result = await axios.delete(
+      'http://localhost:1000/cashflow/delete-cash-flow',
+      { data: { id } }
+    )
+    return result
   } catch (error) {
     console.log(error)
   }
