@@ -14,6 +14,7 @@ export interface CashFlowProps {
   id: string
   start_date: Date
   userId: string
+  category_type: string
 }
 
 export interface CategotyTypeProps {
@@ -22,7 +23,7 @@ export interface CategotyTypeProps {
   setCategory: React.Dispatch<
     React.SetStateAction<{ category: string; goalId: string }>
   >
-  isExpense: string
+  categoryType: string
 }
 
 export interface CashFlowFormProps {

@@ -26,7 +26,7 @@ const customOption = ({ innerProps, label, data }: CustomOptionProps) => (
 const CategorySelector = ({
   category,
   setCategory,
-  isExpense,
+  categoryType,
 }: CategotyTypeProps) => {
   const [optionsGoals, setOptionsGoals] =
     useState<Array<optionsGoalsProps> | null>(null)
@@ -72,12 +72,15 @@ const CategorySelector = ({
     [setCategory]
   )
 
-  const options =
-    isExpense === 'Income'
-      ? optionsIncome
-      : isExpense === 'Expense'
-      ? optionsExpense
-      : optionsGoals
+  let options: any = []
+  if (categoryType) {
+    options =
+      categoryType === 'Income'
+        ? optionsIncome
+        : categoryType === 'Expense'
+        ? optionsExpense
+        : optionsGoals || []
+  }
 
   return (
     <div>
@@ -87,7 +90,7 @@ const CategorySelector = ({
         value={getValue() || null}
         isSearchable={false}
         onChange={onChangeHandler}
-        options={options || []}
+        options={options}
         components={{ Option: customOption }}
       />
     </div>
