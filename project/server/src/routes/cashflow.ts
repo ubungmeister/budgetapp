@@ -47,8 +47,8 @@ router.get('/get-cash-flow', async (req, res) => {
 })
 
 router.post('/add-cash-flow', async (req, res) => {
-    const { amount, category, description, start_date, userId, goalId } = req.body;
-    console.log(req.body)
+    const { amount, category, description, start_date, userId, goalId,category_type} = req.body;
+   
     const newCashFlow = await prisma.incomeOutcome.create({
         data: {
             amount: amount,
@@ -57,13 +57,15 @@ router.post('/add-cash-flow', async (req, res) => {
             start_date: start_date,
             userId: userId,
             saving_goal_Id: goalId as string,
+            category_type: category_type as string,
         }
     })
     res.status(200).json({ newCashFlow });
 })
 
 router.post('/update-cash-flow', async (req, res) => {
-    const { id, amount, category, description, start_date, userId, goalId } = req.body;
+    const { id, amount, category, description, start_date, userId, goalId,category_type } = req.body;
+    console.log("category_type", category_type, goalId)
     const updatedCashFlow = await prisma.incomeOutcome.update({
         where: {id: id as string},
         data: {
@@ -73,6 +75,7 @@ router.post('/update-cash-flow', async (req, res) => {
             start_date: start_date,
             userId: userId,
             saving_goal_Id: goalId as string,
+            category_type: category_type as string,
         }
     })
     res.status(200).json({ updatedCashFlow })

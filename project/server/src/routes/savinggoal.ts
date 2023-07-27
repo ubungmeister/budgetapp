@@ -37,9 +37,10 @@ router.post('/update-goal', async (req, res) => {
     }
 
     const currentAmount = goal.currentAmount || 0;
-    const updatedAmount = currentAmount + Number(amount * -1);
+    const updatedAmount = currentAmount + (amount*-1);
 
     const goalAmount = goal.goalAmount || 0;
+
     if (updatedAmount > goalAmount) {
       return res.status(400).json({ message: `Goal amount exceeded, you can add max ${goalAmount-currentAmount}` });
     }

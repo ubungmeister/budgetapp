@@ -2,7 +2,7 @@ import axios from 'axios'
 import { CashFlowFormProps } from './types'
 import CategorySelector from './CategorySelector'
 import { useState, useEffect } from 'react'
-import { useForm, Controller } from 'react-hook-form'
+import { useForm, Controller, set } from 'react-hook-form'
 import { SubmitHandler } from 'react-hook-form/dist/types/form'
 import DatePicker from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
@@ -23,7 +23,7 @@ const CfForm = ({
   setFormOpen,
   selectedCashFlow,
 }: CashFlowFormProps) => {
-  const [isExpense, setIsExpense] = useState('')
+  const [categoryType, setCategoryType] = useState('')
   const [error, setError] = useState('')
   const [category, setCategory] = useState({ category: '', goalId: '' })
 
@@ -51,10 +51,6 @@ const CfForm = ({
   }, [setFormOpen])
 
   useEffect(() => {
-    setCategory({ category: '', goalId: '' })
-  }, [isExpense, setIsExpense])
-
-  useEffect(() => {
     const findCategory = async () => {
       const goals = await getAllGoals()
       const goalName = goals?.find(
@@ -62,11 +58,13 @@ const CfForm = ({
       )
       if (goalName) {
         setCategory({ category: goalName.name, goalId: goalName.id })
+        setCategoryType(selectedCashFlow?.category_type || '')
       } else {
         setCategory({
           category: selectedCashFlow?.category || '',
           goalId: '',
         })
+        setCategoryType(selectedCashFlow?.category_type || '')
       }
     }
     findCategory()
@@ -78,10 +76,17 @@ const CfForm = ({
         setError('Please select a category')
         return
       }
-
       let amount = data.amount
-      if (isExpense === 'Expense') {
-        amount = -amount
+
+      if (categoryType === 'Expense' || categoryType === 'Goals') {
+        if (amount > 0) {
+          amount = amount * -1
+        }
+      }
+      if (categoryType === 'Income') {
+        if (amount < 0) {
+          amount = amount * -1
+        }
       }
 
       const formData = {
@@ -90,9 +95,10 @@ const CfForm = ({
         category: category.category,
         goalId: category.goalId,
         userId: window.localStorage.getItem('userID'),
+        category_type: categoryType,
       }
 
-      if (isExpense === 'Goals') {
+      if (categoryType === 'Goals') {
         const result = await axios.post(
           'http://localhost:1000/savinggoal/update-goal',
           formData
@@ -128,7 +134,7 @@ const CfForm = ({
       }
 
       let amount = data.amount
-      if (isExpense === 'Expense') {
+      if (categoryType === 'Expense') {
         amount = -amount
       }
 
@@ -139,9 +145,12 @@ const CfForm = ({
         goalId: category.goalId,
         userId: window.localStorage.getItem('userID'),
         id: selectedCashFlow?.id,
+        category_type: categoryType,
       }
 
-      if (isExpense === 'Goals') {
+      if (categoryType === 'Goals') {
+        console.log('formDat222a', formData)
+        let formDataamount = { ...formData, amount: -amount }
         const result = await axios.post(
           'http://localhost:1000/savinggoal/update-goal',
           formData
@@ -152,7 +161,7 @@ const CfForm = ({
         }
         await axios.post(
           'http://localhost:1000/cashflow/update-cash-flow',
-          formData
+          formDataamount
         )
       } else {
         await axios.post(
@@ -174,7 +183,6 @@ const CfForm = ({
     ? new Date(selectedCashFlow.start_date)
     : null
 
-  console.log('selectedCashFlow', selectedCashFlow)
   return (
     <>
       <form
@@ -190,19 +198,28 @@ const CfForm = ({
           <div className="border-b pb-2">Add transaction</div>
           <div className="flex flex-row space-x-5">
             <div
-              onClick={() => setIsExpense('Income')}
+              onClick={() => {
+                setCategoryType('Income')
+                setCategory({ category: '', goalId: '' })
+              }}
               className="border-2 rounded-md px-1 border-cyan-400"
             >
               Income
             </div>
             <div
-              onClick={() => setIsExpense('Expense')}
+              onClick={() => {
+                setCategoryType('Expense')
+                setCategory({ category: '', goalId: '' })
+              }}
               className="border-2 rounded-md px-1 border-cyan-400"
             >
               Expense
             </div>
             <div
-              onClick={() => setIsExpense('Goals')}
+              onClick={() => {
+                setCategoryType('Goals')
+                setCategory({ category: '', goalId: '' })
+              }}
               className="border-2 rounded-md px-1 border-cyan-400"
             >
               Goals
@@ -212,7 +229,7 @@ const CfForm = ({
           <CategorySelector
             category={category}
             setCategory={setCategory}
-            isExpense={isExpense}
+            categoryType={categoryType}
           />
           {error && <p className="auth-error mb-5">{error}</p>}
 
