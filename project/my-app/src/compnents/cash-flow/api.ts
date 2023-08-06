@@ -38,7 +38,7 @@ export const getAllGoals = async () => {
 export const updateGoals = async (data: CashFlowProps) => {
   try {
     const result = await axios.post(
-      'http://localhost:1000/savinggoal/update-goal',
+      'http://localhost:1000/savinggoal/update-goal-amount',
       data
     )
     return result
@@ -53,6 +53,7 @@ export const createCashFlow = async (data: CashFlowProps) => {
       'http://localhost:1000/cashflow/add-cash-flow',
       data
     )
+
     return result
   } catch (error) {
     console.log(error)

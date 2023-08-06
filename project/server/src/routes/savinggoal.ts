@@ -21,7 +21,7 @@ router.get('/get-all-goals', async (req, res) => {
     }
 })
 
-router.post('/update-goal', async (req, res) => {
+router.post('/update-goal-amount', async (req, res) => {
    const {amount, userId, saving_goal_Id} = req.body
    if(!userId) return res.status(400).json({ message: 'User id is required' });
 
@@ -76,6 +76,24 @@ router.post('/update-goal', async (req, res) => {
 
 })
 
+router.post('/add-goal', async (req, res) => {
+    const {name, description, goalAmount, userId,start_date,end_date, isActive } = req.body
+    if(!userId) return res.status(400).json({ message: 'User id is required' });
+    await prisma.savingGoal.create({
+        data: {
+          name: name,
+          description: description,
+          goalAmount: goalAmount,
+          currentAmount: 0,
+          userId: userId,
+          start_date: start_date,
+          end_date: end_date,
+          isActive: isActive,
+        }
+    })
+    res.status(200).json({ message: 'Goal added successfully' });
+    
+})
 
 
 export { router as savingGoalRouter }
