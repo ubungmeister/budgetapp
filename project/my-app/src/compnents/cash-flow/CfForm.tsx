@@ -8,10 +8,9 @@ import 'react-datepicker/dist/react-datepicker.css'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { FaWindowClose } from 'react-icons/fa'
-
+import axios from 'axios'
 import {
   getAllGoals,
-  updateGoals,
   updateCashFlow,
   createCashFlow,
 } from '../../compnents/cash-flow/api'
@@ -108,8 +107,11 @@ const CfForm = ({
       if (categoryType === 'Goals') {
         const formDataAmount = { ...formData, amount: data.amount }
 
-        const result = await updateGoals(formDataAmount)
-        if (result?.status === 400) {
+        const result = await axios.post(
+          'http://localhost:1000/savinggoal/update-goal-amount',
+          formDataAmount
+        )
+        if (result.status === 400) {
           setError(result.data.message)
           return
         }
@@ -153,8 +155,11 @@ const CfForm = ({
 
         let formDataAmount = { ...formData, amount: calcAmount }
 
-        const result = await updateGoals(formDataAmount)
-        if (result?.status === 400) {
+        const result = await axios.post(
+          'http://localhost:1000/savinggoal/update-goal-amount',
+          formDataAmount
+        )
+        if (result.status === 400) {
           setError(result.data.message)
           return
         }
