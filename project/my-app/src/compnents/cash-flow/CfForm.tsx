@@ -9,6 +9,7 @@ import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { FaWindowClose } from 'react-icons/fa'
 import axios from 'axios'
+import { updateGoals } from './api'
 import {
   getAllGoals,
   updateCashFlow,
@@ -106,12 +107,9 @@ const CfForm = ({
 
       if (categoryType === 'Goals') {
         const formDataAmount = { ...formData, amount: data.amount }
+        const result = await updateGoals(formDataAmount)
 
-        const result = await axios.post(
-          'http://localhost:1000/savinggoal/update-goal-amount',
-          formDataAmount
-        )
-        if (result.status === 400) {
+        if (result?.status === 400) {
           setError(result.data.message)
           return
         }

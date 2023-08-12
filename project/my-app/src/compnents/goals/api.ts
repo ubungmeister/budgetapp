@@ -32,8 +32,23 @@ export const createGoal = async (data: GoalProps) => {
 export const updateGoal = async (data: GoalProps) => {
   try {
     const result = await axios.post(
-      'http://localhost:1000/savinggoal/update-goal-amount',
+      'http://localhost:1000/savinggoal/update-goal',
       data
+    )
+    return result
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+export const deleteGoal = async (id: string) => {
+  try {
+    const result = await axios.post(
+      'http://localhost:1000/savinggoal/delete-goal',
+      {
+        id,
+        userId: window.localStorage.getItem('userID') || '',
+      }
     )
     return result
   } catch (error) {

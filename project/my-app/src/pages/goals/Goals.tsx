@@ -18,7 +18,7 @@ const Goals = () => {
       setGoals(data)
     }
     fetchData()
-  }, [formOpen])
+  }, [formOpen, goals])
 
   const filteredGoals = isActive ? goals.filter(goal => goal.isActive) : goals
 

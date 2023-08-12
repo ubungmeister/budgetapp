@@ -7,7 +7,7 @@ import { SubmitHandler } from 'react-hook-form/dist/types/form'
 import { FaWindowClose } from 'react-icons/fa'
 import DatePicker from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
-import { createGoal } from './api'
+import { createGoal, updateGoal } from './api'
 
 const FormSchema = z.object({
   name: z.string().min(1, { message: 'Name is required' }),
@@ -46,6 +46,8 @@ const GoalsForm = ({ formOpen, setFormOpen, selectedGoal }: GoalFormProps) => {
     }
   }, [setFormOpen, formOpen])
 
+  console.log(selectedGoal)
+
   const onSubmit: SubmitHandler<FormSchemaType> = async data => {
     try {
       const formData = {
@@ -55,24 +57,29 @@ const GoalsForm = ({ formOpen, setFormOpen, selectedGoal }: GoalFormProps) => {
         currentAmount: selectedGoal?.currentAmount || 0,
       }
 
-      await createGoal(formData)
+      const result = await createGoal(formData)
+      if (result?.status === 400) {
+        return
+      }
       setFormOpen(false)
-      alert('User created successfully')
+      alert('Goal created successfully')
     } catch (error) {
       console.log(error)
     }
   }
 
   const handleUpdate: SubmitHandler<FormSchemaType> = async data => {
-    // UPDATE goal
-    // DELETE goal
     try {
       const formData = {
         ...data,
+        id: selectedGoal?.id,
         isActive: isActive,
         userId: window.localStorage.getItem('userID') || '',
         currentAmount: selectedGoal?.currentAmount || 0,
       }
+      await updateGoal(formData)
+      setFormOpen(false)
+      alert('Goal created successfully')
     } catch (error) {
       console.log(error)
     }
