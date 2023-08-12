@@ -6,6 +6,7 @@ import CfList from '../../compnents/cash-flow/CfList'
 import CfForm from '../../compnents/cash-flow/CfForm'
 import { getPocketMoney } from '../../compnents/pocket-money/api'
 import { getCashFlow } from '../../compnents/cash-flow/api'
+import GoalsHeader from '../../compnents/goals/GoalsHeader'
 
 const CashFlow = () => {
   const [currentMonth, setCurrentMonth] = useState<Date>(new Date())
@@ -68,55 +69,24 @@ const CashFlow = () => {
     fetchData()
   }, [isMonthChange, formOpen, cashFlowDeleted])
 
-  const formatDecimals = (item: number) => {
-    return Number(item.toFixed(2))
-  }
-
-  const amounts = cashFlow.map(item => item.amount)
-
-  const expense = formatDecimals(
-    amounts.filter(el => el < 0).reduce((acc, el) => acc + el, 0)
-  )
-  const income = formatDecimals(
-    amounts.filter(el => el > 0).reduce((acc, el) => acc + el, 0)
-  )
-  const otherIncome = income - (pocketMoney?.amount || 0)
-
-  const total = formatDecimals(Number(income) - Number(-expense))
-
   return (
     <div className="space-y-10 ">
       <CfControls
         setIsMonthChange={setIsMonthChange}
         pocketMoney={pocketMoney}
+        setFormOpen={setFormOpen}
+        setSelectedCashFlow={setSelectedCashFlow}
       />
       <div className="flex flex-row justify-center space-x-20">
-        <div>
-          <div>Pocket money: {pocketMoney?.amount || 0}</div>
-          <div>Other income: {otherIncome}</div>
-          <div>Total income:{income}</div>
-        </div>
-        <div>
-          <div>Spendings:</div>
-          <div>Savings on goals:</div>
-          <div>Total spendings:{expense}</div>
-        </div>
-        <div>Total:{total}</div>
+        <GoalsHeader cashFlow={cashFlow} pocketMoney={pocketMoney} />
         {formOpen && (
           <CfForm
             setFormOpen={setFormOpen}
             formOpen={formOpen}
             selectedCashFlow={selectedCashFlow}
+            cashFlow={cashFlow}
           />
         )}
-        <div
-          onClick={() => {
-            setFormOpen(true)
-            setSelectedCashFlow(null)
-          }}
-        >
-          Add +
-        </div>
       </div>
       <CfList
         setFormOpen={setFormOpen}

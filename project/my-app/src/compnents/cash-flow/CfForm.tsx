@@ -10,6 +10,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { FaWindowClose } from 'react-icons/fa'
 import axios from 'axios'
 import { updateGoals } from './api'
+import { formatDecimals } from '../helpers/utils'
 import {
   getAllGoals,
   updateCashFlow,
@@ -25,6 +26,7 @@ type FormSchemaType = z.infer<typeof FormSchema>
 
 const CfForm = ({
   formOpen,
+  cashFlow,
   setFormOpen,
   selectedCashFlow,
 }: CashFlowFormProps) => {
@@ -86,6 +88,10 @@ const CfForm = ({
       let amount = data.amount
 
       if (categoryType === 'Expense' || categoryType === 'Goals') {
+        if (income < expense * -1 + amount) {
+          setError('You do not have enough money')
+          return
+        }
         if (amount > 0) {
           amount = amount * -1
         }
@@ -179,6 +185,15 @@ const CfForm = ({
   const startDate = selectedCashFlow?.start_date
     ? new Date(selectedCashFlow.start_date)
     : null
+
+  const amounts = cashFlow.map(item => item.amount)
+
+  const income = formatDecimals(
+    amounts.filter(el => el > 0).reduce((acc, el) => acc + el, 0)
+  )
+  const expense = formatDecimals(
+    amounts.filter(el => el < 0).reduce((acc, el) => acc + el, 0)
+  )
 
   return (
     <>

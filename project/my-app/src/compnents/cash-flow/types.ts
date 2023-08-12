@@ -5,6 +5,10 @@ import CashFlow from './../../pages/cash-flow/CashFlow'
 export interface CashFlowControlsProps {
   setIsMonthChange: React.Dispatch<React.SetStateAction<string>>
   pocketMoney: PmType | undefined
+  setFormOpen: React.Dispatch<React.SetStateAction<boolean>>
+  setSelectedCashFlow: React.Dispatch<
+    React.SetStateAction<CashFlowProps | null>
+  >
 }
 
 export interface CashFlowProps {
@@ -31,6 +35,7 @@ export interface CashFlowFormProps {
   formOpen: boolean
   setFormOpen: React.Dispatch<React.SetStateAction<boolean>>
   selectedCashFlow: CashFlowProps | null
+  cashFlow: CashFlowProps[]
 }
 
 export interface CashFlowListProps {
@@ -52,9 +57,7 @@ export interface optionsGoalsProps {
   isActive: boolean
 }
 
-// export interface updateProps {
-//   amount
-//   category
-//   description
-//   cate
-// }
+export interface cashflowHeaderProps {
+  pocketMoney: PmType | undefined
+  cashFlow: CashFlowProps[]
+}

@@ -37,6 +37,7 @@ router.post('/update-goal-amount', async (req, res) => {
     }
 
     const currentAmount = goal.currentAmount || 0;
+    
     const updatedAmount = currentAmount + amount;
 
     const goalAmount = goal.goalAmount || 0;
@@ -96,7 +97,7 @@ router.post('/add-goal', async (req, res) => {
 })
 
 router.post('/update-goal', async (req, res) => {
-    const {id, name, description, goalAmount, userId,start_date,end_date, isActive } = req.body
+    const {id, name, description, goalAmount, userId,start_date,end_date, isActive, currentAmount } = req.body
     if(!userId) return res.status(400).json({ message: 'User id is required' });
     if(!id) return res.status(400).json({ message: 'Goal id is required' });
     await prisma.savingGoal.update({
@@ -105,7 +106,7 @@ router.post('/update-goal', async (req, res) => {
           name: name,
           description: description,
           goalAmount: goalAmount,
-          currentAmount: 0,
+          currentAmount: currentAmount,
           userId: userId,
           start_date: start_date,
           end_date: end_date,

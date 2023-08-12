@@ -4,6 +4,8 @@ import { CashFlowControlsProps } from './types'
 const CfControls = ({
   setIsMonthChange,
   pocketMoney,
+  setFormOpen,
+  setSelectedCashFlow,
 }: CashFlowControlsProps) => {
   return (
     <div className="">
@@ -16,6 +18,14 @@ const CfControls = ({
           })}
         </div>
         <button onClick={() => setIsMonthChange('next')}>Next</button>
+        <div
+          onClick={() => {
+            setFormOpen(true)
+            setSelectedCashFlow(null)
+          }}
+        >
+          Add +
+        </div>
       </div>
     </div>
   )
