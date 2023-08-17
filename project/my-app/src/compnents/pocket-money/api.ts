@@ -22,11 +22,28 @@ export const editPocketMoney = async (
 export const getPocketMoney = async (userID: string, date: Date) => {
   try {
     const pocketMoney = await axios.get(
+      'http://localhost:1000/pocketmoney/get-pocket-money',
+      {
+        params: {
+          monthYear: date,
+          userID: userID,
+        },
+      }
+    )
+    return pocketMoney
+  } catch (error) {
+    console.error(error)
+  }
+}
+
+export const getPocketMoneyUser = async (userID: string, date: Date) => {
+  try {
+    const pocketMoney = await axios.get(
       'http://localhost:1000/pocketmoney/get-pocket-money-user',
       {
         params: {
           monthYear: date,
-          userID,
+          userID: userID,
         },
       }
     )

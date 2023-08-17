@@ -4,7 +4,7 @@ import { PmType } from '../../compnents/pocket-money/types'
 import { CashFlowProps } from '../../compnents/cash-flow/types'
 import CfList from '../../compnents/cash-flow/CfList'
 import CfForm from '../../compnents/cash-flow/CfForm'
-import { getPocketMoney } from '../../compnents/pocket-money/api'
+import { getPocketMoneyUser } from '../../compnents/pocket-money/api'
 import { getCashFlow } from '../../compnents/cash-flow/api'
 import GoalsHeader from '../../compnents/goals/GoalsHeader'
 
@@ -36,7 +36,7 @@ const CashFlow = () => {
     }
     setIsMonthChange('')
     const fetchData = async () => {
-      const pocketMoney = await getPocketMoney(userID, date)
+      const pocketMoney = await getPocketMoneyUser(userID, date)
       const data = await pocketMoney?.data.pocketMoney
       //bug here
       if (!data) {
