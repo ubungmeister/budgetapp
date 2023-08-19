@@ -26,7 +26,6 @@ const CfList = ({
     setSelectedCashFlow(item)
     setFormOpen(true)
   }
-  console.log('cashFlow', cashFlow)
 
   const onProjectDelete = async (item: CashFlowProps) => {
     if (item.category_type === 'Goals') {

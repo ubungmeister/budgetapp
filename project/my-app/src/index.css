@@ -37,3 +37,6 @@ code {
 .auth-error {
   @apply text-left text-sm text-fuchsia-700;
 }
+.button-month {
+  @apply bg-gray-400 text-white rounded-md px-3 py-2 min-w-[100px]  hover:bg-fuchsia-600 cursor-pointer;
+}
