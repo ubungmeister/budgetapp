@@ -12,7 +12,7 @@ const GoalsHeader = ({ cashFlow, pocketMoney }: cashflowHeaderProps) => {
   )
   const totalIncome = income + (pocketMoney?.amount || 0)
 
-  const total = formatDecimals(Number(income) - Number(-expense))
+  const total = formatDecimals(Number(totalIncome) - Number(-expense))
   return (
     <div className="flex flex-row space-x-5">
       <div>

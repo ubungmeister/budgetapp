@@ -86,8 +86,8 @@ const PmTable = ({
             const month = new Date(monthEntry.month)
             return (
               <div
-                className="flex flex-col space-x-4 items-center pl-14"
                 key={index}
+                className="flex flex-col space-x-4 items-center pl-14"
               >
                 <div>{month.toLocaleString('default', { month: 'long' })}</div>
                 <div> {monthEntry.amount} </div>

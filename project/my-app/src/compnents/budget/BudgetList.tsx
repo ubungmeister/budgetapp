@@ -9,10 +9,8 @@ const BudgetList = ({
       {monthsAndBudget.map((item, index) => {
         const date = new Date(item.month)
         return (
-          <div>
-            <div key={index}>
-              {date.toLocaleString('default', { month: 'long' })}
-            </div>
+          <div key={index}>
+            <div>{date.toLocaleString('default', { month: 'long' })}</div>
             <div>
               <p>Amount</p>
               <input

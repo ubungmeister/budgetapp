@@ -6,12 +6,12 @@ import Header from './compnents/layout/Header'
 import { useCookies } from 'react-cookie'
 import AdminPage from './pages/admin/Admin'
 import Sidebar from './compnents/layout/Sidebar'
-import Home from './pages/Home'
 import Users from './pages/users/Users'
 import Budget from './pages/admin/Budget'
 import PocketMoney from './pages/admin/PocketMoney'
 import CashFlow from './pages/cash-flow/CashFlow'
 import Goals from './pages/goals/Goals'
+import Overview from './pages/overview/Overview'
 
 function App() {
   const [cookies, setCookie] = useCookies(['token'])
@@ -34,6 +34,7 @@ function App() {
                   <Route path="/pocket-money" element={<PocketMoney />} />
                   <Route path="/cash-flow" element={<CashFlow />} />
                   <Route path="/goals" element={<Goals />} />
+                  <Route path="/overview" element={<Overview />} />
                 </Routes>
               </div>
             </div>
@@ -42,7 +43,6 @@ function App() {
       ) : (
         <Router>
           <Routes>
-            <Route path="/" element={<Home />} />
             <Route path="/auth/signUp" element={<SignUp />} />
             <Route path="/auth/signIn" element={<SignIn />} />
           </Routes>
