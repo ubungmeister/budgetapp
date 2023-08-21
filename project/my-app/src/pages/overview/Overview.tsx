@@ -65,13 +65,16 @@ const Overview = () => {
 
   return (
     <div>
-      <h1>Overview</h1>
-      <OverviewControls
-        setIsMonthChange={setIsMonthChange}
-        pocketMoney={pocketMoney}
-      />
-      <div>{cashFlow.map(el => el.description)}</div>
-      <OverviewGraph cashFlow={cashFlow} />
+      <div className="items-center justify-center space-y-10">
+        <div className="items-center mt-10 ">
+          <h1 className="text-center">Overview</h1>
+        </div>
+        <OverviewControls
+          setIsMonthChange={setIsMonthChange}
+          pocketMoney={pocketMoney}
+        />
+        <OverviewGraph cashFlow={cashFlow} pocketMoney={pocketMoney} />
+      </div>
     </div>
   )
 }

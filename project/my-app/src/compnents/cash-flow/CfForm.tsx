@@ -29,6 +29,7 @@ const CfForm = ({
   cashFlow,
   setFormOpen,
   selectedCashFlow,
+  pocketMoney,
 }: CashFlowFormProps) => {
   const [categoryType, setCategoryType] = useState('')
   const [error, setError] = useState('')
@@ -79,6 +80,17 @@ const CfForm = ({
 
   const defaultselectedCashFlow = selectedCashFlow?.amount || 0
 
+  const amounts = cashFlow.map(item => item.amount)
+
+  const income = formatDecimals(
+    amounts.filter(el => el > 0).reduce((acc, el) => acc + el, 0)
+  )
+  const expense = formatDecimals(
+    amounts.filter(el => el < 0).reduce((acc, el) => acc + el, 0)
+  )
+
+  const totalIncome = income + (pocketMoney?.amount || 0)
+
   const onSubmit: SubmitHandler<FormSchemaType> = async data => {
     try {
       if (!category) {
@@ -88,7 +100,7 @@ const CfForm = ({
       let amount = data.amount
 
       if (categoryType === 'Expense' || categoryType === 'Goals') {
-        if (income < expense * -1 + amount) {
+        if (totalIncome < expense * -1 + amount) {
           setError('You do not have enough money')
           return
         }
@@ -185,15 +197,6 @@ const CfForm = ({
   const startDate = selectedCashFlow?.start_date
     ? new Date(selectedCashFlow.start_date)
     : null
-
-  const amounts = cashFlow.map(item => item.amount)
-
-  const income = formatDecimals(
-    amounts.filter(el => el > 0).reduce((acc, el) => acc + el, 0)
-  )
-  const expense = formatDecimals(
-    amounts.filter(el => el < 0).reduce((acc, el) => acc + el, 0)
-  )
 
   return (
     <>
