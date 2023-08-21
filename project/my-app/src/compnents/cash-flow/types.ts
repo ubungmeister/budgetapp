@@ -34,6 +34,7 @@ export interface CashFlowFormProps {
   setFormOpen: React.Dispatch<React.SetStateAction<boolean>>
   selectedCashFlow: CashFlowProps | null
   cashFlow: CashFlowProps[]
+  pocketMoney: PmType | undefined
 }
 
 export interface CashFlowListProps {

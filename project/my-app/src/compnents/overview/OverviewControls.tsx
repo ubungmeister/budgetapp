@@ -6,7 +6,7 @@ const OverviewControls = ({
 }: OverviewControlsProps) => {
   return (
     <div className="mx-10">
-      <div className="flex space-x-10 justify-center items-center mt-10">
+      <div className="flex space-x-10 justify-center items-center mt-5">
         <button
           className=" button-month "
           onClick={() => setIsMonthChange('prev')}

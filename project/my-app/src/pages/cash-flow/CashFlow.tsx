@@ -6,7 +6,7 @@ import CfList from '../../compnents/cash-flow/CfList'
 import CfForm from '../../compnents/cash-flow/CfForm'
 import { getPocketMoneyUser } from '../../compnents/pocket-money/api'
 import { getCashFlow } from '../../compnents/cash-flow/api'
-import GoalsHeader from '../../compnents/goals/GoalsHeader'
+import CfHeader from '../../compnents/cash-flow/CfHeader'
 
 const CashFlow = () => {
   const [currentMonth, setCurrentMonth] = useState<Date>(new Date())
@@ -78,13 +78,14 @@ const CashFlow = () => {
         setSelectedCashFlow={setSelectedCashFlow}
       />
       <div className="flex flex-row justify-center space-x-20">
-        <GoalsHeader cashFlow={cashFlow} pocketMoney={pocketMoney} />
+        <CfHeader cashFlow={cashFlow} pocketMoney={pocketMoney} />
         {formOpen && (
           <CfForm
             setFormOpen={setFormOpen}
             formOpen={formOpen}
             selectedCashFlow={selectedCashFlow}
             cashFlow={cashFlow}
+            pocketMoney={pocketMoney}
           />
         )}
       </div>
