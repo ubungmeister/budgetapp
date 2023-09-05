@@ -16,6 +16,7 @@ import {
   updateCashFlow,
   createCashFlow,
 } from '../../compnents/cash-flow/api'
+import { useRef } from 'react'
 
 const FormSchema = z.object({
   amount: z.number(),
@@ -34,6 +35,7 @@ const CfForm = ({
   const [categoryType, setCategoryType] = useState('')
   const [error, setError] = useState('')
   const [category, setCategory] = useState({ category: '', saving_goal_Id: '' })
+  const categorySelectorRef = useRef(null)
 
   const {
     control,
@@ -98,7 +100,10 @@ const CfForm = ({
         return
       }
       let amount = data.amount
-
+      if (!categoryType) {
+        setError('Please select a category type')
+        return
+      }
       if (categoryType === 'Expense' || categoryType === 'Goals') {
         if (totalIncome < expense * -1 + amount) {
           setError('You do not have enough money')
@@ -197,7 +202,7 @@ const CfForm = ({
   const startDate = selectedCashFlow?.start_date
     ? new Date(selectedCashFlow.start_date)
     : null
-
+  console.log('selectedCashFlow?.category', selectedCashFlow?.category_type)
   return (
     <>
       <form
@@ -212,33 +217,48 @@ const CfForm = ({
         <div className="bg-white max-w-md w-90 p-8 flex flex-col gap-4 rounded-md relative">
           <div className="border-b pb-2">Add transaction</div>
           <div className="flex flex-row space-x-5">
-            <div
+            <button
+              disabled={selectedCashFlow ? true : false}
               onClick={() => {
                 setCategoryType('Income')
                 setCategory({ category: '', saving_goal_Id: '' })
               }}
-              className="border-2 rounded-md px-1 border-cyan-400"
+              className={`border-2 rounded-md px-1 bg-slate-100 ${
+                selectedCashFlow?.category_type === 'Income'
+                  ? 'border-green-400'
+                  : 'border-cyan-400'
+              }`}
             >
               Income
-            </div>
-            <div
+            </button>
+            <button
+              disabled={selectedCashFlow ? true : false}
               onClick={() => {
                 setCategoryType('Expense')
                 setCategory({ category: '', saving_goal_Id: '' })
               }}
-              className="border-2 rounded-md px-1 border-cyan-400"
+              className={`border-2 rounded-md px-1 bg-slate-100 ${
+                selectedCashFlow?.category_type === 'Expense'
+                  ? 'border-green-400'
+                  : 'border-cyan-400'
+              }`}
             >
               Expense
-            </div>
-            <div
+            </button>
+            <button
+              disabled={selectedCashFlow ? true : false}
               onClick={() => {
                 setCategoryType('Goals')
                 setCategory({ category: '', saving_goal_Id: '' })
               }}
-              className="border-2 rounded-md px-1 border-cyan-400"
+              className={`border-2 rounded-md px-1  bg-slate-100  ${
+                selectedCashFlow?.category_type === 'Goals'
+                  ? 'border-green-400'
+                  : 'border-cyan-400'
+              }`}
             >
               Goals
-            </div>
+            </button>
           </div>
 
           <CategorySelector
@@ -246,8 +266,6 @@ const CfForm = ({
             setCategory={setCategory}
             categoryType={categoryType}
           />
-          {error && <p className="auth-error mb-5">{error}</p>}
-
           <div>Amount</div>
           <input
             defaultValue={selectedCashFlow?.amount || ''}
@@ -286,8 +304,9 @@ const CfForm = ({
             <p className="auth-error">{errors.start_date.message}</p>
           )}
           <button className="auth-button" type="submit" disabled={isSubmitting}>
-            Submit
+            {selectedCashFlow ? 'Update' : 'Submit'}
           </button>
+          {error && <p className="auth-error mb-5">{error}</p>}
         </div>
       </form>
     </>

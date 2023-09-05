@@ -95,6 +95,7 @@ const OverviewGraph = ({ cashFlow, pocketMoney }: OverviewGraphProps) => {
               options={options}
             />
           </div>
+
           <PieChart width={500} height={300}>
             <Pie
               data={categoryTotals}
