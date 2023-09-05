@@ -16,7 +16,6 @@ import {
   updateCashFlow,
   createCashFlow,
 } from '../../compnents/cash-flow/api'
-import { useRef } from 'react'
 
 const FormSchema = z.object({
   amount: z.number(),
@@ -35,7 +34,6 @@ const CfForm = ({
   const [categoryType, setCategoryType] = useState('')
   const [error, setError] = useState('')
   const [category, setCategory] = useState({ category: '', saving_goal_Id: '' })
-  const categorySelectorRef = useRef(null)
 
   const {
     control,
