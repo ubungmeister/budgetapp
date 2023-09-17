@@ -1,7 +1,7 @@
 import { CashFlowFormProps } from './types'
 import CategorySelector from './CategorySelector'
 import { useState, useEffect } from 'react'
-import { useForm, Controller, set } from 'react-hook-form'
+import { useForm, Controller } from 'react-hook-form'
 import { SubmitHandler } from 'react-hook-form/dist/types/form'
 import DatePicker from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
@@ -103,8 +103,8 @@ const CfForm = ({
         return
       }
       if (categoryType === 'Expense' || categoryType === 'Goals') {
-        if (totalIncome < expense * -1 + amount) {
-          setError('You do not have enough money')
+        if (totalIncome < Math.abs(expense) + Math.abs(amount)) {
+          setError(`You don't have enough money`)
           return
         }
         if (amount > 0) {
@@ -127,7 +127,8 @@ const CfForm = ({
       }
 
       if (categoryType === 'Goals') {
-        const formDataAmount = { ...formData, amount: data.amount }
+        const formDataAmount = { ...formData, amount: Math.abs(data.amount) }
+        console.log('formDataAmount', formDataAmount)
         const result = await updateGoals(formDataAmount)
 
         if (result?.status === 400) {
@@ -156,6 +157,11 @@ const CfForm = ({
 
       let amount = data.amount
       if (categoryType === 'Expense' || categoryType === 'Goals') {
+        console.log('totalIncome', totalIncome, expense, amount)
+        if (totalIncome < Math.abs(expense) + Math.abs(amount)) {
+          setError(`You don't have enough money`)
+          return
+        }
         amount > 0 && (amount = -amount)
       }
 
@@ -222,7 +228,7 @@ const CfForm = ({
                 setCategory({ category: '', saving_goal_Id: '' })
               }}
               className={`border-2 rounded-md px-1 bg-slate-100 ${
-                selectedCashFlow?.category_type === 'Income'
+                selectedCashFlow?.category_type || categoryType === 'Income'
                   ? 'border-green-400'
                   : 'border-cyan-400'
               }`}
@@ -236,7 +242,7 @@ const CfForm = ({
                 setCategory({ category: '', saving_goal_Id: '' })
               }}
               className={`border-2 rounded-md px-1 bg-slate-100 ${
-                selectedCashFlow?.category_type === 'Expense'
+                selectedCashFlow?.category_type || categoryType === 'Expense'
                   ? 'border-green-400'
                   : 'border-cyan-400'
               }`}
@@ -250,7 +256,7 @@ const CfForm = ({
                 setCategory({ category: '', saving_goal_Id: '' })
               }}
               className={`border-2 rounded-md px-1  bg-slate-100  ${
-                selectedCashFlow?.category_type === 'Goals'
+                selectedCashFlow?.category_type || categoryType === 'Goals'
                   ? 'border-green-400'
                   : 'border-cyan-400'
               }`}
