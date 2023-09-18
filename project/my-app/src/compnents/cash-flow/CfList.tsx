@@ -1,4 +1,3 @@
-import React from 'react'
 import { CashFlowListProps, CashFlowProps } from './types'
 import { optionsExpense, optionsIncome } from './options'
 import { deleteCashFlow, updateGoals } from './api'

@@ -112,9 +112,7 @@ const CfForm = ({
         }
       }
       if (categoryType === 'Income') {
-        if (amount < 0) {
-          amount = amount * -1
-        }
+        amount = Math.abs(amount)
       }
 
       const formData = {
@@ -128,7 +126,6 @@ const CfForm = ({
 
       if (categoryType === 'Goals') {
         const formDataAmount = { ...formData, amount: Math.abs(data.amount) }
-        console.log('formDataAmount', formDataAmount)
         const result = await updateGoals(formDataAmount)
 
         if (result?.status === 400) {
@@ -157,12 +154,14 @@ const CfForm = ({
 
       let amount = data.amount
       if (categoryType === 'Expense' || categoryType === 'Goals') {
-        console.log('totalIncome', totalIncome, expense, amount)
         if (totalIncome < Math.abs(expense) + Math.abs(amount)) {
           setError(`You don't have enough money`)
           return
         }
         amount > 0 && (amount = -amount)
+      }
+      if (categoryType === 'Income') {
+        amount = Math.abs(amount)
       }
 
       const formData = {
@@ -206,7 +205,6 @@ const CfForm = ({
   const startDate = selectedCashFlow?.start_date
     ? new Date(selectedCashFlow.start_date)
     : null
-  console.log('selectedCashFlow?.category', selectedCashFlow?.category_type)
   return (
     <>
       <form
@@ -275,6 +273,7 @@ const CfForm = ({
             defaultValue={selectedCashFlow?.amount || ''}
             className="auth-input"
             type="number"
+            min={categoryType === 'Income' ? 0 : undefined}
             {...register('amount', { valueAsNumber: true })}
           />
           {errors.amount && (
