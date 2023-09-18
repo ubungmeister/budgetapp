@@ -28,7 +28,6 @@ export const getAllGoals = async () => {
         },
       }
     )
-    console.log('goals: ', goals)
     return goals.data
   } catch (error) {
     console.log(error)
