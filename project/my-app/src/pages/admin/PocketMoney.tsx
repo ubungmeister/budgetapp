@@ -95,7 +95,9 @@ const PocketMoney = () => {
           handleSavePm={handleSavePm}
           setChangeCancel={setChangeCancel}
         />
-        <hr className="divider" />
+        <div className="px-5 pt-2">
+          <hr />
+        </div>
         <PmTable
           monthsAndBudget={monthsAndBudget}
           pocketMoney={pocketMoney}

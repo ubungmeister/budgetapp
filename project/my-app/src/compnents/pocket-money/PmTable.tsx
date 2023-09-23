@@ -20,14 +20,14 @@ const PmTable = ({
         const amount = pocketMoneyEntry ? pocketMoneyEntry.amount : 0
 
         return (
-          <div className=" min-w-[8rem] max-w-[8rem] text-center">
+          <div className="  min-w-[4rem] md:min-w-[7rem] lg:min-w-[10rem] text-center">
             <input
               key={index}
               value={amount}
               type="number"
               min={0}
               max={1000000}
-              className=" min-w-[5rem] max-w-[5rem] border-2 border-gray-300 rounded-md p-1"
+              className=" min-w-[4rem] max-w-[4rem] md:max-w-[5rem] md:min-w-[5rem] border-2 border-gray-300 rounded-md p-1"
               onChange={e =>
                 handleInputChange(
                   e.target.value,
@@ -99,7 +99,7 @@ const PmTable = ({
             return (
               <div
                 key={index}
-                className="flex flex-col text-center space-y-2 min-w-[8rem] md:min-w-[10rem] border-x-2 my-4"
+                className="flex flex-col text-center space-y-2 min-w-[4rem] md:min-w-[7rem] lg:min-w-[10rem] border-x-2 my-4"
               >
                 <div className="center items-start">
                   {capitalizeFirstLetter(monthName)}
