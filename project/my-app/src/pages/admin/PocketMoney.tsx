@@ -8,7 +8,6 @@ import PmTable from '../../compnents/pocket-money/PmTable'
 import { getPocketMoney } from '../../compnents/pocket-money/api'
 import { getBudget } from '../../compnents/budget/api'
 import { getUsers } from '../../compnents/users/api'
-import { v4 as uuidv4 } from 'uuid'
 
 const PocketMoney = () => {
   const [currentMonth, setCurrentMonth] = useState('')
@@ -18,6 +17,7 @@ const PocketMoney = () => {
   const [isChangeCancel, setChangeCancel] = useState<boolean>(false)
   const [users, setUsers] = useState<Array<UserData>>([])
   const userID = window.localStorage.getItem('userID')
+  console.log('isMonthChange', isMonthChange)
 
   useEffect(() => {
     if (!userID) return
@@ -73,13 +73,13 @@ const PocketMoney = () => {
       setPocketMoney(pocketMoney?.data.pocketMoney)
 
       const users = await getUsers()
-      console.log('users', users)
       setUsers(users)
     }
 
     getData()
 
     setIsMonthChange('')
+    setChangeCancel(false)
   }, [isMonthChange, isChangeCancel])
 
   const handleSavePm = async () => {
@@ -89,12 +89,15 @@ const PocketMoney = () => {
 
   return (
     <div>
-      <div>
+      <div className="pt-8 pl-6 space-y-3">
         <PmControls
           setIsMonthChange={setIsMonthChange}
           handleSavePm={handleSavePm}
           setChangeCancel={setChangeCancel}
         />
+        <div className="px-5 pt-2">
+          <hr />
+        </div>
         <PmTable
           monthsAndBudget={monthsAndBudget}
           pocketMoney={pocketMoney}

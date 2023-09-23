@@ -21,6 +21,19 @@ code {
   flex-direction: column;
   gap: 1rem;
 }
+.icons-controls {
+  color: #54a3ab;
+  width: 30px;
+  height: 30px;
+}
+.icons-controls:hover {
+  color: #18466a;
+  size: '50px';
+}
+.divider {
+  border-bottom: 1px solid #d3d3d3;
+  padding-top: 1rem;
+}
 
 .auth {
   @apply md:max-w-[30rem] max-w-min relative top-7 flex w-auto min-w-[20rem] flex-col rounded-xl bg-white p-8 shadow-xl font-mono;
@@ -38,5 +51,8 @@ code {
   @apply text-left text-sm text-fuchsia-700;
 }
 .button-month {
-  @apply bg-gray-400 text-white rounded-md px-3 py-2 min-w-[100px]  hover:bg-fuchsia-600 cursor-pointer;
+  @apply bg-[#54a3ab] text-white rounded-md hover:bg-fuchsia-600 cursor-pointer;
+}
+.button-empty {
+  @apply bg-white text-blue-950 border-2 border-[#54a3ab] rounded-md hover:bg-gray-100  cursor-pointer;
 }
