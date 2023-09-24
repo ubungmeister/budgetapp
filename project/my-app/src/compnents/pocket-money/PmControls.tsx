@@ -9,7 +9,6 @@ const PmControls = ({
   setChangeCancel,
   saveDiasbled,
 }: PmControlsProps) => {
-  console.log('saveDiasbled', saveDiasbled)
   return (
     <div className="">
       <div className="flex flex-row justify-start">

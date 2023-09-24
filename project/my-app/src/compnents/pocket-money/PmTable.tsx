@@ -31,21 +31,17 @@ const PmTable = ({
     groupData()
   }, [pocketMoney])
 
-  console.log('groupedData', groupedData)
-
   const renderPocketMoneyInputs = () => {
     const userInputs = users.map(user => {
       const userPocketMoney = pocketMoney?.filter(
         entry => entry.userId === user.id
       )
-      console.log('userPocketMoney', pocketMoney)
 
       const inputs = monthsAndBudget.map((monthEntry, index) => {
         const pocketMoneyEntry = userPocketMoney.find(
           entry => entry.month === monthEntry.month
         )
         const amount = pocketMoneyEntry ? pocketMoneyEntry.amount : 0
-        console.log('amount', amount)
 
         return (
           <div className="  min-w-[4rem] md:min-w-[7rem] lg:min-w-[10rem] text-center">
@@ -80,7 +76,6 @@ const PmTable = ({
         </div>
       )
     })
-    console.log('userInputs', userInputs)
     return userInputs
   }
 
