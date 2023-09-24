@@ -56,3 +56,6 @@ code {
 .button-empty {
   @apply bg-white text-blue-950 border-2 border-[#54a3ab] rounded-md hover:bg-gray-100  cursor-pointer;
 }
+.button-disabled {
+  @apply bg-[#ccd4d5] text-blue-950 rounded-md cursor-pointer;
+}

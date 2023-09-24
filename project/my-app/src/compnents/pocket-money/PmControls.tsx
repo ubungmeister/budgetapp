@@ -2,11 +2,12 @@ import React from 'react'
 import { BsArrowLeftSquare, BsArrowRightSquare, BsSave } from 'react-icons/bs'
 import { TfiBackLeft } from 'react-icons/tfi'
 import { PmControlsProps } from './types'
-
+import Notification from '../../compnents/notification/Notification'
 const PmControls = ({
   setIsMonthChange,
   handleSavePm,
   setChangeCancel,
+  saveDiasbled,
 }: PmControlsProps) => {
   return (
     <div className="">
@@ -21,7 +22,13 @@ const PmControls = ({
         </div>
         <div className=" border-l border-gray-300 h-8"></div>
         <div className="flex space-x-3 px-10">
-          <button className="button-month px-5" onClick={() => handleSavePm()}>
+          <button
+            className={`px-5 py-2 ${
+              saveDiasbled ? 'button-disabled' : 'button-month'
+            }`}
+            onClick={() => handleSavePm()}
+            disabled={saveDiasbled}
+          >
             <div className="flex flex-row space-x-2">
               <div className="py-1">
                 <BsSave />
@@ -40,6 +47,7 @@ const PmControls = ({
               <span>Cancel</span>
             </div>
           </button>
+          {saveDiasbled && <Notification />}
         </div>
       </div>
     </div>
