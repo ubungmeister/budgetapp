@@ -17,8 +17,7 @@ const PocketMoney = () => {
   const [isChangeCancel, setChangeCancel] = useState<boolean>(false)
   const [users, setUsers] = useState<Array<UserData>>([])
   const userID = window.localStorage.getItem('userID')
-  console.log('isMonthChange', isMonthChange)
-
+  const [saveDiasbled, setSaveDisabled] = useState<boolean>(false)
   useEffect(() => {
     if (!userID) return
 
@@ -94,6 +93,7 @@ const PocketMoney = () => {
           setIsMonthChange={setIsMonthChange}
           handleSavePm={handleSavePm}
           setChangeCancel={setChangeCancel}
+          saveDiasbled={saveDiasbled}
         />
         <div className="px-5 pt-2">
           <hr />
@@ -103,6 +103,7 @@ const PocketMoney = () => {
           pocketMoney={pocketMoney}
           users={users}
           setPocketMoney={setPocketMoney}
+          setSaveDisabled={setSaveDisabled}
         />
       </div>
     </div>

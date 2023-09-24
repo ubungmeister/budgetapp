@@ -21,14 +21,20 @@ export interface PmTableProps {
   monthsAndBudget: Array<BudgetData>
   pocketMoney: Array<PmType>
   setPocketMoney: React.Dispatch<React.SetStateAction<PmType[]>>
+  setSaveDisabled: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 export interface PmControlsProps {
   handleSavePm: () => void
   setChangeCancel: (value: React.SetStateAction<boolean>) => void
   setIsMonthChange: React.Dispatch<React.SetStateAction<string>>
+  saveDiasbled: boolean
 }
 
 export interface PmListProps {
   monthsAndBudget: Array<BudgetData>
+}
+
+export interface PmGroupedData {
+  [key: string]: number
 }

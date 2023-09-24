@@ -1,23 +1,51 @@
-import { PmTableProps } from './types'
+import { PmTableProps, PmGroupedData } from './types'
 import { v4 as uuidv4 } from 'uuid'
+import { useEffect, useState } from 'react'
 
 const PmTable = ({
   monthsAndBudget,
   pocketMoney,
   users,
   setPocketMoney,
+  setSaveDisabled,
 }: PmTableProps) => {
+  const [groupedData, setGroupedData] = useState<PmGroupedData>({})
+
+  useEffect(() => {
+    // Group data by month and year
+    const groupData = () => {
+      const grouped: PmGroupedData = {}
+
+      pocketMoney.forEach(item => {
+        const key = new Date(item.month).toISOString()
+        if (grouped[key]) {
+          grouped[key] += item.amount
+        } else {
+          grouped[key] = item.amount
+        }
+      })
+
+      setGroupedData(grouped)
+    }
+
+    groupData()
+  }, [pocketMoney])
+
+  console.log('groupedData', groupedData)
+
   const renderPocketMoneyInputs = () => {
     const userInputs = users.map(user => {
       const userPocketMoney = pocketMoney?.filter(
         entry => entry.userId === user.id
       )
+      console.log('userPocketMoney', pocketMoney)
 
       const inputs = monthsAndBudget.map((monthEntry, index) => {
         const pocketMoneyEntry = userPocketMoney.find(
           entry => entry.month === monthEntry.month
         )
         const amount = pocketMoneyEntry ? pocketMoneyEntry.amount : 0
+        console.log('amount', amount)
 
         return (
           <div className="  min-w-[4rem] md:min-w-[7rem] lg:min-w-[10rem] text-center">
@@ -52,7 +80,7 @@ const PmTable = ({
         </div>
       )
     })
-
+    console.log('userInputs', userInputs)
     return userInputs
   }
 
@@ -96,6 +124,13 @@ const PmTable = ({
           {monthsAndBudget.map((monthEntry, index) => {
             const month = new Date(monthEntry.month)
             const monthName = month.toLocaleString('default', { month: 'long' })
+            const spendAmount = groupedData[month.toISOString()]
+            if (spendAmount > monthEntry.amount) {
+              setSaveDisabled(true)
+            }
+            if (spendAmount <= monthEntry.amount) {
+              setSaveDisabled(false)
+            }
             return (
               <div
                 key={index}
@@ -104,7 +139,16 @@ const PmTable = ({
                 <div className="center items-start">
                   {capitalizeFirstLetter(monthName)}
                 </div>
-                <div> {monthEntry.amount} </div>
+                <div>
+                  <span
+                    className={`${
+                      spendAmount > monthEntry.amount && 'text-red-600'
+                    }`}
+                  >
+                    {spendAmount}
+                  </span>
+                  /<span>{monthEntry.amount}</span>
+                </div>
               </div>
             )
           })}
