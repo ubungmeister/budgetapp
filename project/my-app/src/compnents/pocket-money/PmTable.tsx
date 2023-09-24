@@ -47,14 +47,15 @@ const PmTable = ({
           <div className="  min-w-[4rem] md:min-w-[7rem] lg:min-w-[10rem] text-center">
             <input
               key={index}
-              value={amount}
+              defaultValue={amount ?? 0}
+              value={amount ?? 0}
               type="number"
               min={0}
               max={1000000}
               className=" min-w-[4rem] max-w-[4rem] md:max-w-[5rem] md:min-w-[5rem] border-2 border-gray-300 rounded-md p-1"
               onChange={e =>
                 handleInputChange(
-                  e.target.value,
+                  parseFloat(e.target.value) || 0,
                   monthEntry.month,
                   user.id,
                   pocketMoneyEntry?.id
@@ -80,7 +81,7 @@ const PmTable = ({
   }
 
   const handleInputChange = (
-    value: string,
+    value: number,
     month: any,
     userId: any,
     pocketMoneyID?: string
@@ -88,7 +89,7 @@ const PmTable = ({
     if (pocketMoneyID === undefined) {
       const newPocketMoneyEntry = {
         id: uuidv4(),
-        amount: parseFloat(value),
+        amount: value,
         month,
         userId,
       }
@@ -96,7 +97,7 @@ const PmTable = ({
     } else {
       const updatedPocketMoney = pocketMoney.map(entry => {
         if (entry.userId === userId && entry.month === month) {
-          return { ...entry, amount: parseFloat(value) }
+          return { ...entry, amount: value }
         }
         return entry
       })
@@ -107,6 +108,15 @@ const PmTable = ({
   const capitalizeFirstLetter = (name: string) => {
     return name.charAt(0).toUpperCase() + name.slice(1)
   }
+
+  // verify if any month budget is exceeded and disable save button
+  const isAnyMonthExceeded = monthsAndBudget.some(monthEntry => {
+    const month = new Date(monthEntry.month)
+    const spendAmount = groupedData[month.toISOString()]
+    return spendAmount > monthEntry.amount
+  })
+
+  setSaveDisabled(isAnyMonthExceeded)
 
   return (
     <div className="flex flex-col w-full">
@@ -120,12 +130,6 @@ const PmTable = ({
             const month = new Date(monthEntry.month)
             const monthName = month.toLocaleString('default', { month: 'long' })
             const spendAmount = groupedData[month.toISOString()]
-            if (spendAmount > monthEntry.amount) {
-              setSaveDisabled(true)
-            }
-            if (spendAmount <= monthEntry.amount) {
-              setSaveDisabled(false)
-            }
             return (
               <div
                 key={index}
@@ -140,7 +144,7 @@ const PmTable = ({
                       spendAmount > monthEntry.amount && 'text-red-600'
                     }`}
                   >
-                    {spendAmount}
+                    {spendAmount ?? 0}
                   </span>
                   /<span>{monthEntry.amount}</span>
                 </div>
