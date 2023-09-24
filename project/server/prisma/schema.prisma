@@ -37,6 +37,7 @@ model User {
   incomeOutcome  IncomeOutcome[]
   savingGoal   SavingGoal[]
   family    Family?  @relation(fields: [familyID], references: [id])
+  task    Task[]
 }
 
  model PocketMoney {
@@ -69,6 +70,19 @@ model SavingGoal {
   start_date    DateTime
   end_date      DateTime?
   isActive    Boolean
+  user       User       @relation(fields: [userId], references: [id])
+
+}
+
+model Task {
+  id         String     @id @default(uuid())
+  name String
+  description String
+  userId     String
+  amount     Float
+  start_date    DateTime?
+  end_date      DateTime?
+  isActive    Boolean?
   user       User       @relation(fields: [userId], references: [id])
 
 }
