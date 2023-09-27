@@ -1,13 +1,10 @@
-import React from 'react'
+import { useRef } from 'react'
 import { UserData } from './types'
 import { updateUser, createUser, deleteUser, getUsers } from './api'
-
-type EditUserProps = {
-  userForm: UserData
-  formOpen: boolean
-  setUserForm: (userForm: UserData) => void
-  setFormOpen: (formOpen: boolean) => void
-}
+import { EditUserProps } from './types'
+import { useState } from 'react'
+import EditUserControls from './EditUserControls'
+import { AiOutlineUserDelete } from 'react-icons/ai'
 
 const EditUser: React.FC<EditUserProps> = ({
   userForm,
@@ -15,15 +12,19 @@ const EditUser: React.FC<EditUserProps> = ({
   setUserForm,
   setFormOpen,
 }: EditUserProps) => {
+  const [errorNotification, setErrorNotification] = useState<string>('')
+
+  const formRef = useRef<HTMLFormElement | null>(null)
+
   const userID = window.localStorage.getItem('userID')
 
   const userValidation = async (userForm: UserData) => {
     if (!userForm.username.trim()) {
-      alert('Please enter a username')
+      setErrorNotification('Please enter a username')
       return false
     }
     if (!userForm.email.trim() || !userForm.email.includes('@')) {
-      alert('Please enter a valid email')
+      setErrorNotification('Please enter a valid email')
       return false
     }
 
@@ -36,13 +37,13 @@ const EditUser: React.FC<EditUserProps> = ({
           return true
         }
       }
-      alert('Email already exists')
+      setErrorNotification('Email already exists')
       return false
     }
     return true
   }
 
-  const formHandler = async (e: React.FormEvent<HTMLFormElement>) => {
+  const formHandler = async (e: any) => {
     e.preventDefault()
 
     const isValid = await userValidation(userForm)
@@ -55,6 +56,7 @@ const EditUser: React.FC<EditUserProps> = ({
     }
     if (isValid) {
       setFormOpen(false)
+      setErrorNotification('')
     }
   }
 
@@ -64,57 +66,86 @@ const EditUser: React.FC<EditUserProps> = ({
 
   const onDelete = async (userID: string) => {
     if (userID) {
-      await deleteUser(userID)
+      const shouldDelete = window.confirm(
+        'Are you sure you want to delete this user?'
+      )
+
+      if (shouldDelete) {
+        await deleteUser(userID)
+      }
     }
     setFormOpen(false)
   }
 
+  const submitForm = () => {
+    if (formRef.current) {
+      const formElement = formRef.current
+      const submitEvent = new Event('submit', { cancelable: true })
+
+      if (
+        formElement.dispatchEvent(submitEvent) &&
+        !submitEvent.defaultPrevented
+      ) {
+        formHandler(submitEvent)
+      }
+    }
+  }
+
   return (
-    <div>
+    <div className=" shadow-md rounded-md  max-w-[650px] min-w-[650px]">
       <form
+        ref={formRef}
         onSubmit={e => {
           formHandler(e)
         }}
       >
-        <div>{userForm.id}</div>
-        <input
-          type="text"
-          value={userForm.username}
-          onChange={e => {
-            setUserForm({ ...userForm, username: e.target.value })
-          }}
-        />
-        <input
-          type="text"
-          value={userForm.email}
-          onChange={e => {
-            setUserForm({ ...userForm, email: e.target.value })
-          }}
-        />
-        {userForm.id ? (
-          <div>
-            <button onClick={() => onDelete(userForm.id)}>Delete</button>
-            <button type="submit">Edit</button>
-            <button
-              onClick={() => {
-                setFormOpen(false)
-              }}
-            >
-              Cancel
-            </button>
+        <div className="divide-solid divide-y">
+          <EditUserControls
+            userForm={userForm}
+            errorNotification={errorNotification}
+            setFormOpen={setFormOpen}
+            submitForm={submitForm}
+          />
+          <div className="px-4 py-10 space-y-2 ">
+            <div className="flex flex-col text-[15px]">
+              <p className="text-gray-600 pb-1">User name:</p>
+              <input
+                className="input-table"
+                placeholder="Enter user name..."
+                type="text"
+                value={userForm.username}
+                onChange={e => {
+                  setUserForm({ ...userForm, username: e.target.value })
+                }}
+              />
+            </div>
+            <div className="flex flex-col text-[15px] ">
+              <p className="text-gray-600 pb-1">Email:</p>
+              <input
+                type="text"
+                className="input-table"
+                placeholder="Enter user email..."
+                value={userForm.email}
+                onChange={e => {
+                  setUserForm({ ...userForm, email: e.target.value })
+                }}
+              />
+            </div>
+            {userForm.id && (
+              <div className="pt-4">
+                <button
+                  className="flex flex-row space-x-2 button-delete px-4 py-2 bg-red-100"
+                  onClick={() => onDelete(userForm.id)}
+                >
+                  <div className="py-1">
+                    <AiOutlineUserDelete />
+                  </div>
+                  <span>Delete user</span>
+                </button>
+              </div>
+            )}
           </div>
-        ) : (
-          <div>
-            <button type="submit">Create</button>
-            <button
-              onClick={() => {
-                setFormOpen(false)
-              }}
-            >
-              Cancel
-            </button>
-          </div>
-        )}
+        </div>
       </form>
     </div>
   )

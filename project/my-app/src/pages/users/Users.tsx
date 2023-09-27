@@ -70,7 +70,7 @@ const Users = () => {
   }
 
   return (
-    <div className="p-10 ">
+    <div className="flex pt-14 space-x-5 ">
       <UsersList
         setSearch={setSearch}
         filteredUsers={filteredUsers}

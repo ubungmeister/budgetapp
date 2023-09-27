@@ -8,6 +8,7 @@ const PmTable = ({
   users,
   setPocketMoney,
   setSaveDisabled,
+  setSuccessAlert,
 }: PmTableProps) => {
   const [groupedData, setGroupedData] = useState<PmGroupedData>({})
 
@@ -53,14 +54,15 @@ const PmTable = ({
               min={0}
               max={1000000}
               className=" min-w-[4rem] max-w-[4rem] md:max-w-[5rem] md:min-w-[5rem] border-2 border-gray-300 rounded-md p-1"
-              onChange={e =>
+              onChange={e => {
                 handleInputChange(
                   parseFloat(e.target.value) || 0,
                   monthEntry.month,
                   user.id,
                   pocketMoneyEntry?.id
                 )
-              }
+                setSuccessAlert(false)
+              }}
             />
           </div>
         )

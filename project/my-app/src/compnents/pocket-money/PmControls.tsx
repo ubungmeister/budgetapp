@@ -3,11 +3,14 @@ import { BsArrowLeftSquare, BsArrowRightSquare, BsSave } from 'react-icons/bs'
 import { TfiBackLeft } from 'react-icons/tfi'
 import { PmControlsProps } from './types'
 import Notification from '../../compnents/notification/Notification'
+import NotificationSuccess from '../notification/NotificationSuccess'
+
 const PmControls = ({
   setIsMonthChange,
   handleSavePm,
   setChangeCancel,
   saveDiasbled,
+  sussessAlert,
 }: PmControlsProps) => {
   return (
     <div className="">
@@ -37,17 +40,18 @@ const PmControls = ({
             </div>
           </button>
           <button
-            className="button-empty px-5"
+            className="button-empty flex flex-row space-x-2 button-month px-5 py-2"
             onClick={() => setChangeCancel(true)}
           >
-            <div className="flex flex-row space-x-2">
-              <div className="py-1">
-                <TfiBackLeft />
-              </div>
-              <span>Cancel</span>
+            <div className="py-1">
+              <TfiBackLeft />
             </div>
+            <span>Cancel</span>
           </button>
-          {saveDiasbled && <Notification />}
+          {saveDiasbled && (
+            <Notification notification={'Budget limit exceeded !'} />
+          )}
+          {sussessAlert && <NotificationSuccess />}
         </div>
       </div>
     </div>

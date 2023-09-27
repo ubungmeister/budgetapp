@@ -22,6 +22,7 @@ export interface PmTableProps {
   pocketMoney: Array<PmType>
   setPocketMoney: React.Dispatch<React.SetStateAction<PmType[]>>
   setSaveDisabled: React.Dispatch<React.SetStateAction<boolean>>
+  setSuccessAlert: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 export interface PmControlsProps {
@@ -29,6 +30,7 @@ export interface PmControlsProps {
   setChangeCancel: (value: React.SetStateAction<boolean>) => void
   setIsMonthChange: React.Dispatch<React.SetStateAction<string>>
   saveDiasbled: boolean
+  sussessAlert: boolean
 }
 
 export interface PmListProps {

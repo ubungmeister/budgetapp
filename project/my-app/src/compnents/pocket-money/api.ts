@@ -1,4 +1,3 @@
-import exp from 'constants'
 import { PmType } from './types'
 import axios from 'axios'
 export const editPocketMoney = async (
@@ -13,7 +12,8 @@ export const editPocketMoney = async (
         userID,
       }
     )
-    console.log(result)
+
+    return result.status
   } catch (error) {
     console.error(error)
   }
