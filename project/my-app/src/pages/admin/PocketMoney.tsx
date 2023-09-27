@@ -18,6 +18,7 @@ const PocketMoney = () => {
   const [users, setUsers] = useState<Array<UserData>>([])
   const userID = window.localStorage.getItem('userID')
   const [saveDiasbled, setSaveDisabled] = useState<boolean>(false)
+  const [sussessAlert, setSuccessAlert] = useState<boolean>(false)
   useEffect(() => {
     if (!userID) return
 
@@ -83,7 +84,10 @@ const PocketMoney = () => {
 
   const handleSavePm = async () => {
     if (!userID) return
-    await editPocketMoney(pocketMoney, userID)
+    const result = await editPocketMoney(pocketMoney, userID)
+    if (result === 200) {
+      setSuccessAlert(true)
+    }
   }
 
   return (
@@ -94,6 +98,7 @@ const PocketMoney = () => {
           handleSavePm={handleSavePm}
           setChangeCancel={setChangeCancel}
           saveDiasbled={saveDiasbled}
+          sussessAlert={sussessAlert}
         />
         <div className="px-5 pt-2">
           <hr />
@@ -104,6 +109,7 @@ const PocketMoney = () => {
           users={users}
           setPocketMoney={setPocketMoney}
           setSaveDisabled={setSaveDisabled}
+          setSuccessAlert={setSuccessAlert}
         />
       </div>
     </div>

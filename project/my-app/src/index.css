@@ -59,3 +59,9 @@ code {
 .button-disabled {
   @apply bg-[#ccd4d5] text-blue-950 rounded-md cursor-pointer;
 }
+.button-delete {
+  @apply bg-white text-blue-950 border-2 border-[#de9e9e] rounded-md hover:bg-red-50  cursor-pointer;
+}
+.input-table {
+  @apply border border-info-content hover:border-fuchsia-600 bg-white h-8 w-64 px-1 pr-16 rounded-md text-sm focus:outline-none;
+}
