@@ -1,6 +1,7 @@
 import { PmTableProps, PmGroupedData } from './types'
 import { v4 as uuidv4 } from 'uuid'
 import { useEffect, useState } from 'react'
+import { capitalizeFirstLetter } from '../helpers/utils'
 
 const PmTable = ({
   monthsAndBudget,
@@ -53,7 +54,7 @@ const PmTable = ({
               type="number"
               min={0}
               max={1000000}
-              className=" min-w-[4rem] max-w-[4rem] md:max-w-[5rem] md:min-w-[5rem] border-2 border-gray-300 rounded-md p-1"
+              className=" min-w-[4rem] max-w-[4rem] md:max-w-[5rem] md:min-w-[5rem] border-2 border-info-content-light  p-1"
               onChange={e => {
                 handleInputChange(
                   parseFloat(e.target.value) || 0,
@@ -107,10 +108,6 @@ const PmTable = ({
     }
   }
 
-  const capitalizeFirstLetter = (name: string) => {
-    return name.charAt(0).toUpperCase() + name.slice(1)
-  }
-
   // verify if any month budget is exceeded and disable save button
   const isAnyMonthExceeded = monthsAndBudget.some(monthEntry => {
     const month = new Date(monthEntry.month)
@@ -121,11 +118,11 @@ const PmTable = ({
   setSaveDisabled(isAnyMonthExceeded)
 
   return (
-    <div className="flex flex-col w-full">
+    <div className="flex flex-col w-full pt-7">
       <div className="flex flex-row ">
-        <div className="px-5 overflow-x-hidden text-ellipsis min-w-[10rem] max-w-[10rem] space-y-2 my-4">
-          <p>Month</p>
-          <p>Budget</p>
+        <div className="pl-5 overflow-x-hidden text-ellipsis min-w-[10rem] max-w-[10rem] space-y-2 my-4 divide-y">
+          <p className="font-semibold pb-4">Month</p>
+          <p className="pt-6">Budget</p>
         </div>
         <div className="flex flex-row ">
           {monthsAndBudget.map((monthEntry, index) => {
@@ -135,12 +132,12 @@ const PmTable = ({
             return (
               <div
                 key={index}
-                className="flex flex-col text-center space-y-2 min-w-[4rem] md:min-w-[7rem] lg:min-w-[10rem] border-x-2 my-4"
+                className="flex flex-col text-center space-y-2 min-w-[4rem] md:min-w-[7rem] lg:min-w-[10rem] my-4 divide-y"
               >
-                <div className="center items-start">
+                <div className="center items-start pb-4 ">
                   {capitalizeFirstLetter(monthName)}
                 </div>
-                <div>
+                <div className="pt-6">
                   <span
                     className={`${
                       spendAmount > monthEntry.amount && 'text-red-600'
