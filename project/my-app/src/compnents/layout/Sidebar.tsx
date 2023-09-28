@@ -8,6 +8,7 @@ import {
   FiChevronLeft,
   FiUserPlus,
 } from 'react-icons/fi'
+import { TbMoneybag } from 'react-icons/tb'
 import { IconContext } from 'react-icons'
 import { useNavigate } from 'react-router-dom'
 
@@ -19,13 +20,13 @@ const Sidebar = () => {
 
   const adminMenu = [
     { title: 'Admin', src: <FiHome />, navigate: '/admin' },
-    { title: 'Budget', src: <FiCreditCard />, navigate: '/budget' },
-    { title: 'Users', src: <FiUserPlus />, navigate: '/users' },
+    { title: 'Budget', src: <TbMoneybag />, navigate: '/budget' },
     {
       title: 'Pocket money planning',
       src: <FiCreditCard />,
       navigate: '/pocket-money',
     },
+    { title: 'Users', src: <FiUserPlus />, navigate: '/users' },
   ]
   const userMenu = [
     { title: 'Cash flow', src: <FiCreditCard />, navigate: '/cash-flow' },

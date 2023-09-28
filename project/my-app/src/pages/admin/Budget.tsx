@@ -1,4 +1,3 @@
-import axios from 'axios'
 import { useEffect, useState } from 'react'
 import { BudgetData } from '../../compnents/budget/types'
 import BudgetTable from '../../compnents/budget/BudgetTable'
