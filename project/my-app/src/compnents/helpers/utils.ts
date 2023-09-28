@@ -21,3 +21,7 @@ export const goalsCalc = (cashFlow: CashFlowProps[]) => {
   const goals = filteredGoals.map(el => el.amount)
   return formatDecimals(goals.reduce((acc, el) => acc + el, 0))
 }
+
+export const capitalizeFirstLetter = (name: string) => {
+  return name.charAt(0).toUpperCase() + name.slice(1)
+}

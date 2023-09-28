@@ -1,9 +1,9 @@
 import axios from 'axios'
 import { useEffect, useState } from 'react'
 import { BudgetData } from '../../compnents/budget/types'
-import BudgetList from '../../compnents/budget/BudgetList'
-import BudgetControls from '../../compnents/budget/BudgetControls'
+import BudgetTable from '../../compnents/budget/BudgetTable'
 import { updateBudgets, getBudget } from '../../compnents/budget/api'
+import Controls from '../../compnents/helpers/Controls'
 
 const Budget = () => {
   const [isMonthChange, setIsMonthChange] = useState('')
@@ -66,20 +66,25 @@ const Budget = () => {
     setIsMonthChange('')
   }, [isMonthChange, isChangeCancel])
 
-  const handleSaveBudget = async () => {
+  const handleSave = async () => {
     if (!userID) return
     await updateBudgets(monthsAndBudget, userID)
   }
 
   return (
     <div>
-      <div>
-        <BudgetControls
+      <div className="pt-8 pl-6 space-y-3">
+        <Controls
           setIsMonthChange={setIsMonthChange}
-          handleSaveBudget={handleSaveBudget}
+          handleSave={handleSave}
           setChangeCancel={setChangeCancel}
+          saveDiasbled={false}
+          sussessAlert={false}
         />
-        <BudgetList
+        <div className="px-5 pt-2">
+          <hr />
+        </div>
+        <BudgetTable
           monthsAndBudget={monthsAndBudget}
           setMonthsAndBudget={setMonthsAndBudget}
         />

@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react'
-import PmControls from '../../compnents/pocket-money/PmControls'
 import { PmType } from '../../compnents/pocket-money/types'
 import { editPocketMoney } from '../../compnents/pocket-money/api'
 import { UserData } from '../../compnents/users/types'
@@ -8,6 +7,7 @@ import PmTable from '../../compnents/pocket-money/PmTable'
 import { getPocketMoney } from '../../compnents/pocket-money/api'
 import { getBudget } from '../../compnents/budget/api'
 import { getUsers } from '../../compnents/users/api'
+import Controls from '../../compnents/helpers/Controls'
 
 const PocketMoney = () => {
   const [currentMonth, setCurrentMonth] = useState('')
@@ -82,7 +82,7 @@ const PocketMoney = () => {
     setChangeCancel(false)
   }, [isMonthChange, isChangeCancel])
 
-  const handleSavePm = async () => {
+  const handleSave = async () => {
     if (!userID) return
     const result = await editPocketMoney(pocketMoney, userID)
     if (result === 200) {
@@ -93,9 +93,9 @@ const PocketMoney = () => {
   return (
     <div>
       <div className="pt-8 pl-6 space-y-3">
-        <PmControls
+        <Controls
           setIsMonthChange={setIsMonthChange}
-          handleSavePm={handleSavePm}
+          handleSave={handleSave}
           setChangeCancel={setChangeCancel}
           saveDiasbled={saveDiasbled}
           sussessAlert={sussessAlert}
