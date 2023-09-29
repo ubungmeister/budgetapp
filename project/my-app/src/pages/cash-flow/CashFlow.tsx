@@ -70,25 +70,26 @@ const CashFlow = () => {
   }, [isMonthChange, formOpen, cashFlowDeleted])
 
   return (
-    <div className="space-y-10 ">
+    <div className="pt-8 pl-6 space-y-3 ">
       <CfControls
         setIsMonthChange={setIsMonthChange}
         pocketMoney={pocketMoney}
         setFormOpen={setFormOpen}
         setSelectedCashFlow={setSelectedCashFlow}
       />
-      <div className="flex flex-row justify-center space-x-20">
-        <CfHeader cashFlow={cashFlow} pocketMoney={pocketMoney} />
-        {formOpen && (
-          <CfForm
-            setFormOpen={setFormOpen}
-            formOpen={formOpen}
-            selectedCashFlow={selectedCashFlow}
-            cashFlow={cashFlow}
-            pocketMoney={pocketMoney}
-          />
-        )}
+      <div className="px-5 pt-2">
+        <hr />
       </div>
+      <CfHeader cashFlow={cashFlow} pocketMoney={pocketMoney} />
+      {formOpen && (
+        <CfForm
+          setFormOpen={setFormOpen}
+          formOpen={formOpen}
+          selectedCashFlow={selectedCashFlow}
+          cashFlow={cashFlow}
+          pocketMoney={pocketMoney}
+        />
+      )}
       <CfList
         setFormOpen={setFormOpen}
         cashFlow={cashFlow}

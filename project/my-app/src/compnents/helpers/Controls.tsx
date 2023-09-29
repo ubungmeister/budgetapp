@@ -30,7 +30,6 @@ const PmControls = ({
             <BsArrowRightSquare className="icons-controls" />
           </button>
         </div>
-        <div className=" border-l border-gray-300 h-8"></div>
         <div className="flex space-x-3 px-10">
           <button
             className={`px-5 py-2 ${

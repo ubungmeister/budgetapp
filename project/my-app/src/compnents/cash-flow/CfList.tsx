@@ -35,7 +35,7 @@ const CfList = ({
   }
 
   return (
-    <div>
+    <div className="">
       <h2>Cash Flow</h2>
       <div className="flex flex-col">
         {sortedCashFlowByDate.map(item => {
