@@ -1,9 +1,9 @@
 export interface UserData {
-  id: string
-  email: string
-  familtyID: string
-  username: string
-  role: string
+  id: string;
+  email: string;
+  familtyID: string;
+  username: string;
+  role: string;
 }
 
 export const initialUserData = {
@@ -12,18 +12,18 @@ export const initialUserData = {
   email: '',
   role: '',
   familtyID: '',
-}
+};
 
 export type EditUserProps = {
-  userForm: UserData
-  formOpen: boolean
-  setUserForm: (userForm: UserData) => void
-  setFormOpen: (formOpen: boolean) => void
-}
+  userForm: UserData;
+  formOpen: boolean;
+  setUserForm: (userForm: UserData) => void;
+  setFormOpen: (value: React.SetStateAction<boolean>) => void;
+};
 
 export type EditUserControlsProps = {
-  userForm: UserData
-  errorNotification: string
-  setFormOpen: (formOpen: boolean) => void
-  submitForm: () => void
-}
+  userForm: UserData;
+  errorNotification: string;
+  setFormOpen: (value: React.SetStateAction<boolean>) => void;
+  submitForm: () => void;
+};
