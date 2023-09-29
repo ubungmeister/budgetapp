@@ -1,64 +1,68 @@
-import { OverviewGraphProps } from './types'
-import { expenseCalc, incomeCalc, goalsCalc } from '../helpers/utils'
-import Select from 'react-select'
-import { PieChart, Pie, Cell } from 'recharts'
-import { useState } from 'react'
+import { useState } from 'react';
+import Select from 'react-select';
+import { Cell, Pie, PieChart } from 'recharts';
+
+import { expenseCalc, goalsCalc, incomeCalc } from '../../_basic/helpers/utils';
+import { OverviewGraphProps } from './types';
 
 const options = [
   { value: 'Goals', label: 'Goals' },
   { value: 'Expense', label: 'Expense' },
   { value: 'Income', label: 'Income' },
-]
+];
 
 const OverviewGraph = ({ cashFlow, pocketMoney }: OverviewGraphProps) => {
-  const [category, setCategory] = useState({ value: 'Income', label: 'Income' })
+  const [category, setCategory] = useState({
+    value: 'Income',
+    label: 'Income',
+  });
   const sortedCashFlowByDate = cashFlow.sort(function (a, b) {
-    const dateA = new Date(a.start_date)
-    const dateB = new Date(b.start_date)
+    const dateA = new Date(a.start_date);
+    const dateB = new Date(b.start_date);
 
     if (isNaN(dateA.getTime()) || isNaN(dateB.getTime())) {
       // Handle invalid dates
-      return 0
+      return 0;
     }
 
-    return dateB.getTime() - dateA.getTime()
-  })
-  const amounts = sortedCashFlowByDate.map(item => item.amount)
+    return dateB.getTime() - dateA.getTime();
+  });
+  const amounts = sortedCashFlowByDate.map((item) => item.amount);
 
-  const expense = expenseCalc(sortedCashFlowByDate)
-  const income = incomeCalc(amounts)
-  const totalIncome = income + (pocketMoney?.amount || 0)
-  const goals = goalsCalc(sortedCashFlowByDate) * -1
+  const expense = expenseCalc(sortedCashFlowByDate);
+  const income = incomeCalc(amounts);
+  const totalIncome = income + (pocketMoney?.amount || 0);
+  const goals = goalsCalc(sortedCashFlowByDate) * -1;
 
   // go though each item in the array and create categories
   // go through each category and sum the amounts
-  const categories = [] as Array<string>
+  const categories = [] as Array<string>;
   for (let i = 0; i < cashFlow.length; i++) {
     // cashFlow[i].category_type.includes(categories)
     !categories.includes(cashFlow[i].category_type) &&
-      categories.push(cashFlow[i].category_type)
+      categories.push(cashFlow[i].category_type);
   }
 
   const dataCategoryType = cashFlow.filter(
-    categoty => categoty.category_type === category.value
-  )
+    (categoty) => categoty.category_type === category.value
+  );
 
   const uniqueCategories = Array.from(
-    new Set(dataCategoryType.map(item => item.category))
-  )
-  console.log(uniqueCategories)
+    new Set(dataCategoryType.map((item) => item.category))
+  );
+  console.log(uniqueCategories);
 
-  const categoryTotals = uniqueCategories.map(category => {
+  const categoryTotals = uniqueCategories.map((category) => {
     const totalAmount = dataCategoryType
-      .filter(item => item.category === category)
-      .reduce((sum, item) => sum + item.amount, 0)
+      .filter((item) => item.category === category)
+      .reduce((sum, item) => sum + item.amount, 0);
 
-    const absoluteTotalAmount = Math.abs(totalAmount)
+    const absoluteTotalAmount = Math.abs(totalAmount);
 
-    return { category, totalAmount: absoluteTotalAmount }
-  })
+    return { category, totalAmount: absoluteTotalAmount };
+  });
 
-  console.log(categoryTotals)
+  console.log(categoryTotals);
 
   //Barchaert shows the amount of money spend by category_type
   // First user chose from options which category he wants to see (dropdown)
@@ -70,7 +74,7 @@ const OverviewGraph = ({ cashFlow, pocketMoney }: OverviewGraphProps) => {
     '#FF8042',
     '#FF0000',
     '#0000FF',
-  ]
+  ];
   return (
     <div>
       <div className="items-center flex flex-col">
@@ -121,7 +125,7 @@ const OverviewGraph = ({ cashFlow, pocketMoney }: OverviewGraphProps) => {
         <li></li>
       </ul>
     </div>
-  )
-}
+  );
+};
 
-export default OverviewGraph
+export default OverviewGraph;

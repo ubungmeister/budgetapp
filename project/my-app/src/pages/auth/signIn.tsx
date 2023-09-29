@@ -1,27 +1,27 @@
-import Logo from '../../compnents/auth/logo'
-import withAuthLayout from './layout'
-import { Link, useNavigate } from 'react-router-dom'
-import { z } from 'zod'
-import { useForm, SubmitHandler } from 'react-hook-form'
-import { zodResolver } from '@hookform/resolvers/zod'
-import axios from 'axios'
-import { useCookies } from 'react-cookie'
-import UseRedirect from '../../compnents/helpers/UseRedirect'
+import { zodResolver } from '@hookform/resolvers/zod';
+import axios from 'axios';
+import { useCookies } from 'react-cookie';
+import { SubmitHandler, useForm } from 'react-hook-form';
+import { Link, useNavigate } from 'react-router-dom';
+import { z } from 'zod';
+
+import UseRedirect from '../../_basic/helpers/UseRedirect';
+import withAuthLayout from './layout';
 
 const FormSchema = z.object({
   email: z.string().email({ message: 'Please enter a valid email' }),
   password: z
     .string()
     .min(6, { message: 'Password must be at least 6 characters long' }),
-})
+});
 
-export type FormSchemaType = z.infer<typeof FormSchema>
+export type FormSchemaType = z.infer<typeof FormSchema>;
 
 const SignIn = () => {
-  UseRedirect()
+  UseRedirect();
 
-  const navigate = useNavigate()
-  const [cookies, setCookie] = useCookies(['token'])
+  const navigate = useNavigate();
+  const [cookies, setCookie] = useCookies(['token']);
 
   const {
     register,
@@ -29,27 +29,26 @@ const SignIn = () => {
     formState: { errors, isSubmitting },
   } = useForm<FormSchemaType>({
     resolver: zodResolver(FormSchema),
-  })
+  });
 
-  const onSubmit: SubmitHandler<FormSchemaType> = async data => {
+  const onSubmit: SubmitHandler<FormSchemaType> = async (data) => {
     try {
       const response = await axios.post(
         'http://localhost:1000/auth/signin',
         data
-      )
-      setCookie('token', response.data.token)
-      window.localStorage.setItem('userID', response.data.userID)
-      window.localStorage.setItem('userRole', response.data.userRole)
-      navigate('/')
+      );
+      setCookie('token', response.data.token);
+      window.localStorage.setItem('userID', response.data.userID);
+      window.localStorage.setItem('userRole', response.data.userRole);
+      navigate('/');
     } catch (error: any) {
-      alert(error.response.data.message)
+      alert(error.response.data.message);
     }
-  }
+  };
 
   return (
     <>
       <form className="auth" onSubmit={handleSubmit(onSubmit)}>
-        <Logo />
         <div>
           <p className="my-5 text-center text-lg">SignIn</p>
           <input
@@ -81,7 +80,7 @@ const SignIn = () => {
         </div>
       </form>
     </>
-  )
-}
+  );
+};
 
-export default withAuthLayout(SignIn)
+export default withAuthLayout(SignIn);

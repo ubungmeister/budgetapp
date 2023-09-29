@@ -1,7 +1,9 @@
-import { BsSave } from 'react-icons/bs'
-import { TfiBackLeft } from 'react-icons/tfi'
-import Notification from '../notification/Notification'
-import { EditUserControlsProps } from './types'
+import { BsSave } from 'react-icons/bs';
+import { TfiBackLeft } from 'react-icons/tfi';
+
+import Notification from '../../_basic/library/notification/Notification';
+import { EditUserControlsProps } from './types';
+
 const EditUserControls = ({
   userForm,
   errorNotification,
@@ -37,7 +39,7 @@ const EditUserControls = ({
             <button
               className="flex flex-row space-x-2 button-empty px-4 py-2"
               onClick={() => {
-                setFormOpen(false)
+                setFormOpen(false);
               }}
             >
               <div className="py-1">
@@ -68,7 +70,7 @@ const EditUserControls = ({
             <button
               className="flex flex-row space-x-2 button-empty px-4 py-2"
               onClick={() => {
-                setFormOpen(false)
+                setFormOpen(false);
               }}
             >
               <div className="py-1">
@@ -80,7 +82,7 @@ const EditUserControls = ({
         </div>
       )}
     </div>
-  )
-}
+  );
+};
 
-export default EditUserControls
+export default EditUserControls;

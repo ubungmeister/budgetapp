@@ -1,16 +1,18 @@
-import { cashflowHeaderProps } from './types'
-import { formatDecimals } from '../helpers/utils'
-import { expenseCalc, incomeCalc, goalsCalc } from '../helpers/utils'
+import { formatDecimals } from '../../_basic/helpers/utils';
+import { expenseCalc, goalsCalc, incomeCalc } from '../../_basic/helpers/utils';
+import { cashflowHeaderProps } from './types';
 
 const CfHeader = ({ cashFlow, pocketMoney }: cashflowHeaderProps) => {
-  const amounts = cashFlow.map(item => item.amount)
+  const amounts = cashFlow.map((item) => item.amount);
 
-  const expense = expenseCalc(cashFlow)
-  const income = incomeCalc(amounts)
-  const goals = Math.abs(goalsCalc(cashFlow))
-  const totalIncome = income + (pocketMoney?.amount || 0)
+  const expense = expenseCalc(cashFlow);
+  const income = incomeCalc(amounts);
+  const goals = Math.abs(goalsCalc(cashFlow));
+  const totalIncome = income + (pocketMoney?.amount || 0);
 
-  const total = formatDecimals(Number(totalIncome) - Number(-(expense + goals)))
+  const total = formatDecimals(
+    Number(totalIncome) - Number(-(expense + goals))
+  );
 
   return (
     <div className=" pt-7 flex items-center justify-center">
@@ -45,7 +47,7 @@ const CfHeader = ({ cashFlow, pocketMoney }: cashflowHeaderProps) => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default CfHeader
+export default CfHeader;

@@ -1,28 +1,29 @@
-import { CashFlowFormProps } from './types'
-import CategorySelector from './CategorySelector'
-import { useState, useEffect } from 'react'
-import { useForm, Controller } from 'react-hook-form'
-import { SubmitHandler } from 'react-hook-form/dist/types/form'
-import DatePicker from 'react-datepicker'
-import 'react-datepicker/dist/react-datepicker.css'
-import { z } from 'zod'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { FaWindowClose } from 'react-icons/fa'
-import axios from 'axios'
-import { updateGoals } from './api'
-import { formatDecimals } from '../helpers/utils'
+import { zodResolver } from '@hookform/resolvers/zod';
+import axios from 'axios';
+import { useEffect, useState } from 'react';
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
+import { Controller, useForm } from 'react-hook-form';
+import { SubmitHandler } from 'react-hook-form/dist/types/form';
+import { FaWindowClose } from 'react-icons/fa';
+import { z } from 'zod';
+
+import { formatDecimals } from '../../_basic/helpers/utils';
 import {
+  createCashFlow,
   getAllGoals,
   updateCashFlow,
-  createCashFlow,
-} from '../../compnents/cash-flow/api'
+} from '../../compnents/cash-flow/api';
+import CategorySelector from './CategorySelector';
+import { updateGoals } from './api';
+import { CashFlowFormProps } from './types';
 
 const FormSchema = z.object({
   amount: z.number(),
   description: z.string().min(1, { message: 'Description is required' }),
   start_date: z.date(),
-})
-type FormSchemaType = z.infer<typeof FormSchema>
+});
+type FormSchemaType = z.infer<typeof FormSchema>;
 
 const CfForm = ({
   formOpen,
@@ -31,9 +32,12 @@ const CfForm = ({
   selectedCashFlow,
   pocketMoney,
 }: CashFlowFormProps) => {
-  const [categoryType, setCategoryType] = useState('')
-  const [error, setError] = useState('')
-  const [category, setCategory] = useState({ category: '', saving_goal_Id: '' })
+  const [categoryType, setCategoryType] = useState('');
+  const [error, setError] = useState('');
+  const [category, setCategory] = useState({
+    category: '',
+    saving_goal_Id: '',
+  });
 
   const {
     control,
@@ -42,77 +46,77 @@ const CfForm = ({
     formState: { errors, isSubmitting },
   } = useForm<FormSchemaType>({
     resolver: zodResolver(FormSchema),
-  })
+  });
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === 'Escape') {
-        setFormOpen(false)
+        setFormOpen(false);
       }
-    }
+    };
 
-    window.addEventListener('keydown', handleKeyDown)
+    window.addEventListener('keydown', handleKeyDown);
 
     return () => {
-      window.removeEventListener('keydown', handleKeyDown)
-    }
-  }, [setFormOpen])
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [setFormOpen]);
 
   useEffect(() => {
     const findCategory = async () => {
-      const goals = await getAllGoals()
+      const goals = await getAllGoals();
       const goalName = goals?.find(
         (el: any) => el.id === selectedCashFlow?.saving_goal_Id
-      )
+      );
       if (goalName) {
-        setCategory({ category: goalName.name, saving_goal_Id: goalName.id })
-        setCategoryType(selectedCashFlow?.category_type || '')
+        setCategory({ category: goalName.name, saving_goal_Id: goalName.id });
+        setCategoryType(selectedCashFlow?.category_type || '');
       } else {
         setCategory({
           category: selectedCashFlow?.category || '',
           saving_goal_Id: '',
-        })
-        setCategoryType(selectedCashFlow?.category_type || '')
+        });
+        setCategoryType(selectedCashFlow?.category_type || '');
       }
-    }
-    findCategory()
-  }, [selectedCashFlow])
+    };
+    findCategory();
+  }, [selectedCashFlow]);
 
-  const defaultselectedCashFlow = selectedCashFlow?.amount || 0
+  const defaultselectedCashFlow = selectedCashFlow?.amount || 0;
 
-  const amounts = cashFlow.map(item => item.amount)
+  const amounts = cashFlow.map((item) => item.amount);
 
   const income = formatDecimals(
-    amounts.filter(el => el > 0).reduce((acc, el) => acc + el, 0)
-  )
+    amounts.filter((el) => el > 0).reduce((acc, el) => acc + el, 0)
+  );
   const expense = formatDecimals(
-    amounts.filter(el => el < 0).reduce((acc, el) => acc + el, 0)
-  )
+    amounts.filter((el) => el < 0).reduce((acc, el) => acc + el, 0)
+  );
 
-  const totalIncome = income + (pocketMoney?.amount || 0)
+  const totalIncome = income + (pocketMoney?.amount || 0);
 
-  const onSubmit: SubmitHandler<FormSchemaType> = async data => {
+  const onSubmit: SubmitHandler<FormSchemaType> = async (data) => {
     try {
       if (!category) {
-        setError('Please select a category')
-        return
+        setError('Please select a category');
+        return;
       }
-      let amount = data.amount
+      let amount = data.amount;
       if (!categoryType) {
-        setError('Please select a category type')
-        return
+        setError('Please select a category type');
+        return;
       }
       if (categoryType === 'Expense' || categoryType === 'Goals') {
         if (totalIncome < Math.abs(expense) + Math.abs(amount)) {
-          setError(`You don't have enough money`)
-          return
+          setError(`You don't have enough money`);
+          return;
         }
         if (amount > 0) {
-          amount = amount * -1
+          amount = amount * -1;
         }
       }
       if (categoryType === 'Income') {
-        amount = Math.abs(amount)
+        amount = Math.abs(amount);
       }
 
       const formData = {
@@ -122,46 +126,46 @@ const CfForm = ({
         saving_goal_Id: category.saving_goal_Id,
         userId: window.localStorage.getItem('userID') || '',
         category_type: categoryType,
-      }
+      };
 
       if (categoryType === 'Goals') {
-        const formDataAmount = { ...formData, amount: Math.abs(data.amount) }
-        const result = await updateGoals(formDataAmount)
+        const formDataAmount = { ...formData, amount: Math.abs(data.amount) };
+        const result = await updateGoals(formDataAmount);
 
         if (result?.status === 400) {
-          setError(result.data.message)
-          return
+          setError(result.data.message);
+          return;
         }
-        await createCashFlow(formData)
+        await createCashFlow(formData);
       } else {
-        await createCashFlow(formData)
+        await createCashFlow(formData);
       }
-      setFormOpen(false)
-      alert('User created successfully')
-      setError('')
-      setCategory({ category: '', saving_goal_Id: '' })
+      setFormOpen(false);
+      alert('User created successfully');
+      setError('');
+      setCategory({ category: '', saving_goal_Id: '' });
     } catch (error: any) {
-      setError(error.response.data.message)
+      setError(error.response.data.message);
     }
-  }
+  };
 
-  const handleUpdate: SubmitHandler<FormSchemaType> = async data => {
+  const handleUpdate: SubmitHandler<FormSchemaType> = async (data) => {
     try {
       if (!category) {
-        setError('Please select a category')
-        return
+        setError('Please select a category');
+        return;
       }
 
-      let amount = data.amount
+      let amount = data.amount;
       if (categoryType === 'Expense' || categoryType === 'Goals') {
         if (totalIncome < Math.abs(expense) + Math.abs(amount)) {
-          setError(`You don't have enough money`)
-          return
+          setError(`You don't have enough money`);
+          return;
         }
-        amount > 0 && (amount = -amount)
+        amount > 0 && (amount = -amount);
       }
       if (categoryType === 'Income') {
-        amount = Math.abs(amount)
+        amount = Math.abs(amount);
       }
 
       const formData = {
@@ -172,39 +176,39 @@ const CfForm = ({
         userId: window.localStorage.getItem('userID') || '',
         id: selectedCashFlow?.id,
         category_type: categoryType,
-      }
+      };
 
       if (categoryType === 'Goals') {
-        const calcAmount = defaultselectedCashFlow - amount
+        const calcAmount = defaultselectedCashFlow - amount;
 
-        let formDataAmount = { ...formData, amount: calcAmount }
+        let formDataAmount = { ...formData, amount: calcAmount };
 
         const result = await axios.post(
           'http://localhost:1000/savinggoal/update-goal-amount',
           formDataAmount
-        )
+        );
         if (result.status === 400) {
-          setError(result.data.message)
-          return
+          setError(result.data.message);
+          return;
         }
 
-        await updateCashFlow(formData)
+        await updateCashFlow(formData);
       } else {
-        await updateCashFlow(formData)
+        await updateCashFlow(formData);
       }
-      setFormOpen(false)
-      alert('User created successfully')
-      setError('')
-      setCategory({ category: '', saving_goal_Id: '' })
+      setFormOpen(false);
+      alert('User created successfully');
+      setError('');
+      setCategory({ category: '', saving_goal_Id: '' });
     } catch (error: any) {
-      setError(error.response.data.message)
+      setError(error.response.data.message);
     }
-  }
+  };
 
   //  date format for date picker
   const startDate = selectedCashFlow?.start_date
     ? new Date(selectedCashFlow.start_date)
-    : null
+    : null;
   return (
     <>
       <form
@@ -222,8 +226,8 @@ const CfForm = ({
             <button
               disabled={selectedCashFlow ? true : false}
               onClick={() => {
-                setCategoryType('Income')
-                setCategory({ category: '', saving_goal_Id: '' })
+                setCategoryType('Income');
+                setCategory({ category: '', saving_goal_Id: '' });
               }}
               className={`border-2 rounded-md px-1 bg-slate-100 ${
                 selectedCashFlow?.category_type || categoryType === 'Income'
@@ -236,8 +240,8 @@ const CfForm = ({
             <button
               disabled={selectedCashFlow ? true : false}
               onClick={() => {
-                setCategoryType('Expense')
-                setCategory({ category: '', saving_goal_Id: '' })
+                setCategoryType('Expense');
+                setCategory({ category: '', saving_goal_Id: '' });
               }}
               className={`border-2 rounded-md px-1 bg-slate-100 ${
                 selectedCashFlow?.category_type || categoryType === 'Expense'
@@ -250,8 +254,8 @@ const CfForm = ({
             <button
               disabled={selectedCashFlow ? true : false}
               onClick={() => {
-                setCategoryType('Goals')
-                setCategory({ category: '', saving_goal_Id: '' })
+                setCategoryType('Goals');
+                setCategory({ category: '', saving_goal_Id: '' });
               }}
               className={`border-2 rounded-md px-1  bg-slate-100  ${
                 selectedCashFlow?.category_type || categoryType === 'Goals'
@@ -297,7 +301,7 @@ const CfForm = ({
             render={({ field }) => (
               <DatePicker
                 placeholderText="Select date"
-                onChange={date => field.onChange(date)}
+                onChange={(date) => field.onChange(date)}
                 dateFormat="dd/MM/yyyy"
                 selected={field.value}
               />
@@ -313,7 +317,7 @@ const CfForm = ({
         </div>
       </form>
     </>
-  )
-}
+  );
+};
 
-export default CfForm
+export default CfForm;

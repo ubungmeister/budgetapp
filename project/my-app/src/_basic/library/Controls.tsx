@@ -1,18 +1,21 @@
-import React from 'react'
-import { BsArrowLeftSquare, BsArrowRightSquare, BsSave } from 'react-icons/bs'
-import { TfiBackLeft } from 'react-icons/tfi'
-import Notification from '../../compnents/notification/Notification'
-import NotificationSuccess from '../notification/NotificationSuccess'
+import React from 'react';
+import { BsArrowLeftSquare, BsArrowRightSquare, BsSave } from 'react-icons/bs';
+import { TfiBackLeft } from 'react-icons/tfi';
+
+import Notification from './notification/Notification';
+import NotificationSuccess from './notification/NotificationSuccess';
 
 export interface ControlsProps {
-  handleSave: () => void
-  setChangeCancel: (value: React.SetStateAction<boolean>) => void
-  setIsMonthChange: React.Dispatch<React.SetStateAction<string>>
-  saveDiasbled: boolean
-  sussessAlert: boolean
+  handleSave: () => void;
+  setChangeCancel: (value: React.SetStateAction<boolean>) => void;
+  setIsMonthChange: React.Dispatch<React.SetStateAction<string>>;
+  saveDiasbled: boolean;
+  sussessAlert: boolean;
 }
 
-const PmControls = ({
+//Controls component, which is used in Budget.tsx and Pm.tsx
+
+const Controls = ({
   setIsMonthChange,
   handleSave,
   setChangeCancel,
@@ -61,7 +64,7 @@ const PmControls = ({
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default PmControls
+export default Controls;
