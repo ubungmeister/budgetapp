@@ -72,7 +72,7 @@ const PmTable = ({
 
       return (
         <div className="flex  flex-row justify-stretch hover:bg-gray-50 py-4">
-          <p className="px-5 overflow-x-hidden text-ellipsis min-w-[10rem]">
+          <p className="px-5 overflow-x-hidden text-ellipsis min-w-[10rem] max-w-[10rem] overflow-hidden">
             {user.username}
           </p>
           <div className="flex flex-row space-x-4 position-center">

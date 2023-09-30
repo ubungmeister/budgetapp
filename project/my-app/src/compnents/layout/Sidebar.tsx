@@ -1,22 +1,22 @@
-import { useState, useEffect } from 'react'
+import { useEffect, useState } from 'react';
+import { IconContext } from 'react-icons';
 import {
-  FiHome,
-  FiCreditCard,
   FiBarChart2,
-  FiCrosshair,
-  FiCoffee,
   FiChevronLeft,
+  FiCoffee,
+  FiCreditCard,
+  FiCrosshair,
+  FiHome,
   FiUserPlus,
-} from 'react-icons/fi'
-import { TbMoneybag } from 'react-icons/tb'
-import { IconContext } from 'react-icons'
-import { useNavigate } from 'react-router-dom'
+} from 'react-icons/fi';
+import { TbMoneybag } from 'react-icons/tb';
+import { useNavigate } from 'react-router-dom';
 
 const Sidebar = () => {
-  const [open, setOpen] = useState(false)
-  const [isAdmin, setIsAdmin] = useState(false)
+  const [open, setOpen] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
 
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const adminMenu = [
     { title: 'Admin', src: <FiHome />, navigate: '/admin' },
@@ -27,24 +27,24 @@ const Sidebar = () => {
       navigate: '/pocket-money',
     },
     { title: 'Users', src: <FiUserPlus />, navigate: '/users' },
-  ]
+  ];
   const userMenu = [
     { title: 'Cash flow', src: <FiCreditCard />, navigate: '/cash-flow' },
     { title: 'Overview', src: <FiBarChart2 />, navigate: '/overview' },
     { title: 'Goals', src: <FiCrosshair />, navigate: '/goals' },
     { title: 'Tasks', src: <FiCoffee />, navigate: '/tasks' },
-  ]
+  ];
 
   useEffect(() => {
-    const userRole = window.localStorage.getItem('userRole')
+    const userRole = window.localStorage.getItem('userRole');
     if (userRole !== 'ADMIN') {
-      setIsAdmin(false)
+      setIsAdmin(false);
     } else {
-      setIsAdmin(true)
+      setIsAdmin(true);
     }
-  }, [navigate])
+  }, [navigate]);
 
-  const menuItems = isAdmin ? adminMenu : userMenu
+  const menuItems = isAdmin ? adminMenu : userMenu;
 
   return (
     <div
@@ -88,7 +88,7 @@ const Sidebar = () => {
         ))}
       </ul>
     </div>
-  )
-}
+  );
+};
 
-export default Sidebar
+export default Sidebar;

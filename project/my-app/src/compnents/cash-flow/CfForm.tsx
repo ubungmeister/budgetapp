@@ -9,14 +9,12 @@ import { FaWindowClose } from 'react-icons/fa';
 import { z } from 'zod';
 
 import { formatDecimals } from '../../_basic/helpers/utils';
-import {
-  createCashFlow,
-  getAllGoals,
-  updateCashFlow,
-} from '../../compnents/cash-flow/api';
+import { createCashFlow, updateCashFlow } from '../cash-flow/api';
+import { findCategory } from '../cash-flow/utils';
 import CategorySelector from './CategorySelector';
 import { updateGoals } from './api';
-import { CashFlowFormProps } from './types';
+import { CashFlowFormProps, CategoryType } from './types';
+import { checkForm } from './utils';
 
 const FormSchema = z.object({
   amount: z.number(),
@@ -34,7 +32,7 @@ const CfForm = ({
 }: CashFlowFormProps) => {
   const [categoryType, setCategoryType] = useState('');
   const [error, setError] = useState('');
-  const [category, setCategory] = useState({
+  const [category, setCategory] = useState<CategoryType>({
     category: '',
     saving_goal_Id: '',
   });
@@ -49,37 +47,21 @@ const CfForm = ({
   });
 
   useEffect(() => {
+    // close form on escape key
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === 'Escape') {
         setFormOpen(false);
       }
     };
-
     window.addEventListener('keydown', handleKeyDown);
-
     return () => {
       window.removeEventListener('keydown', handleKeyDown);
     };
   }, [setFormOpen]);
 
   useEffect(() => {
-    const findCategory = async () => {
-      const goals = await getAllGoals();
-      const goalName = goals?.find(
-        (el: any) => el.id === selectedCashFlow?.saving_goal_Id
-      );
-      if (goalName) {
-        setCategory({ category: goalName.name, saving_goal_Id: goalName.id });
-        setCategoryType(selectedCashFlow?.category_type || '');
-      } else {
-        setCategory({
-          category: selectedCashFlow?.category || '',
-          saving_goal_Id: '',
-        });
-        setCategoryType(selectedCashFlow?.category_type || '');
-      }
-    };
-    findCategory();
+    // set selected category
+    findCategory({ selectedCashFlow, setCategory, setCategoryType });
   }, [selectedCashFlow]);
 
   const defaultselectedCashFlow = selectedCashFlow?.amount || 0;
@@ -97,26 +79,18 @@ const CfForm = ({
 
   const onSubmit: SubmitHandler<FormSchemaType> = async (data) => {
     try {
-      if (!category) {
-        setError('Please select a category');
+      const amount = checkForm({
+        category,
+        categoryType,
+        data,
+        setError,
+        totalIncome,
+        expense,
+      });
+
+      if (amount === undefined) {
+        // If error occurred in checkForm, don't proceed request
         return;
-      }
-      let amount = data.amount;
-      if (!categoryType) {
-        setError('Please select a category type');
-        return;
-      }
-      if (categoryType === 'Expense' || categoryType === 'Goals') {
-        if (totalIncome < Math.abs(expense) + Math.abs(amount)) {
-          setError(`You don't have enough money`);
-          return;
-        }
-        if (amount > 0) {
-          amount = amount * -1;
-        }
-      }
-      if (categoryType === 'Income') {
-        amount = Math.abs(amount);
       }
 
       const formData = {
@@ -151,21 +125,18 @@ const CfForm = ({
 
   const handleUpdate: SubmitHandler<FormSchemaType> = async (data) => {
     try {
-      if (!category) {
-        setError('Please select a category');
-        return;
-      }
+      const amount = checkForm({
+        category,
+        categoryType,
+        data,
+        setError,
+        totalIncome,
+        expense,
+      });
 
-      let amount = data.amount;
-      if (categoryType === 'Expense' || categoryType === 'Goals') {
-        if (totalIncome < Math.abs(expense) + Math.abs(amount)) {
-          setError(`You don't have enough money`);
-          return;
-        }
-        amount > 0 && (amount = -amount);
-      }
-      if (categoryType === 'Income') {
-        amount = Math.abs(amount);
+      if (amount === undefined) {
+        // If error occurred in checkForm, don't proceed request
+        return;
       }
 
       const formData = {
@@ -209,6 +180,7 @@ const CfForm = ({
   const startDate = selectedCashFlow?.start_date
     ? new Date(selectedCashFlow.start_date)
     : null;
+
   return (
     <>
       <form
