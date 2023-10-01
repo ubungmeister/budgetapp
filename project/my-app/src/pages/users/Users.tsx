@@ -1,72 +1,72 @@
-import React, { useEffect, useState } from 'react'
-import useAuth from '../../compnents/helpers/UseAuth'
+import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
-import { UserData, initialUserData } from '../../compnents/users/types'
-import UsersList from '../../compnents/users/UsersList'
-import EditUser from '../../compnents/users/EditUser'
-import { getUsers } from '../../compnents/users/api'
-import { useNavigate } from 'react-router-dom'
+import EditUser from '../../compnents/users/EditUser';
+import UsersList from '../../compnents/users/UsersList';
+import { getUsers } from '../../compnents/users/api';
+import { UserData, initialUserData } from '../../compnents/users/types';
+import useAuth from '../../hooks/UseAuth';
 
 const Users = () => {
-  const [users, setUsers] = useState<UserData[]>([initialUserData])
-  const [search, setSearch] = useState<string>('')
+  const [users, setUsers] = useState<UserData[]>([initialUserData]);
+  const [search, setSearch] = useState<string>('');
   const [filteredUsers, setFilteredUsers] = useState<UserData[]>([
     initialUserData,
-  ])
-  const [selectedUser, setSetSelectedUser] = useState<string>('')
-  const [userForm, setUserForm] = useState<UserData>(initialUserData)
-  const [formOpen, setFormOpen] = useState<boolean>(false)
-  const [isAdmin, setIsAdmin] = useState(false)
+  ]);
+  const [selectedUser, setSetSelectedUser] = useState<string>('');
+  const [userForm, setUserForm] = useState<UserData>(initialUserData);
+  const [formOpen, setFormOpen] = useState<boolean>(false);
+  const [isAdmin, setIsAdmin] = useState(false);
 
-  useAuth()
-  const userId = window.localStorage.getItem('userID')
-  const navigate = useNavigate()
+  useAuth();
+  const userId = window.localStorage.getItem('userID');
+  const navigate = useNavigate();
 
   useEffect(() => {
-    const userRole = window.localStorage.getItem('userRole')
+    const userRole = window.localStorage.getItem('userRole');
     if (userRole !== 'ADMIN') {
-      navigate('/')
+      navigate('/');
     } else {
-      setIsAdmin(true)
+      setIsAdmin(true);
     }
-  }, [navigate])
+  }, [navigate]);
 
   useEffect(() => {
     const fetchData = async () => {
       if (userId) {
-        const allUsers = await getUsers()
+        const allUsers = await getUsers();
         const filteredUsers = allUsers.filter(
           (user: UserData) => user.id !== userId
-        )
-        setUsers(filteredUsers)
+        );
+        setUsers(filteredUsers);
       }
-    }
-    fetchData()
-  }, [formOpen])
+    };
+    fetchData();
+  }, [formOpen]);
 
   useEffect(() => {
     if (search === '') {
-      setFilteredUsers(users) // Reset filtered users to original list
-      return
+      setFilteredUsers(users); // Reset filtered users to original list
+      return;
     }
-    const filteredUsers = users.filter(user => {
-      return user.username.toLowerCase().includes(search.toLowerCase())
-    })
+    const filteredUsers = users.filter((user) => {
+      return user.username.toLowerCase().includes(search.toLowerCase());
+    });
 
-    setFilteredUsers(filteredUsers)
-  }, [search, users])
+    setFilteredUsers(filteredUsers);
+  }, [search, users]);
 
   useEffect(() => {
     if (selectedUser) {
-      const user = users.find(user => user.id === selectedUser)
+      const user = users.find((user) => user.id === selectedUser);
       if (user) {
-        setUserForm(user)
+        setUserForm(user);
       }
     }
-  }, [selectedUser])
+  }, [selectedUser]);
 
   if (!isAdmin) {
-    return null // Render nothing if the user is not an admin
+    return null; // Render nothing if the user is not an admin
   }
 
   return (
@@ -85,7 +85,7 @@ const Users = () => {
         setUserForm={setUserForm}
       />
     </div>
-  )
-}
+  );
+};
 
-export default Users
+export default Users;

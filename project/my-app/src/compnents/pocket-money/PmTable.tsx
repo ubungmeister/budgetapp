@@ -1,7 +1,8 @@
-import { PmTableProps, PmGroupedData } from './types'
-import { v4 as uuidv4 } from 'uuid'
-import { useEffect, useState } from 'react'
-import { capitalizeFirstLetter } from '../helpers/utils'
+import { useEffect, useState } from 'react';
+import { v4 as uuidv4 } from 'uuid';
+
+import { capitalizeFirstLetter } from '../_basic/helpers/utils';
+import { PmGroupedData, PmTableProps } from './types';
 
 const PmTable = ({
   monthsAndBudget,
@@ -11,39 +12,39 @@ const PmTable = ({
   setSaveDisabled,
   setSuccessAlert,
 }: PmTableProps) => {
-  const [groupedData, setGroupedData] = useState<PmGroupedData>({})
+  const [groupedData, setGroupedData] = useState<PmGroupedData>({});
 
   useEffect(() => {
     // Group data by month and year
     const groupData = () => {
-      const grouped: PmGroupedData = {}
+      const grouped: PmGroupedData = {};
 
-      pocketMoney.forEach(item => {
-        const key = new Date(item.month).toISOString()
+      pocketMoney.forEach((item) => {
+        const key = new Date(item.month).toISOString();
         if (grouped[key]) {
-          grouped[key] += item.amount
+          grouped[key] += item.amount;
         } else {
-          grouped[key] = item.amount
+          grouped[key] = item.amount;
         }
-      })
+      });
 
-      setGroupedData(grouped)
-    }
+      setGroupedData(grouped);
+    };
 
-    groupData()
-  }, [pocketMoney])
+    groupData();
+  }, [pocketMoney]);
 
   const renderPocketMoneyInputs = () => {
-    const userInputs = users.map(user => {
+    const userInputs = users.map((user) => {
       const userPocketMoney = pocketMoney?.filter(
-        entry => entry.userId === user.id
-      )
+        (entry) => entry.userId === user.id
+      );
 
       const inputs = monthsAndBudget.map((monthEntry, index) => {
         const pocketMoneyEntry = userPocketMoney.find(
-          entry => entry.month === monthEntry.month
-        )
-        const amount = pocketMoneyEntry ? pocketMoneyEntry.amount : 0
+          (entry) => entry.month === monthEntry.month
+        );
+        const amount = pocketMoneyEntry ? pocketMoneyEntry.amount : 0;
 
         return (
           <div className="  min-w-[4rem] md:min-w-[7rem] lg:min-w-[10rem] text-center">
@@ -55,33 +56,33 @@ const PmTable = ({
               min={0}
               max={1000000}
               className=" min-w-[4rem] max-w-[4rem] md:max-w-[5rem] md:min-w-[5rem] border-2 border-info-content-light  p-1"
-              onChange={e => {
+              onChange={(e) => {
                 handleInputChange(
                   parseFloat(e.target.value) || 0,
                   monthEntry.month,
                   user.id,
                   pocketMoneyEntry?.id
-                )
-                setSuccessAlert(false)
+                );
+                setSuccessAlert(false);
               }}
             />
           </div>
-        )
-      })
+        );
+      });
 
       return (
         <div className="flex  flex-row justify-stretch hover:bg-gray-50 py-4">
-          <p className="px-5 overflow-x-hidden text-ellipsis min-w-[10rem]">
+          <p className="px-5 overflow-x-hidden text-ellipsis min-w-[10rem] max-w-[10rem] overflow-hidden">
             {user.username}
           </p>
           <div className="flex flex-row space-x-4 position-center">
             <p className="flex ">{inputs}</p>
           </div>
         </div>
-      )
-    })
-    return userInputs
-  }
+      );
+    });
+    return userInputs;
+  };
 
   const handleInputChange = (
     value: number,
@@ -95,27 +96,27 @@ const PmTable = ({
         amount: value,
         month,
         userId,
-      }
-      setPocketMoney([...pocketMoney, newPocketMoneyEntry])
+      };
+      setPocketMoney([...pocketMoney, newPocketMoneyEntry]);
     } else {
-      const updatedPocketMoney = pocketMoney.map(entry => {
+      const updatedPocketMoney = pocketMoney.map((entry) => {
         if (entry.userId === userId && entry.month === month) {
-          return { ...entry, amount: value }
+          return { ...entry, amount: value };
         }
-        return entry
-      })
-      setPocketMoney(updatedPocketMoney)
+        return entry;
+      });
+      setPocketMoney(updatedPocketMoney);
     }
-  }
+  };
 
   // verify if any month budget is exceeded and disable save button
-  const isAnyMonthExceeded = monthsAndBudget.some(monthEntry => {
-    const month = new Date(monthEntry.month)
-    const spendAmount = groupedData[month.toISOString()]
-    return spendAmount > monthEntry.amount
-  })
+  const isAnyMonthExceeded = monthsAndBudget.some((monthEntry) => {
+    const month = new Date(monthEntry.month);
+    const spendAmount = groupedData[month.toISOString()];
+    return spendAmount > monthEntry.amount;
+  });
 
-  setSaveDisabled(isAnyMonthExceeded)
+  setSaveDisabled(isAnyMonthExceeded);
 
   return (
     <div className="flex flex-col w-full pt-7">
@@ -126,9 +127,11 @@ const PmTable = ({
         </div>
         <div className="flex flex-row ">
           {monthsAndBudget.map((monthEntry, index) => {
-            const month = new Date(monthEntry.month)
-            const monthName = month.toLocaleString('default', { month: 'long' })
-            const spendAmount = groupedData[month.toISOString()]
+            const month = new Date(monthEntry.month);
+            const monthName = month.toLocaleString('default', {
+              month: 'long',
+            });
+            const spendAmount = groupedData[month.toISOString()];
             return (
               <div
                 key={index}
@@ -148,13 +151,13 @@ const PmTable = ({
                   /<span>{monthEntry.amount}</span>
                 </div>
               </div>
-            )
+            );
           })}
         </div>
       </div>
       <div>{renderPocketMoneyInputs()}</div>
     </div>
-  )
-}
+  );
+};
 
-export default PmTable
+export default PmTable;

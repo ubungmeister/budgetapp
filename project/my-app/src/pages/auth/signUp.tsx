@@ -1,12 +1,12 @@
-import Logo from '../../compnents/auth/logo'
-import withAuthLayout from './layout'
-import { Link } from 'react-router-dom'
-import { z } from 'zod'
-import { useForm, SubmitHandler } from 'react-hook-form'
-import { zodResolver } from '@hookform/resolvers/zod'
-import axios from 'axios'
-import { useState } from 'react'
-import UseRedirect from '../../compnents/helpers/UseRedirect'
+import { zodResolver } from '@hookform/resolvers/zod';
+import axios from 'axios';
+import { useState } from 'react';
+import { SubmitHandler, useForm } from 'react-hook-form';
+import { Link } from 'react-router-dom';
+import { z } from 'zod';
+
+import UseRedirect from '../../hooks/UseRedirect';
+import withAuthLayout from './layout';
 
 const FormSchema = z
   .object({
@@ -17,15 +17,15 @@ const FormSchema = z
       .string()
       .email({ message: 'Please enter a valid email' })
       .refine(
-        async email => {
+        async (email) => {
           try {
             const response = await axios.get(
               `http://localhost:1000/users/get-user-email/${email}`
-            )
-            const { emailExists } = response.data
-            return !emailExists // Return true if email doesn't exist, false otherwise
+            );
+            const { emailExists } = response.data;
+            return !emailExists; // Return true if email doesn't exist, false otherwise
           } catch (error) {
-            return true // Assuming an error means the email doesn't exist
+            return true; // Assuming an error means the email doesn't exist
           }
         },
         { message: 'Email already exists' }
@@ -36,16 +36,16 @@ const FormSchema = z
       .min(6, { message: 'Password must be at least 6 characters long' }),
     confirmPassword: z.string(),
   })
-  .refine(data => data.password === data.confirmPassword, {
+  .refine((data) => data.password === data.confirmPassword, {
     message: 'Passwords do not match',
     path: ['confirmPassword'],
-  })
-type FormSchemaType = z.infer<typeof FormSchema>
+  });
+type FormSchemaType = z.infer<typeof FormSchema>;
 
 const SignUp = () => {
-  UseRedirect()
+  UseRedirect();
 
-  const [error, setError] = useState('')
+  const [error, setError] = useState('');
 
   const {
     register,
@@ -53,22 +53,21 @@ const SignUp = () => {
     formState: { errors, isSubmitting },
   } = useForm<FormSchemaType>({
     resolver: zodResolver(FormSchema),
-  })
+  });
 
-  const onSubmit: SubmitHandler<FormSchemaType> = async data => {
+  const onSubmit: SubmitHandler<FormSchemaType> = async (data) => {
     try {
-      await axios.post('http://localhost:1000/auth/signup', data)
-      alert('User created successfully')
-      setError('')
+      await axios.post('http://localhost:1000/auth/signup', data);
+      alert('User created successfully');
+      setError('');
     } catch (error: any) {
-      setError(error.response.data.message)
+      setError(error.response.data.message);
     }
-  }
+  };
 
   return (
     <>
       <form className="auth" onSubmit={handleSubmit(onSubmit)}>
-        <Logo />
         <div>
           <p className="my-5 text-center text-lg">SignUp form</p>
           <input
@@ -121,7 +120,7 @@ const SignUp = () => {
         </div>
       </form>
     </>
-  )
-}
+  );
+};
 
-export default withAuthLayout(SignUp)
+export default withAuthLayout(SignUp);

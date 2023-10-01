@@ -1,102 +1,103 @@
-import { useRef } from 'react'
-import { UserData } from './types'
-import { updateUser, createUser, deleteUser, getUsers } from './api'
-import { EditUserProps } from './types'
-import { useState } from 'react'
-import EditUserControls from './EditUserControls'
-import { AiOutlineUserDelete } from 'react-icons/ai'
+import { useRef } from 'react';
+import { useState } from 'react';
 
-const EditUser: React.FC<EditUserProps> = ({
+import DeleteUserButtonProps from '../_basic/library/buttons/DeleteUserButton';
+import EditUserControls from './EditUserControls';
+import { createUser, deleteUser, getUsers, updateUser } from './api';
+import { UserData } from './types';
+import { EditUserProps } from './types';
+
+const EditUser = ({
   userForm,
   formOpen,
   setUserForm,
   setFormOpen,
 }: EditUserProps) => {
-  const [errorNotification, setErrorNotification] = useState<string>('')
+  const [errorNotification, setErrorNotification] = useState<string>('');
 
-  const formRef = useRef<HTMLFormElement | null>(null)
+  const formRef = useRef<HTMLFormElement | null>(null);
 
-  const userID = window.localStorage.getItem('userID')
+  const userID = window.localStorage.getItem('userID');
 
   const userValidation = async (userForm: UserData) => {
     if (!userForm.username.trim()) {
-      setErrorNotification('Please enter a username')
-      return false
+      setErrorNotification('Please enter a username');
+      return false;
     }
     if (!userForm.email.trim() || !userForm.email.includes('@')) {
-      setErrorNotification('Please enter a valid email')
-      return false
+      setErrorNotification('Please enter a valid email');
+      return false;
     }
 
-    const allUsers = await getUsers()
+    const allUsers = await getUsers();
 
     if (allUsers.some((user: UserData) => user.email === userForm.email)) {
       if (userForm.id) {
-        const user = allUsers.find((user: UserData) => user.id === userForm.id)
+        const user = allUsers.find((user: UserData) => user.id === userForm.id);
         if (user && user.email === userForm.email) {
-          return true
+          return true;
         }
       }
-      setErrorNotification('Email already exists')
-      return false
+      setErrorNotification('Email already exists');
+      return false;
     }
-    return true
-  }
+    return true;
+  };
 
   const formHandler = async (e: any) => {
-    e.preventDefault()
+    e.preventDefault();
 
-    const isValid = await userValidation(userForm)
+    const isValid = await userValidation(userForm);
     if (userForm.id) {
-      await updateUser(userForm)
+      await updateUser(userForm);
     } else {
       if (userID) {
-        await createUser(userForm, userID)
+        await createUser(userForm, userID);
       }
     }
     if (isValid) {
-      setFormOpen(false)
-      setErrorNotification('')
+      setFormOpen(false);
+      setErrorNotification('');
     }
-  }
+  };
 
   if (!formOpen) {
-    return null
+    return null;
   }
 
-  const onDelete = async (userID: string) => {
-    if (userID) {
+  const onDelete = async (value: string) => {
+    if (value) {
       const shouldDelete = window.confirm(
         'Are you sure you want to delete this user?'
-      )
+      );
 
       if (shouldDelete) {
-        await deleteUser(userID)
+        await deleteUser(value);
       }
     }
-    setFormOpen(false)
-  }
+    setFormOpen(false);
+  };
 
   const submitForm = () => {
     if (formRef.current) {
-      const formElement = formRef.current
-      const submitEvent = new Event('submit', { cancelable: true })
+      const formElement = formRef.current;
+      const submitEvent = new Event('submit', { cancelable: true });
 
       if (
         formElement.dispatchEvent(submitEvent) &&
         !submitEvent.defaultPrevented
       ) {
-        formHandler(submitEvent)
+        formHandler(submitEvent);
       }
     }
-  }
+  };
 
   return (
     <div className=" shadow-md rounded-md  max-w-[650px] min-w-[650px]">
       <form
         ref={formRef}
-        onSubmit={e => {
-          formHandler(e)
+        onSubmit={(e) => {
+          formHandler(e);
         }}
       >
         <div className="divide-solid divide-y">
@@ -114,8 +115,8 @@ const EditUser: React.FC<EditUserProps> = ({
                 placeholder="Enter user name..."
                 type="text"
                 value={userForm.username}
-                onChange={e => {
-                  setUserForm({ ...userForm, username: e.target.value })
+                onChange={(e) => {
+                  setUserForm({ ...userForm, username: e.target.value });
                 }}
               />
             </div>
@@ -126,29 +127,19 @@ const EditUser: React.FC<EditUserProps> = ({
                 className="input-table"
                 placeholder="Enter user email..."
                 value={userForm.email}
-                onChange={e => {
-                  setUserForm({ ...userForm, email: e.target.value })
+                onChange={(e) => {
+                  setUserForm({ ...userForm, email: e.target.value });
                 }}
               />
             </div>
             {userForm.id && (
-              <div className="pt-4">
-                <button
-                  className="flex flex-row space-x-2 button-delete px-4 py-2 bg-red-100"
-                  onClick={() => onDelete(userForm.id)}
-                >
-                  <div className="py-1">
-                    <AiOutlineUserDelete />
-                  </div>
-                  <span>Delete user</span>
-                </button>
-              </div>
+              <DeleteUserButtonProps onDelete={onDelete} userForm={userForm} />
             )}
           </div>
         </div>
       </form>
     </div>
-  )
-}
+  );
+};
 
-export default EditUser
+export default EditUser;

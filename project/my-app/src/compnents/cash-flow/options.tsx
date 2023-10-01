@@ -1,13 +1,13 @@
-import ic_icecream from '../../compnents/cash-flow/images/ic_icecream.png'
-import ic_computer from '../../compnents/cash-flow/images/ic_computer.png'
-import ic_boat from '../../compnents/cash-flow/images/ic_boat.png'
-import ic_drink from '../../compnents/cash-flow/images/ic_drink.png'
-import ic_gift from '../../compnents/cash-flow/images/ic_gift.png'
-import other from '../../compnents/cash-flow/images/other.png'
-import deposit from '../../compnents/cash-flow/images/deposit.png'
-import ic_Food from '../../compnents/cash-flow/images/ic_Food.png'
-import ic_working from '../../compnents/cash-flow/images/ic_working.png'
-import business from '../../compnents/cash-flow/images/business.png'
+import business from '../../assets/images/business.png';
+import deposit from '../../assets/images/deposit.png';
+import ic_Food from '../../assets/images/ic_Food.png';
+import ic_boat from '../../assets/images/ic_boat.png';
+import ic_computer from '../../assets/images/ic_computer.png';
+import ic_drink from '../../assets/images/ic_drink.png';
+import ic_gift from '../../assets/images/ic_gift.png';
+import ic_icecream from '../../assets/images/ic_icecream.png';
+import ic_working from '../../assets/images/ic_working.png';
+import other from '../../assets/images/other.png';
 
 export const optionsExpense = [
   {
@@ -50,7 +50,7 @@ export const optionsExpense = [
     label: 'Goals savings',
     src: deposit,
   },
-]
+];
 export const optionsIncome = [
   {
     value: 'Part-time',
@@ -72,4 +72,4 @@ export const optionsIncome = [
     label: 'Other',
     src: other,
   },
-]
+];

@@ -1,14 +1,16 @@
-import React from 'react'
-import { AiOutlineUserAdd } from 'react-icons/ai'
-import { BiPencil } from 'react-icons/bi'
-import { UserData, initialUserData } from '../../compnents/users/types'
-import SearchBox from '../../compnents/search-box/SearchBox'
+import React from 'react';
+import { AiOutlineUserAdd } from 'react-icons/ai';
+import { BiPencil } from 'react-icons/bi';
+
+import { UserData, initialUserData } from '../../compnents/users/types';
+import SearchBox from '../_basic/library/search-box/SearchBox';
+
 interface UsersListProps {
-  filteredUsers: UserData[]
-  setSearch: (search: string) => void
-  setSetSelectedUser: (selectedUserForm: string) => void
-  setFormOpen: (formOpen: boolean) => void
-  setUserForm: (userForm: UserData) => void
+  filteredUsers: UserData[];
+  setSearch: (search: string) => void;
+  setSetSelectedUser: (selectedUserForm: string) => void;
+  setFormOpen: (formOpen: boolean) => void;
+  setUserForm: (userForm: UserData) => void;
 }
 
 const UsersList: React.FC<UsersListProps> = ({
@@ -19,17 +21,17 @@ const UsersList: React.FC<UsersListProps> = ({
   setUserForm,
 }) => {
   const selectedUserHandler = (user: UserData) => {
-    setSetSelectedUser(user.id)
-    setFormOpen(true)
-  }
+    setSetSelectedUser(user.id);
+    setFormOpen(true);
+  };
   const onAddUser = () => {
-    setUserForm(initialUserData)
-    setFormOpen(true)
-  }
+    setUserForm(initialUserData);
+    setFormOpen(true);
+  };
 
   const handleSearch = (searchTerm: string) => {
-    setSearch(searchTerm)
-  }
+    setSearch(searchTerm);
+  };
 
   return (
     <div className=" pl-10 flex ">
@@ -70,7 +72,7 @@ const UsersList: React.FC<UsersListProps> = ({
         </button>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default UsersList
+export default UsersList;

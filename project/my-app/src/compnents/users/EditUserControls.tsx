@@ -1,7 +1,11 @@
-import { BsSave } from 'react-icons/bs'
-import { TfiBackLeft } from 'react-icons/tfi'
-import Notification from '../notification/Notification'
-import { EditUserControlsProps } from './types'
+import { BsSave } from 'react-icons/bs';
+import { TfiBackLeft } from 'react-icons/tfi';
+
+import CancelButton from '../_basic/library/buttons/CancelButton';
+import SaveButton from '../_basic/library/buttons/SaveButton';
+import Notification from '../_basic/library/notification/Notification';
+import { EditUserControlsProps } from './types';
+
 const EditUserControls = ({
   userForm,
   errorNotification,
@@ -25,26 +29,8 @@ const EditUserControls = ({
             )}
           </div>
           <div className="flex space-x-5">
-            <button
-              className="flex flex-row space-x-2 button-month px-5 py-2"
-              onClick={() => submitForm()}
-            >
-              <div className="py-1">
-                <BsSave />
-              </div>
-              <span>Save</span>
-            </button>
-            <button
-              className="flex flex-row space-x-2 button-empty px-4 py-2"
-              onClick={() => {
-                setFormOpen(false)
-              }}
-            >
-              <div className="py-1">
-                <TfiBackLeft />
-              </div>
-              <span>Cancel</span>
-            </button>
+            <SaveButton handleSave={submitForm} />
+            <CancelButton setFormOpen={setFormOpen} />
           </div>
         </div>
       ) : (
@@ -56,31 +42,13 @@ const EditUserControls = ({
             </span>
           </div>
           <div className="flex space-x-5">
-            <button
-              className="flex flex-row space-x-2 button-month px-4 py-2"
-              onClick={() => submitForm()}
-            >
-              <div className="py-1">
-                <BsSave />
-              </div>
-              <span>Create</span>
-            </button>
-            <button
-              className="flex flex-row space-x-2 button-empty px-4 py-2"
-              onClick={() => {
-                setFormOpen(false)
-              }}
-            >
-              <div className="py-1">
-                <TfiBackLeft />
-              </div>
-              <span>Cancel</span>
-            </button>
+            <SaveButton handleSave={submitForm} />
+            <CancelButton setFormOpen={setFormOpen} />
           </div>
         </div>
       )}
     </div>
-  )
-}
+  );
+};
 
-export default EditUserControls
+export default EditUserControls;

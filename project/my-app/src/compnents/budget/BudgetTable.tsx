@@ -1,5 +1,5 @@
-import { BudgetListProps } from './types'
-import { capitalizeFirstLetter } from '../helpers/utils'
+import { capitalizeFirstLetter } from '../_basic/helpers/utils';
+import { BudgetListProps } from './types';
 
 const BudgetTable = ({
   monthsAndBudget,
@@ -14,8 +14,10 @@ const BudgetTable = ({
         </div>
         <div className="flex flex-row ">
           {monthsAndBudget.map((monthEntry, index) => {
-            const month = new Date(monthEntry.month)
-            const monthName = month.toLocaleString('default', { month: 'long' })
+            const month = new Date(monthEntry.month);
+            const monthName = month.toLocaleString('default', {
+              month: 'long',
+            });
             return (
               <div
                 key={index}
@@ -27,11 +29,11 @@ const BudgetTable = ({
                 <div className="pt-6">
                   <input
                     className="border border-info-content-light w-20 h-9 text-center"
-                    onChange={e => {
-                      const updatedArray = [...monthsAndBudget]
+                    onChange={(e) => {
+                      const updatedArray = [...monthsAndBudget];
                       updatedArray[index].amount =
-                        parseFloat(e.target.value) || 0
-                      setMonthsAndBudget(updatedArray)
+                        parseFloat(e.target.value) || 0;
+                      setMonthsAndBudget(updatedArray);
                     }}
                     type="number"
                     value={monthEntry.amount}
@@ -40,12 +42,12 @@ const BudgetTable = ({
                   />
                 </div>
               </div>
-            )
+            );
           })}
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default BudgetTable
+export default BudgetTable;
