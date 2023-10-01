@@ -1,13 +1,13 @@
-import business from '../../_basic/library/images/business.png';
-import deposit from '../../_basic/library/images/deposit.png';
-import ic_Food from '../../_basic/library/images/ic_Food.png';
-import ic_boat from '../../_basic/library/images/ic_boat.png';
-import ic_computer from '../../_basic/library/images/ic_computer.png';
-import ic_drink from '../../_basic/library/images/ic_drink.png';
-import ic_gift from '../../_basic/library/images/ic_gift.png';
-import ic_icecream from '../../_basic/library/images/ic_icecream.png';
-import ic_working from '../../_basic/library/images/ic_working.png';
-import other from '../../_basic/library/images/other.png';
+import business from '../../assets/images/business.png';
+import deposit from '../../assets/images/deposit.png';
+import ic_Food from '../../assets/images/ic_Food.png';
+import ic_boat from '../../assets/images/ic_boat.png';
+import ic_computer from '../../assets/images/ic_computer.png';
+import ic_drink from '../../assets/images/ic_drink.png';
+import ic_gift from '../../assets/images/ic_gift.png';
+import ic_icecream from '../../assets/images/ic_icecream.png';
+import ic_working from '../../assets/images/ic_working.png';
+import other from '../../assets/images/other.png';
 
 export const optionsExpense = [
   {

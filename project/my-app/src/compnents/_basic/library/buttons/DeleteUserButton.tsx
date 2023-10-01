@@ -1,6 +1,6 @@
 import { AiOutlineUserDelete } from 'react-icons/ai';
 
-import { UserData } from '../../../compnents/users/types';
+import { UserData } from '../../../users/types';
 
 type DeleteUserButtonProps = {
   onDelete: (value: string) => void;

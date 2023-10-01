@@ -1,10 +1,10 @@
 import React from 'react';
 
-import CancelButton from './buttons/CancelButton';
-import MonthChangeButton from './buttons/MonthChangeButton';
-import SaveButton from './buttons/SaveButton';
-import Notification from './notification/Notification';
-import NotificationSuccess from './notification/NotificationSuccess';
+import CancelButton from '../library/buttons/CancelButton';
+import MonthChangeButton from '../library/buttons/MonthChangeButton';
+import SaveButton from '../library/buttons/SaveButton';
+import Notification from '../library/notification/Notification';
+import NotificationSuccess from '../library/notification/NotificationSuccess';
 
 export interface ControlsProps {
   handleSave: () => void;
@@ -16,7 +16,7 @@ export interface ControlsProps {
 
 //Controls component, which is used in Budget.tsx and Pm.tsx
 
-const Controls = ({
+const HeaderControls = ({
   setIsMonthChange,
   handleSave,
   setChangeCancel,
@@ -40,4 +40,4 @@ const Controls = ({
   );
 };
 
-export default Controls;
+export default HeaderControls;

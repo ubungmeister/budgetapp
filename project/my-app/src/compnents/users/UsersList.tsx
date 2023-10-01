@@ -2,8 +2,8 @@ import React from 'react';
 import { AiOutlineUserAdd } from 'react-icons/ai';
 import { BiPencil } from 'react-icons/bi';
 
-import SearchBox from '../../_basic/library/search-box/SearchBox';
 import { UserData, initialUserData } from '../../compnents/users/types';
+import SearchBox from '../_basic/library/search-box/SearchBox';
 
 interface UsersListProps {
   filteredUsers: UserData[];

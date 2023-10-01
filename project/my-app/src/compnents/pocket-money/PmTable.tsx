@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 
-import { capitalizeFirstLetter } from '../../_basic/helpers/utils';
+import { capitalizeFirstLetter } from '../_basic/helpers/utils';
 import { PmGroupedData, PmTableProps } from './types';
 
 const PmTable = ({

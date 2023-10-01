@@ -1,7 +1,7 @@
 import { useRef } from 'react';
 import { useState } from 'react';
 
-import DeleteUserButtonProps from '../../_basic/library/buttons/DeleteUserButton';
+import DeleteUserButtonProps from '../_basic/library/buttons/DeleteUserButton';
 import EditUserControls from './EditUserControls';
 import { createUser, deleteUser, getUsers, updateUser } from './api';
 import { UserData } from './types';

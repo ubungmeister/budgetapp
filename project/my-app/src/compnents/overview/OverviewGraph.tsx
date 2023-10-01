@@ -2,7 +2,11 @@ import { useState } from 'react';
 import Select from 'react-select';
 import { Cell, Pie, PieChart } from 'recharts';
 
-import { expenseCalc, goalsCalc, incomeCalc } from '../../_basic/helpers/utils';
+import {
+  expenseCalculation,
+  goalsCalculation,
+  incomeCalculation,
+} from '../_basic/helpers/utils';
 import { OverviewGraphProps } from './types';
 
 const options = [
@@ -29,10 +33,10 @@ const OverviewGraph = ({ cashFlow, pocketMoney }: OverviewGraphProps) => {
   });
   const amounts = sortedCashFlowByDate.map((item) => item.amount);
 
-  const expense = expenseCalc(sortedCashFlowByDate);
-  const income = incomeCalc(amounts);
+  const expense = expenseCalculation(sortedCashFlowByDate);
+  const income = incomeCalculation(amounts);
   const totalIncome = income + (pocketMoney?.amount || 0);
-  const goals = goalsCalc(sortedCashFlowByDate) * -1;
+  const goals = goalsCalculation(sortedCashFlowByDate) * -1;
 
   // go though each item in the array and create categories
   // go through each category and sum the amounts
@@ -50,7 +54,6 @@ const OverviewGraph = ({ cashFlow, pocketMoney }: OverviewGraphProps) => {
   const uniqueCategories = Array.from(
     new Set(dataCategoryType.map((item) => item.category))
   );
-  console.log(uniqueCategories);
 
   const categoryTotals = uniqueCategories.map((category) => {
     const totalAmount = dataCategoryType
@@ -61,8 +64,6 @@ const OverviewGraph = ({ cashFlow, pocketMoney }: OverviewGraphProps) => {
 
     return { category, totalAmount: absoluteTotalAmount };
   });
-
-  console.log(categoryTotals);
 
   //Barchaert shows the amount of money spend by category_type
   // First user chose from options which category he wants to see (dropdown)

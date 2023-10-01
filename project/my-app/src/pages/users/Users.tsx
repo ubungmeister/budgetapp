@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import useAuth from '../../_basic/helpers/UseAuth';
 import EditUser from '../../compnents/users/EditUser';
 import UsersList from '../../compnents/users/UsersList';
 import { getUsers } from '../../compnents/users/api';
 import { UserData, initialUserData } from '../../compnents/users/types';
+import useAuth from '../../hooks/UseAuth';
 
 const Users = () => {
   const [users, setUsers] = useState<UserData[]>([initialUserData]);

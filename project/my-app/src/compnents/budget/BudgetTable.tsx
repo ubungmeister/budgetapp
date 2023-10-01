@@ -1,4 +1,4 @@
-import { capitalizeFirstLetter } from '../../_basic/helpers/utils';
+import { capitalizeFirstLetter } from '../_basic/helpers/utils';
 import { BudgetListProps } from './types';
 
 const BudgetTable = ({

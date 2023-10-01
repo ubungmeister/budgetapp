@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-import Controls from '../../_basic/library/Controls';
+import HeaderControls from '../../compnents/_basic/helpers/HeaderControls';
 import BudgetTable from '../../compnents/budget/BudgetTable';
 import { getBudget, updateBudgets } from '../../compnents/budget/api';
 import { BudgetData } from '../../compnents/budget/types';
@@ -74,7 +74,7 @@ const Budget = () => {
   return (
     <div>
       <div className="pt-8 pl-6 space-y-3">
-        <Controls
+        <HeaderControls
           setIsMonthChange={setIsMonthChange}
           handleSave={handleSave}
           setChangeCancel={setChangeCancel}

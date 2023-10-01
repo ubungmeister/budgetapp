@@ -1,9 +1,9 @@
 import { BsSave } from 'react-icons/bs';
 import { TfiBackLeft } from 'react-icons/tfi';
 
-import CancelButton from '../../_basic/library/buttons/CancelButton';
-import SaveButton from '../../_basic/library/buttons/SaveButton';
-import Notification from '../../_basic/library/notification/Notification';
+import CancelButton from '../_basic/library/buttons/CancelButton';
+import SaveButton from '../_basic/library/buttons/SaveButton';
+import Notification from '../_basic/library/notification/Notification';
 import { EditUserControlsProps } from './types';
 
 const EditUserControls = ({

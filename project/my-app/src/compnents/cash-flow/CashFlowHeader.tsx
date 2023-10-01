@@ -1,13 +1,17 @@
-import { formatDecimals } from '../../_basic/helpers/utils';
-import { expenseCalc, goalsCalc, incomeCalc } from '../../_basic/helpers/utils';
+import { formatDecimals } from '../_basic/helpers/utils';
+import {
+  expenseCalculation,
+  goalsCalculation,
+  incomeCalculation,
+} from '../_basic/helpers/utils';
 import { cashflowHeaderProps } from './types';
 
-const CfHeader = ({ cashFlow, pocketMoney }: cashflowHeaderProps) => {
+const CashFlowHeader = ({ cashFlow, pocketMoney }: cashflowHeaderProps) => {
   const amounts = cashFlow.map((item) => item.amount);
 
-  const expense = expenseCalc(cashFlow);
-  const income = incomeCalc(amounts);
-  const goals = Math.abs(goalsCalc(cashFlow));
+  const expense = expenseCalculation(cashFlow);
+  const income = incomeCalculation(amounts);
+  const goals = Math.abs(goalsCalculation(cashFlow));
   const totalIncome = income + (pocketMoney?.amount || 0);
 
   const total = formatDecimals(
@@ -50,4 +54,4 @@ const CfHeader = ({ cashFlow, pocketMoney }: cashflowHeaderProps) => {
   );
 };
 
-export default CfHeader;
+export default CashFlowHeader;

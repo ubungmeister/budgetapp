@@ -8,12 +8,13 @@ import { SubmitHandler } from 'react-hook-form/dist/types/form';
 import { FaWindowClose } from 'react-icons/fa';
 import { z } from 'zod';
 
-import { formatDecimals } from '../../_basic/helpers/utils';
-import { createCashFlow, updateCashFlow } from '../cash-flow/api';
-import { findCategory } from '../cash-flow/utils';
+import { formatDecimals } from '../_basic/helpers/utils';
+import CategotyButton from '../_basic/library/buttons/CategoryButton';
 import CategorySelector from './CategorySelector';
+import { createCashFlow, updateCashFlow } from './api';
 import { updateGoals } from './api';
 import { CashFlowFormProps, CategoryType } from './types';
+import { findCategory } from './utils';
 import { checkForm } from './utils';
 
 const FormSchema = z.object({
@@ -23,7 +24,7 @@ const FormSchema = z.object({
 });
 type FormSchemaType = z.infer<typeof FormSchema>;
 
-const CfForm = ({
+const CashFlowForm = ({
   formOpen,
   cashFlow,
   setFormOpen,
@@ -76,6 +77,11 @@ const CfForm = ({
   );
 
   const totalIncome = income + (pocketMoney?.amount || 0);
+
+  const onCategorySelectHandler = (categotyType: string) => {
+    setCategoryType(categotyType);
+    setCategory({ category: '', saving_goal_Id: '' });
+  };
 
   const onSubmit: SubmitHandler<FormSchemaType> = async (data) => {
     try {
@@ -195,48 +201,24 @@ const CfForm = ({
         <div className="bg-white max-w-md w-90 p-8 flex flex-col gap-4 rounded-md relative">
           <div className="border-b pb-2">Add transaction</div>
           <div className="flex flex-row space-x-5">
-            <button
-              disabled={selectedCashFlow ? true : false}
-              onClick={() => {
-                setCategoryType('Income');
-                setCategory({ category: '', saving_goal_Id: '' });
-              }}
-              className={`border-2 rounded-md px-1 bg-slate-100 ${
-                selectedCashFlow?.category_type || categoryType === 'Income'
-                  ? 'border-green-400'
-                  : 'border-cyan-400'
-              }`}
-            >
-              Income
-            </button>
-            <button
-              disabled={selectedCashFlow ? true : false}
-              onClick={() => {
-                setCategoryType('Expense');
-                setCategory({ category: '', saving_goal_Id: '' });
-              }}
-              className={`border-2 rounded-md px-1 bg-slate-100 ${
-                selectedCashFlow?.category_type || categoryType === 'Expense'
-                  ? 'border-green-400'
-                  : 'border-cyan-400'
-              }`}
-            >
-              Expense
-            </button>
-            <button
-              disabled={selectedCashFlow ? true : false}
-              onClick={() => {
-                setCategoryType('Goals');
-                setCategory({ category: '', saving_goal_Id: '' });
-              }}
-              className={`border-2 rounded-md px-1  bg-slate-100  ${
-                selectedCashFlow?.category_type || categoryType === 'Goals'
-                  ? 'border-green-400'
-                  : 'border-cyan-400'
-              }`}
-            >
-              Goals
-            </button>
+            <CategotyButton
+              selectedCashFlow={selectedCashFlow}
+              category={'Income'}
+              onCategorySelectHandler={onCategorySelectHandler}
+              categoryType={categoryType}
+            />
+            <CategotyButton
+              selectedCashFlow={selectedCashFlow}
+              category={'Expense'}
+              onCategorySelectHandler={onCategorySelectHandler}
+              categoryType={categoryType}
+            />
+            <CategotyButton
+              selectedCashFlow={selectedCashFlow}
+              category={'Goals'}
+              onCategorySelectHandler={onCategorySelectHandler}
+              categoryType={categoryType}
+            />
           </div>
 
           <CategorySelector
@@ -292,4 +274,4 @@ const CfForm = ({
   );
 };
 
-export default CfForm;
+export default CashFlowForm;

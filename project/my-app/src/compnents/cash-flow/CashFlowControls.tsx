@@ -1,10 +1,10 @@
 import { BsSave } from 'react-icons/bs';
 
-import MonthButton from '../../_basic/library/buttons/MonthButton';
-import MonthChangeButton from '../../_basic/library/buttons/MonthChangeButton';
+import MonthButton from '../_basic/library/buttons/MonthButton';
+import MonthChangeButton from '../_basic/library/buttons/MonthChangeButton';
 import { CashFlowControlsProps } from './types';
 
-const CfControls = ({
+const CashFlowControls = ({
   setIsMonthChange,
   pocketMoney,
   setFormOpen,
@@ -34,4 +34,4 @@ const CfControls = ({
   );
 };
 
-export default CfControls;
+export default CashFlowControls;

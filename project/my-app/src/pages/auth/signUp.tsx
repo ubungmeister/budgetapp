@@ -5,7 +5,7 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import { Link } from 'react-router-dom';
 import { z } from 'zod';
 
-import UseRedirect from '../../_basic/helpers/UseRedirect';
+import UseRedirect from '../../hooks/UseRedirect';
 import withAuthLayout from './layout';
 
 const FormSchema = z
