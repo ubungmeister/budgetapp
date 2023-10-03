@@ -6,13 +6,14 @@ import OverviewControls from '../../compnents/overview/OverviewControls';
 import OverviewGraph from '../../compnents/overview/OverviewGraph';
 import { getPocketMoneyUser } from '../../compnents/pocket-money/api';
 import { PmType } from '../../compnents/pocket-money/types';
+import { UseAuthUser } from '../../hooks/UseAuth';
 
 const Overview = () => {
   const [isMonthChange, setIsMonthChange] = useState('');
   const [pocketMoney, setPocketMoney] = useState<PmType | undefined>();
   const [currentMonth, setCurrentMonth] = useState<Date>(new Date());
   const [cashFlow, setCashFlow] = useState<Array<CashFlowProps>>([]);
-
+  UseAuthUser();
   const userID = window.localStorage.getItem('userID');
 
   useEffect(() => {

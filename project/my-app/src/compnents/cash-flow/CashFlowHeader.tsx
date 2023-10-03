@@ -20,7 +20,7 @@ const CashFlowHeader = ({ cashFlow, pocketMoney }: cashflowHeaderProps) => {
 
   return (
     <div className=" pt-7 flex items-center justify-center">
-      <div className="w-[25rem] h-44 border py-4 px-7">
+      <div className="w-[25rem] h-44 border py-4 px-7  ">
         <div>
           <div className="flex justify-between">
             <div>Total income</div>

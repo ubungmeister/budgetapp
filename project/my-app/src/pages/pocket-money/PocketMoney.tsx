@@ -9,6 +9,7 @@ import { getPocketMoney } from '../../compnents/pocket-money/api';
 import { PmType } from '../../compnents/pocket-money/types';
 import { getUsers } from '../../compnents/users/api';
 import { UserData } from '../../compnents/users/types';
+import { UseAuth } from '../../hooks/UseAuth';
 
 const PocketMoney = () => {
   const [currentMonth, setCurrentMonth] = useState('');
@@ -20,6 +21,8 @@ const PocketMoney = () => {
   const userID = window.localStorage.getItem('userID');
   const [saveDiasbled, setSaveDisabled] = useState<boolean>(false);
   const [sussessAlert, setSuccessAlert] = useState<boolean>(false);
+
+  UseAuth();
 
   useEffect(() => {
     if (!userID) return;

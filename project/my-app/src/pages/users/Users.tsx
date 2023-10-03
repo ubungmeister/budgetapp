@@ -5,7 +5,7 @@ import EditUser from '../../compnents/users/EditUser';
 import UsersList from '../../compnents/users/UsersList';
 import { getUsers } from '../../compnents/users/api';
 import { UserData, initialUserData } from '../../compnents/users/types';
-import useAuth from '../../hooks/UseAuth';
+import { UseAuth } from '../../hooks/UseAuth';
 
 const Users = () => {
   const [users, setUsers] = useState<UserData[]>([initialUserData]);
@@ -16,20 +16,10 @@ const Users = () => {
   const [selectedUser, setSetSelectedUser] = useState<string>('');
   const [userForm, setUserForm] = useState<UserData>(initialUserData);
   const [formOpen, setFormOpen] = useState<boolean>(false);
-  const [isAdmin, setIsAdmin] = useState(false);
 
-  useAuth();
+  UseAuth();
+
   const userId = window.localStorage.getItem('userID');
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    const userRole = window.localStorage.getItem('userRole');
-    if (userRole !== 'ADMIN') {
-      navigate('/');
-    } else {
-      setIsAdmin(true);
-    }
-  }, [navigate]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -64,10 +54,6 @@ const Users = () => {
       }
     }
   }, [selectedUser]);
-
-  if (!isAdmin) {
-    return null; // Render nothing if the user is not an admin
-  }
 
   return (
     <div className="flex pt-14 space-x-5 ">

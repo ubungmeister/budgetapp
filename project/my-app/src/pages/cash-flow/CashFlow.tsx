@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import CashFlowControls from '../../compnents/cash-flow/CashFlowControls';
 import CashFlowForm from '../../compnents/cash-flow/CashFlowForm';
@@ -8,6 +8,7 @@ import { getCashFlow } from '../../compnents/cash-flow/api';
 import { CashFlowProps } from '../../compnents/cash-flow/types';
 import { getPocketMoneyUser } from '../../compnents/pocket-money/api';
 import { PmType } from '../../compnents/pocket-money/types';
+import { UseAuthUser } from '../../hooks/UseAuth';
 
 const CashFlow = () => {
   const [currentMonth, setCurrentMonth] = useState<Date>(new Date());
@@ -19,6 +20,7 @@ const CashFlow = () => {
   const [selectedCashFlow, setSelectedCashFlow] =
     useState<CashFlowProps | null>(null);
 
+  UseAuthUser();
   const userID = window.localStorage.getItem('userID');
 
   useEffect(() => {

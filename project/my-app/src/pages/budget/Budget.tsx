@@ -1,17 +1,22 @@
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import HeaderControls from '../../compnents/_basic/helpers/HeaderControls';
 import BudgetTable from '../../compnents/budget/BudgetTable';
 import { getBudget, updateBudgets } from '../../compnents/budget/api';
 import { BudgetData } from '../../compnents/budget/types';
+import { UseAuth } from '../../hooks/UseAuth';
 
 const Budget = () => {
+  UseAuth();
+
   const [isMonthChange, setIsMonthChange] = useState('');
   const [currentMonth, setCurrentMonth] = useState('');
   const [monthsAndBudget, setMonthsAndBudget] = useState<Array<BudgetData>>([]);
   const [isChangeCancel, setChangeCancel] = useState<boolean>(false);
 
   const userID = window.localStorage.getItem('userID');
+
   useEffect(() => {
     if (!userID) return;
     const getData = async () => {
