@@ -5,6 +5,8 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { Controller, useForm } from 'react-hook-form';
 import { SubmitHandler } from 'react-hook-form/dist/types/form';
+import { BsDatabaseAdd } from 'react-icons/bs';
+import { CgCloseR } from 'react-icons/cg';
 import { FaWindowClose } from 'react-icons/fa';
 import { z } from 'zod';
 
@@ -193,77 +195,96 @@ const CashFlowForm = ({
         onSubmit={
           selectedCashFlow ? handleSubmit(handleUpdate) : handleSubmit(onSubmit)
         }
-        className="fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 flex justify-center items-center"
+        className=" w-full h-full flex"
       >
-        <div>
-          <FaWindowClose onClick={() => setFormOpen(false)} />
-        </div>
-        <div className="bg-white max-w-md w-90 p-8 flex flex-col gap-4 rounded-md relative">
-          <div className="border-b pb-2">Add transaction</div>
-          <div className="flex flex-row space-x-5">
-            <CategotyButton
-              selectedCashFlow={selectedCashFlow}
-              category={'Income'}
-              onCategorySelectHandler={onCategorySelectHandler}
-              categoryType={categoryType}
-            />
-            <CategotyButton
-              selectedCashFlow={selectedCashFlow}
-              category={'Expense'}
-              onCategorySelectHandler={onCategorySelectHandler}
-              categoryType={categoryType}
-            />
-            <CategotyButton
-              selectedCashFlow={selectedCashFlow}
-              category={'Goals'}
-              onCategorySelectHandler={onCategorySelectHandler}
+        <div className="bg-gray-50 max-w-md w-[25rem] p-4 flex flex-col space-y-2 relative">
+          <div className="flex flex-row space-x-2">
+            <div className="pt-1">
+              <BsDatabaseAdd style={{ color: '#3b757f' }} />
+            </div>
+            <div className="flex flex-row pb-2">
+              <p className="font-semibold">Add transaction</p>
+              <div className="absolute top-0 right-0 cursor-pointer opacity-60 hover:opacity-100">
+                <CgCloseR
+                  style={{ color: '#3b757f', fontSize: '25px' }}
+                  onClick={() => setFormOpen(false)}
+                />
+              </div>
+            </div>
+          </div>
+          <div className="flex flex-col space-y-2 pb-2">
+            <div className="flex flex-row space-x-5 justify-stretch">
+              <CategotyButton
+                selectedCashFlow={selectedCashFlow}
+                category={'Income'}
+                onCategorySelectHandler={onCategorySelectHandler}
+                categoryType={categoryType}
+              />
+              <CategotyButton
+                selectedCashFlow={selectedCashFlow}
+                category={'Expense'}
+                onCategorySelectHandler={onCategorySelectHandler}
+                categoryType={categoryType}
+              />
+              <CategotyButton
+                selectedCashFlow={selectedCashFlow}
+                category={'Goals'}
+                onCategorySelectHandler={onCategorySelectHandler}
+                categoryType={categoryType}
+              />
+            </div>
+
+            <CategorySelector
+              category={category}
+              setCategory={setCategory}
               categoryType={categoryType}
             />
           </div>
+          <div>
+            <div>Amount</div>
+            <input
+              defaultValue={selectedCashFlow?.amount || ''}
+              className="auth-input"
+              type="float"
+              min={categoryType === 'Income' ? 0 : undefined}
+              {...register('amount', { valueAsNumber: true })}
+            />
+            {errors.amount && (
+              <p className="auth-error">{errors.amount.message}</p>
+            )}
+          </div>
 
-          <CategorySelector
-            category={category}
-            setCategory={setCategory}
-            categoryType={categoryType}
-          />
-          <div>Amount</div>
-          <input
-            defaultValue={selectedCashFlow?.amount || ''}
-            className="auth-input"
-            type="number"
-            min={categoryType === 'Income' ? 0 : undefined}
-            {...register('amount', { valueAsNumber: true })}
-          />
-          {errors.amount && (
-            <p className="auth-error">{errors.amount.message}</p>
-          )}
           <div>Description</div>
-          <input
+          <textarea
             defaultValue={selectedCashFlow?.description || ''}
             className="auth-input"
-            type="text"
+            // type="text"
             {...register('description')}
           />
           {errors.description && (
             <p className="auth-error">{errors.description.message}</p>
           )}
-          <div>Date</div>
-          <Controller
-            control={control}
-            defaultValue={startDate || undefined}
-            name="start_date"
-            render={({ field }) => (
-              <DatePicker
-                placeholderText="Select date"
-                onChange={(date) => field.onChange(date)}
-                dateFormat="dd/MM/yyyy"
-                selected={field.value}
-              />
+          <div className="flex flex-col space-y-1 pb-2">
+            <div>Date</div>
+            <Controller
+              control={control}
+              defaultValue={startDate || undefined}
+              name="start_date"
+              render={({ field }) => (
+                <DatePicker
+                  placeholderText="Select date"
+                  onChange={(date) => field.onChange(date)}
+                  dateFormat="dd/MM/yyyy"
+                  selected={field.value}
+                  className="auth-input"
+                />
+              )}
+            />
+            {errors.start_date && (
+              <p className="auth-error">{errors.start_date.message}</p>
             )}
-          />
-          {errors.start_date && (
-            <p className="auth-error">{errors.start_date.message}</p>
-          )}
+          </div>
+
           <button className="auth-button" type="submit" disabled={isSubmitting}>
             {selectedCashFlow ? 'Update' : 'Submit'}
           </button>

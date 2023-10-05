@@ -7,7 +7,6 @@ import { UnauthenticatedRoutes } from './compnents/_basic/helpers/routes/Unauthe
 
 function App() {
   const [cookies, setCookie] = useCookies(['token']);
-  console.log(cookies);
   const isLoggedIn = !!cookies.token;
 
   return (

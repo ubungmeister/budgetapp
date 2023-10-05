@@ -84,22 +84,25 @@ const CashFlow = () => {
         <hr />
       </div>
       <CashFlowHeader cashFlow={cashFlow} pocketMoney={pocketMoney} />
-      {formOpen && (
-        <CashFlowForm
+
+      <div className="flex flex-row space-x-10 pt-3">
+        <CashFlowList
           setFormOpen={setFormOpen}
-          formOpen={formOpen}
-          selectedCashFlow={selectedCashFlow}
           cashFlow={cashFlow}
-          pocketMoney={pocketMoney}
+          setSelectedCashFlow={setSelectedCashFlow}
+          selectedCashFlow={selectedCashFlow}
+          setCashFlowDeleted={setCashFlowDeleted}
         />
-      )}
-      <CashFlowList
-        setFormOpen={setFormOpen}
-        cashFlow={cashFlow}
-        setSelectedCashFlow={setSelectedCashFlow}
-        selectedCashFlow={selectedCashFlow}
-        setCashFlowDeleted={setCashFlowDeleted}
-      />
+        {formOpen && (
+          <CashFlowForm
+            setFormOpen={setFormOpen}
+            formOpen={formOpen}
+            selectedCashFlow={selectedCashFlow}
+            cashFlow={cashFlow}
+            pocketMoney={pocketMoney}
+          />
+        )}
+      </div>
     </div>
   );
 };
