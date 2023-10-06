@@ -1,6 +1,3 @@
-import { BsSave } from 'react-icons/bs';
-import { TfiBackLeft } from 'react-icons/tfi';
-
 import CancelButton from '../_basic/library/buttons/CancelButton';
 import SaveButton from '../_basic/library/buttons/SaveButton';
 import Notification from '../_basic/library/notification/Notification';
@@ -13,7 +10,7 @@ const EditUserControls = ({
   submitForm,
 }: EditUserControlsProps) => {
   return (
-    <div className=" bg-gray-50 pt-6 pb-4 px-4 justify-center">
+    <div className=" bg-gray-50 pt-6 pb-4 px-4 justify-center ">
       {userForm.id ? (
         <div className=" flex  justify-between ">
           <div className="pt-2 text-[18px]">

@@ -21,7 +21,7 @@ const CashFlowHeader = ({ cashFlow, pocketMoney }: cashflowHeaderProps) => {
   return (
     <div className=" pt-2 flex px-5">
       <div className="flex flex-row space-x-10">
-        <div className="flex flex-col bg-gray-50 p-4 w-72 h-30">
+        <div className="flex flex-col bg-gray-100 p-4 w-72 h-30 rounded-md">
           <div>
             <p className="font-semibold	">Balance Left</p>
           </div>
@@ -32,7 +32,7 @@ const CashFlowHeader = ({ cashFlow, pocketMoney }: cashflowHeaderProps) => {
             <p>{total}</p>
           </div>
         </div>
-        <div className="flex flex-col bg-gray-50 p-4 w-72 h-30">
+        <div className="flex flex-col bg-gray-100  p-4 w-72 h-30 rounded-md">
           <div>
             <p className="font-semibold	">Total Income</p>
           </div>
@@ -47,7 +47,7 @@ const CashFlowHeader = ({ cashFlow, pocketMoney }: cashflowHeaderProps) => {
             <p>Other income: {income}</p>
           </div>
         </div>
-        <div className="flex flex-col bg-gray-50 p-4 w-72 h-30">
+        <div className="flex flex-col bg-gray-100  p-4 w-72 h-30 rounded-md">
           <div>
             <p className="font-semibold	">Total Outcome</p>
           </div>

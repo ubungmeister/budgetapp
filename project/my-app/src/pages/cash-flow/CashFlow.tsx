@@ -91,7 +91,6 @@ const CashFlow = () => {
           cashFlow={cashFlow}
           setSelectedCashFlow={setSelectedCashFlow}
           selectedCashFlow={selectedCashFlow}
-          setCashFlowDeleted={setCashFlowDeleted}
         />
         {formOpen && (
           <CashFlowForm
@@ -100,6 +99,7 @@ const CashFlow = () => {
             selectedCashFlow={selectedCashFlow}
             cashFlow={cashFlow}
             pocketMoney={pocketMoney}
+            setCashFlowDeleted={setCashFlowDeleted}
           />
         )}
       </div>

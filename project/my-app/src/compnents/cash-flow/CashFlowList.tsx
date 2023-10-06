@@ -1,6 +1,7 @@
+import { BiPencil } from 'react-icons/bi';
+import { BsTrash2 } from 'react-icons/bs';
 import { HiArrowsUpDown } from 'react-icons/hi2';
 
-import { deleteCashFlow, updateGoals } from './api';
 import { optionsExpense, optionsIncome } from './options';
 import { CashFlowListProps, CashFlowProps } from './types';
 
@@ -8,8 +9,6 @@ const CashFlowList = ({
   setFormOpen,
   cashFlow,
   setSelectedCashFlow,
-  selectedCashFlow,
-  setCashFlowDeleted,
 }: CashFlowListProps) => {
   const sortedCashFlowByDate = cashFlow.sort(function (a, b) {
     const dateA = new Date(a.start_date);
@@ -28,19 +27,11 @@ const CashFlowList = ({
     setFormOpen(true);
   };
 
-  const onProjectDelete = async (item: CashFlowProps) => {
-    if (item.category_type === 'Goals') {
-      await updateGoals(item);
-    }
-    await deleteCashFlow(item.id as string);
-    setCashFlowDeleted(true);
-  };
-
   return (
     <div className="pl-5 ">
-      <div className="bg-gray-50 w-[31.5rem] p-4">
+      <div className="bg-gray-100 w-[31.5rem] p-4 rounded-md">
         <div className="flex flex-row space-x-2">
-          <div className="pt-1">
+          <div className="pt-1 pb-5">
             <HiArrowsUpDown style={{ color: '#3b757f' }} />
           </div>
           <p className="font-semibold">Cash Flow</p>
@@ -66,8 +57,12 @@ const CashFlowList = ({
                 </div>
                 <div>{item.description}</div>
                 <div>{item.amount}</div>
-                <div onClick={() => onProjectDelete(item)}>Delete</div>
-                <div onClick={() => onProjectSelect(item)}>Edit</div>
+                {item.category_type !== 'Goals' &&
+                  item.category !== 'Refund' && (
+                    <div onClick={() => onProjectSelect(item)}>
+                      <BiPencil />
+                    </div>
+                  )}
               </div>
             );
           })}
