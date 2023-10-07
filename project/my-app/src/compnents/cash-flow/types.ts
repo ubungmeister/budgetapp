@@ -35,6 +35,7 @@ export interface CashFlowFormProps {
   selectedCashFlow: CashFlowProps | null;
   cashFlow: CashFlowProps[];
   pocketMoney: PmType | undefined;
+  setCashFlowDeleted: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export interface CashFlowListProps {
@@ -44,7 +45,6 @@ export interface CashFlowListProps {
     React.SetStateAction<CashFlowProps | null>
   >;
   selectedCashFlow: CashFlowProps | null;
-  setCashFlowDeleted: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export interface optionsGoalsProps {

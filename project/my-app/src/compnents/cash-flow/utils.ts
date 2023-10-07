@@ -48,13 +48,13 @@ export const checkForm = ({
   totalIncome,
   expense,
 }: checkFormProps) => {
-  if (!category) {
-    setError('Please select a category');
-    return;
-  }
   let amount = data.amount;
   if (!categoryType) {
     setError('Please select a category type');
+    return;
+  }
+  if (!category.category) {
+    setError('Please select a category');
     return;
   }
   if (categoryType === 'Expense' || categoryType === 'Goals') {

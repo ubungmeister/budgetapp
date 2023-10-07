@@ -7,11 +7,11 @@ import { Controller, useForm } from 'react-hook-form';
 import { SubmitHandler } from 'react-hook-form/dist/types/form';
 import { BsDatabaseAdd } from 'react-icons/bs';
 import { CgCloseR } from 'react-icons/cg';
-import { FaWindowClose } from 'react-icons/fa';
 import { z } from 'zod';
 
 import { formatDecimals } from '../_basic/helpers/utils';
 import CategotyButton from '../_basic/library/buttons/CategoryButton';
+import { deleteCashFlow } from '../cash-flow/api';
 import CategorySelector from './CategorySelector';
 import { createCashFlow, updateCashFlow } from './api';
 import { updateGoals } from './api';
@@ -32,6 +32,7 @@ const CashFlowForm = ({
   setFormOpen,
   selectedCashFlow,
   pocketMoney,
+  setCashFlowDeleted,
 }: CashFlowFormProps) => {
   const [categoryType, setCategoryType] = useState('');
   const [error, setError] = useState('');
@@ -189,6 +190,13 @@ const CashFlowForm = ({
     ? new Date(selectedCashFlow.start_date)
     : null;
 
+  const onDeleteChashFlow = async (e: any, cashFlowID: string) => {
+    e.preventDefault();
+    await deleteCashFlow(cashFlowID as string);
+    setCashFlowDeleted(true);
+    setFormOpen(false);
+  };
+
   return (
     <>
       <form
@@ -197,7 +205,7 @@ const CashFlowForm = ({
         }
         className=" w-full h-full flex"
       >
-        <div className="bg-gray-50 max-w-md w-[25rem] p-4 flex flex-col space-y-2 relative">
+        <div className="bg-gray-100  max-w-md w-[25rem] p-4 flex flex-col space-y-2 relative rounded-md">
           <div className="flex flex-row space-x-2">
             <div className="pt-1">
               <BsDatabaseAdd style={{ color: '#3b757f' }} />
@@ -249,26 +257,18 @@ const CashFlowForm = ({
               min={categoryType === 'Income' ? 0 : undefined}
               {...register('amount', { valueAsNumber: true })}
             />
-            {errors.amount && (
-              <p className="auth-error">{errors.amount.message}</p>
-            )}
           </div>
-
           <div>Description</div>
           <textarea
             defaultValue={selectedCashFlow?.description || ''}
             className="auth-input"
-            // type="text"
             {...register('description')}
           />
-          {errors.description && (
-            <p className="auth-error">{errors.description.message}</p>
-          )}
           <div className="flex flex-col space-y-1 pb-2">
             <div>Date</div>
             <Controller
               control={control}
-              defaultValue={startDate || undefined}
+              defaultValue={startDate || new Date()}
               name="start_date"
               render={({ field }) => (
                 <DatePicker
@@ -280,15 +280,34 @@ const CashFlowForm = ({
                 />
               )}
             />
-            {errors.start_date && (
-              <p className="auth-error">{errors.start_date.message}</p>
+          </div>
+          <div className=" flex flex-row space-x-2">
+            <button
+              className="auth-button"
+              type="submit"
+              disabled={isSubmitting}
+            >
+              {selectedCashFlow ? 'Update' : 'Submit'}
+            </button>
+            {selectedCashFlow && (
+              <button
+                className="button-disabled px-3 py-2 w-full mb-4 hover:bg-gray-400"
+                disabled={isSubmitting}
+                onClick={(e) =>
+                  onDeleteChashFlow(e, selectedCashFlow.id as string)
+                }
+              >
+                Delete
+              </button>
             )}
           </div>
-
-          <button className="auth-button" type="submit" disabled={isSubmitting}>
-            {selectedCashFlow ? 'Update' : 'Submit'}
-          </button>
           {error && <p className="auth-error mb-5">{error}</p>}
+          {errors.amount && (
+            <p className="auth-error">{errors.amount.message}</p>
+          )}
+          {errors.description && (
+            <p className="auth-error">{errors.description.message}</p>
+          )}
         </div>
       </form>
     </>
