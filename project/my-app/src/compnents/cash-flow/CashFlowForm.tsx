@@ -86,7 +86,6 @@ const CashFlowForm = ({
     setCategory({ category: '', saving_goal_Id: '' });
   };
 
-  console.log('error', error);
   const onSubmit: SubmitHandler<FormSchemaType> = async (data) => {
     try {
       const amount = checkForm({
