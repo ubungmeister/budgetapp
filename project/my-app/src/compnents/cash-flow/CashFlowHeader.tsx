@@ -16,7 +16,8 @@ const CashFlowHeader = ({ cashFlow, pocketMoney }: cashflowHeaderProps) => {
   const income = incomeCalculation(amounts);
   const goals = Math.abs(goalsCalculation(cashFlow));
   const totalIncome = income + (pocketMoney?.amount || 0);
-  const total = formatDecimals(Number(totalIncome) - Number(expense + goals));
+  const totalOutcome = Math.abs(expense) + goals;
+  const total = formatDecimals(totalIncome - totalOutcome);
 
   return (
     <div className=" pt-2 flex px-5">
@@ -55,7 +56,7 @@ const CashFlowHeader = ({ cashFlow, pocketMoney }: cashflowHeaderProps) => {
             <div className="pt-1">
               <IoStatsChart style={{ color: '#3b757f' }} />
             </div>
-            <p>{expense + goals}</p>
+            <p>{totalOutcome}</p>
           </div>
           <div>
             <p>Expense: {expense}</p>

@@ -13,6 +13,9 @@ const GoalsList = ({ goals, setSelectedGoal, setFormOpen }: GoalListProps) => {
     if (result?.status === 400) {
       return;
     }
+
+    // after deleting Goal send saved money to cash flow as income
+    // money will be saved in cash flow as refund and user won't be able to edit it
     try {
       const formData = {
         amount: goal.currentAmount,
@@ -39,7 +42,9 @@ const GoalsList = ({ goals, setSelectedGoal, setFormOpen }: GoalListProps) => {
               <div>{goal.goalAmount}</div>
               <div>{goal.currentAmount}</div>
               <div onClick={() => onGoalSelect(goal)}>Edit goal</div>
-              <div onClick={() => onGoalDelete(goal)}>Remove goal</div>
+              {goal.currentAmount < goal.goalAmount && (
+                <div onClick={() => onGoalDelete(goal)}>Remove goal</div>
+              )}
             </div>
           );
         })}

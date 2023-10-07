@@ -86,6 +86,7 @@ const CashFlowForm = ({
     setCategory({ category: '', saving_goal_Id: '' });
   };
 
+  console.log('error', error);
   const onSubmit: SubmitHandler<FormSchemaType> = async (data) => {
     try {
       const amount = checkForm({
@@ -190,7 +191,8 @@ const CashFlowForm = ({
     ? new Date(selectedCashFlow.start_date)
     : null;
 
-  const onDeleteChashFlow = async (cashFlowID: string) => {
+  const onDeleteChashFlow = async (e: any, cashFlowID: string) => {
+    e.preventDefault();
     await deleteCashFlow(cashFlowID as string);
     setCashFlowDeleted(true);
     setFormOpen(false);
@@ -256,25 +258,18 @@ const CashFlowForm = ({
               min={categoryType === 'Income' ? 0 : undefined}
               {...register('amount', { valueAsNumber: true })}
             />
-            {errors.amount && (
-              <p className="auth-error">{errors.amount.message}</p>
-            )}
           </div>
-
           <div>Description</div>
           <textarea
             defaultValue={selectedCashFlow?.description || ''}
             className="auth-input"
             {...register('description')}
           />
-          {errors.description && (
-            <p className="auth-error">{errors.description.message}</p>
-          )}
           <div className="flex flex-col space-y-1 pb-2">
             <div>Date</div>
             <Controller
               control={control}
-              defaultValue={startDate || undefined}
+              defaultValue={startDate || new Date()}
               name="start_date"
               render={({ field }) => (
                 <DatePicker
@@ -286,9 +281,6 @@ const CashFlowForm = ({
                 />
               )}
             />
-            {errors.start_date && (
-              <p className="auth-error">{errors.start_date.message}</p>
-            )}
           </div>
           <div className=" flex flex-row space-x-2">
             <button
@@ -302,13 +294,21 @@ const CashFlowForm = ({
               <button
                 className="button-disabled px-3 py-2 w-full mb-4 hover:bg-gray-400"
                 disabled={isSubmitting}
-                onClick={() => onDeleteChashFlow(selectedCashFlow.id as string)}
+                onClick={(e) =>
+                  onDeleteChashFlow(e, selectedCashFlow.id as string)
+                }
               >
                 Delete
               </button>
             )}
           </div>
           {error && <p className="auth-error mb-5">{error}</p>}
+          {errors.amount && (
+            <p className="auth-error">{errors.amount.message}</p>
+          )}
+          {errors.description && (
+            <p className="auth-error">{errors.description.message}</p>
+          )}
         </div>
       </form>
     </>

@@ -1,5 +1,4 @@
 import { BiPencil } from 'react-icons/bi';
-import { BsTrash2 } from 'react-icons/bs';
 import { HiArrowsUpDown } from 'react-icons/hi2';
 
 import { optionsExpense, optionsIncome } from './options';
@@ -36,30 +35,59 @@ const CashFlowList = ({
           </div>
           <p className="font-semibold">Cash Flow</p>
         </div>
-        <div className="flex flex-col">
+        <div className="flex flex-col divide-y">
           {sortedCashFlowByDate.map((item) => {
             const options = item.amount < 0 ? optionsExpense : optionsIncome;
             const selectedOption = options.find(
               (el) => el.value === item.category
             );
             return (
-              <div key={item.id} className="flex flex-row space-x-5">
-                {selectedOption && (
+              <div
+                key={item.id}
+                className="flex flex-row space-x-5 py-1 items-center"
+              >
+                <div className="flex flex-row space-x-4 min-w-[8rem]  items-center ">
                   <img
-                    className="w-10 h-10"
-                    src={selectedOption.src}
-                    alt={selectedOption.label}
+                    className="w-8 h-8"
+                    src={
+                      selectedOption?.src ||
+                      'https://upload.wikimedia.org/wikipedia/commons/b/bd/Circle_Gainsboro.svg'
+                    }
+                    alt={selectedOption?.label || ''}
                   />
-                )}
-                <div>{item.category}</div>
-                <div>
-                  {new Date(item.start_date).toLocaleDateString('en-DE')}
+                  <div className="flex flex-col">
+                    <span>{item.category}</span>
+
+                    <span className="text-[10px] text-gray-800 ">
+                      {item.category_type}
+                    </span>
+                  </div>
                 </div>
-                <div>{item.description}</div>
-                <div>{item.amount}</div>
+                <div className="max-w-[9rem] overflow-hidden  truncate min-w-[9rem] ">
+                  {item.description}
+                </div>
+                <div className="flex flex-col max-w-[7rem] min-w-[7rem] items-end text-[14px] justify-center">
+                  <div
+                    className={`${
+                      item.amount > 0 ? 'text-green-600' : 'text-red-600'
+                    }`}
+                  >
+                    {item.amount > 0 ? `+${item.amount}` : item.amount}
+                  </div>
+                  <div>
+                    {new Date().toLocaleString('en-us', {
+                      month: 'short',
+                      day: 'numeric',
+                      year: 'numeric',
+                    })}
+                  </div>
+                </div>
                 {item.category_type !== 'Goals' &&
                   item.category !== 'Refund' && (
-                    <div onClick={() => onProjectSelect(item)}>
+                    <div
+                      className=" cursor-pointer hover:text-info-content"
+                      onClick={() => onProjectSelect(item)}
+                    >
                       <BiPencil />
                     </div>
                   )}
