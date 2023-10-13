@@ -33,3 +33,11 @@ export const goalsCalculation = (cashFlow: CashFlowProps[]) => {
 export const capitalizeFirstLetter = (name: string) => {
   return name.charAt(0).toUpperCase() + name.slice(1);
 };
+
+export const percentageBetweenTwoNumbers = (num1: number, num2: number) => {
+  if (num1 === 0 || num2 === 0) {
+    return 0;
+  }
+  const result = ((num1 - num2) / num2) * 100;
+  return formatDecimals(result);
+};

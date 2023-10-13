@@ -4,6 +4,7 @@ import { getCashFlow } from '../../compnents/cash-flow/api';
 import { CashFlowProps } from '../../compnents/cash-flow/types';
 import OverviewControls from '../../compnents/overview/OverviewControls';
 import OverviewGraph from '../../compnents/overview/OverviewGraph';
+import OverviewHeaders from '../../compnents/overview/OverviewHeaders';
 import { getPocketMoneyUser } from '../../compnents/pocket-money/api';
 import { PmType } from '../../compnents/pocket-money/types';
 import { UseAuthUser } from '../../hooks/UseAuth';
@@ -13,6 +14,10 @@ const Overview = () => {
   const [pocketMoney, setPocketMoney] = useState<PmType | undefined>();
   const [currentMonth, setCurrentMonth] = useState<Date>(new Date());
   const [cashFlow, setCashFlow] = useState<Array<CashFlowProps>>([]);
+  const [previousMonthCashFlow, setPreviousMonthCashFlow] = useState<
+    Array<CashFlowProps>
+  >([]);
+
   UseAuthUser();
   const userID = window.localStorage.getItem('userID');
 
@@ -20,6 +25,8 @@ const Overview = () => {
     if (!userID) return;
 
     const date = new Date(currentMonth || new Date());
+    const previousMonthDate = new Date(currentMonth || new Date());
+    previousMonthDate.setMonth(previousMonthDate.getMonth() - 1);
 
     if (isMonthChange) {
       if (isMonthChange === 'next') {
@@ -59,25 +66,33 @@ const Overview = () => {
       const cashFlow = await getCashFlow(userID, date);
       // const cashFlowData = await cashFlow
       setCashFlow(cashFlow || []);
-    };
 
+      const previousMonthCashFlow = await getCashFlow(
+        userID,
+        previousMonthDate
+      );
+      setPreviousMonthCashFlow(previousMonthCashFlow || []);
+    };
     fetchData();
   }, [isMonthChange]);
 
-  console.log('cashFlow', cashFlow);
+  console.log('cashFlow', cashFlow, 'lastMonthCashFlow', previousMonthCashFlow);
 
   return (
-    <div>
-      <div className="pt-8 pl-6 space-y-3">
-        <OverviewControls
-          setIsMonthChange={setIsMonthChange}
-          pocketMoney={pocketMoney}
-        />
-        <div className="px-5 pt-2">
-          <hr />
-        </div>
-        <OverviewGraph cashFlow={cashFlow} pocketMoney={pocketMoney} />
+    <div className="pt-8 pl-6 space-y-3">
+      <OverviewControls
+        setIsMonthChange={setIsMonthChange}
+        pocketMoney={pocketMoney}
+      />
+      <div className="px-5 pt-2">
+        <hr />
       </div>
+      <OverviewHeaders
+        cashFlow={cashFlow}
+        previousMonthCashFlow={previousMonthCashFlow}
+        pocketMoney={pocketMoney}
+      />
+      <OverviewGraph cashFlow={cashFlow} pocketMoney={pocketMoney} />
     </div>
   );
 };
