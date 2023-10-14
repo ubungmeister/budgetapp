@@ -1,5 +1,7 @@
 import { BiPencil } from 'react-icons/bi';
 import { HiArrowsUpDown } from 'react-icons/hi2';
+import { TbQuestionMark } from 'react-icons/tb';
+import { Tooltip as ReactTooltip } from 'react-tooltip';
 
 import { optionsExpense, optionsIncome } from './options';
 import { CashFlowListProps, CashFlowProps } from './types';
@@ -91,6 +93,21 @@ const CashFlowList = ({
                       <BiPencil />
                     </div>
                   )}
+                {item.category_type === 'Goals' && (
+                  <>
+                    <div data-tooltip-id="my-tooltip-1">
+                      <TbQuestionMark />
+                    </div>
+                    <ReactTooltip id="my-tooltip-1" aria-haspopup="true">
+                      <div className="">
+                        <p>You can't edit goal amount.</p>
+                        <p>If you want to edit goal go to</p>
+                        <p>the Goal page and delete it</p>
+                        <p>Money will be refunded.</p>
+                      </div>
+                    </ReactTooltip>
+                  </>
+                )}
               </div>
             );
           })}

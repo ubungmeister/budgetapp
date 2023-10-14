@@ -27,7 +27,7 @@ code {
   height: 30px;
 }
 .icons-controls:hover {
-  color: #18466a;
+  color: #12486b;
   size: '50px';
 }
 .divider {
@@ -51,7 +51,7 @@ code {
   @apply text-left text-sm text-fuchsia-700;
 }
 .button-month {
-  @apply bg-[#54a3ab] text-white rounded-md hover:bg-fuchsia-600 cursor-pointer;
+  @apply bg-[#54a3ab] text-white rounded-md hover:bg-[#12486B] cursor-pointer;
 }
 .button-empty {
   @apply bg-white text-blue-950 border-2 border-[#54a3ab] rounded-md hover:bg-gray-100  cursor-pointer;
@@ -64,4 +64,16 @@ code {
 }
 .input-table {
   @apply border border-info-content hover:border-fuchsia-600 bg-white h-8 w-64 px-1 pr-16 rounded-md text-sm focus:outline-none;
+}
+.cash-flow-box {
+  @apply flex flex-col bg-gray-100 p-4 w-72 h-36 rounded-md;
+}
+.cash-flow-icon {
+  @apply flex flex-row space-x-4 pt-2 text-[20px];
+}
+.overview-box {
+  @apply flex flex-col bg-gray-100 p-4 w-44 h-48 rounded-xl;
+}
+.overview-performance {
+  @apply flex flex-col bg-gray-100 p-4 rounded-xl w-[24.5rem] h-[23rem];
 }

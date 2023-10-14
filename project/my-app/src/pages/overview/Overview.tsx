@@ -4,15 +4,23 @@ import { getCashFlow } from '../../compnents/cash-flow/api';
 import { CashFlowProps } from '../../compnents/cash-flow/types';
 import OverviewControls from '../../compnents/overview/OverviewControls';
 import OverviewGraph from '../../compnents/overview/OverviewGraph';
+import OverviewHeaders from '../../compnents/overview/OverviewHeaders';
+import OverviewPeroformance from '../../compnents/overview/OverviewPeroformance';
 import { getPocketMoneyUser } from '../../compnents/pocket-money/api';
 import { PmType } from '../../compnents/pocket-money/types';
 import { UseAuthUser } from '../../hooks/UseAuth';
 
 const Overview = () => {
   const [isMonthChange, setIsMonthChange] = useState('');
-  const [pocketMoney, setPocketMoney] = useState<PmType | undefined>();
+  const [pocketMoney, setPocketMoney] = useState<PmType | null>(null);
+  const [previousMonthPocketMoney, setPreviousMonthPocketMoney] =
+    useState<PmType | null>(null);
   const [currentMonth, setCurrentMonth] = useState<Date>(new Date());
   const [cashFlow, setCashFlow] = useState<Array<CashFlowProps>>([]);
+  const [previousMonthCashFlow, setPreviousMonthCashFlow] = useState<
+    Array<CashFlowProps>
+  >([]);
+
   UseAuthUser();
   const userID = window.localStorage.getItem('userID');
 
@@ -20,6 +28,8 @@ const Overview = () => {
     if (!userID) return;
 
     const date = new Date(currentMonth || new Date());
+    const previousMonthDate = new Date(currentMonth || new Date());
+    previousMonthDate.setMonth(previousMonthDate.getMonth() - 1);
 
     if (isMonthChange) {
       if (isMonthChange === 'next') {
@@ -56,26 +66,62 @@ const Overview = () => {
         });
       }
 
-      const cashFlow = await getCashFlow(userID, date);
-      // const cashFlowData = await cashFlow
-      setCashFlow(cashFlow || []);
-    };
+      const previousMonthPocketMoney = await getPocketMoneyUser(
+        userID,
+        previousMonthDate
+      );
+      const previousMonthData = await previousMonthPocketMoney?.data
+        .pocketMoney;
+      if (!previousMonthData) {
+        const year = previousMonthDate.getFullYear();
+        const month = previousMonthDate.getMonth() + 1;
 
+        const newDate = new Date(year, month, 1);
+        newDate.setUTCHours(0, 0, 0, 0);
+
+        setPreviousMonthPocketMoney({
+          amount: 0,
+          month: newDate,
+          userId: userID as string,
+        });
+      } else {
+        setPreviousMonthPocketMoney({
+          id: previousMonthData.id,
+          amount: previousMonthData.amount,
+          month: new Date(previousMonthData.month),
+          userId: previousMonthData.userId,
+        });
+      }
+
+      const cashFlow = await getCashFlow(userID, date);
+      setCashFlow(cashFlow || []);
+
+      const previousMonthCashFlow = await getCashFlow(
+        userID,
+        previousMonthDate
+      );
+      setPreviousMonthCashFlow(previousMonthCashFlow || []);
+    };
     fetchData();
   }, [isMonthChange]);
 
-  console.log('cashFlow', cashFlow);
-
   return (
-    <div>
-      <div className="pt-8 pl-6 space-y-3">
-        <OverviewControls
-          setIsMonthChange={setIsMonthChange}
-          pocketMoney={pocketMoney}
-        />
-        <div className="px-5 pt-2">
-          <hr />
-        </div>
+    <div className="pt-8 pl-6 space-y-3">
+      <OverviewControls
+        setIsMonthChange={setIsMonthChange}
+        pocketMoney={pocketMoney}
+      />
+      <div className="px-5 pt-2">
+        <hr />
+      </div>
+      <OverviewHeaders
+        cashFlow={cashFlow}
+        previousMonthCashFlow={previousMonthCashFlow}
+        pocketMoney={pocketMoney}
+        previousMonthPocketMoney={previousMonthPocketMoney}
+      />
+      <div className="felex flex-row space-x-10 pt-2 flex px-5">
+        <OverviewPeroformance />
         <OverviewGraph cashFlow={cashFlow} pocketMoney={pocketMoney} />
       </div>
     </div>

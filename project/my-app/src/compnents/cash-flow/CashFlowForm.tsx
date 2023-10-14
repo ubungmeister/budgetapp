@@ -205,7 +205,7 @@ const CashFlowForm = ({
         }
         className=" w-full h-full flex"
       >
-        <div className="bg-gray-100  max-w-md w-[25rem] p-4 flex flex-col space-y-2 relative rounded-md">
+        <div className="bg-gray-100  max-w-md w-[25rem] p-4 flex flex-col space-y-2 relative rounded-md shadow-lg shadow-info-color-blue">
           <div className="flex flex-row space-x-2">
             <div className="pt-1">
               <BsDatabaseAdd style={{ color: '#3b757f' }} />

@@ -1,9 +1,9 @@
 import { BiCoinStack } from 'react-icons/bi';
 import { IoStatsChart } from 'react-icons/io5';
 
-import { formatDecimals } from '../_basic/helpers/utils';
 import {
   expenseCalculation,
+  formatDecimals,
   goalsCalculation,
   incomeCalculation,
 } from '../_basic/helpers/utils';
@@ -22,22 +22,22 @@ const CashFlowHeader = ({ cashFlow, pocketMoney }: cashflowHeaderProps) => {
   return (
     <div className=" pt-2 flex px-5">
       <div className="flex flex-row space-x-10">
-        <div className="flex flex-col bg-gray-100 p-4 w-72 h-30 rounded-md">
+        <div className="cash-flow-box">
           <div>
             <p className="font-semibold	">Balance Left</p>
           </div>
-          <div className="flex flex-row space-x-4 pt-2 text-[20px]">
+          <div className="cash-flow-icon">
             <div className="pt-1">
               <BiCoinStack style={{ color: '#3b757f' }} />
             </div>
             <p>{total}</p>
           </div>
         </div>
-        <div className="flex flex-col bg-gray-100  p-4 w-72 h-30 rounded-md">
+        <div className="cash-flow-box">
           <div>
             <p className="font-semibold	">Total Income</p>
           </div>
-          <div className="flex flex-row space-x-4 pt-2 text-[20px]">
+          <div className="cash-flow-icon">
             <div className="pt-1">
               <IoStatsChart style={{ color: '#3b757f' }} />
             </div>
@@ -48,11 +48,11 @@ const CashFlowHeader = ({ cashFlow, pocketMoney }: cashflowHeaderProps) => {
             <p>Other income: {income}</p>
           </div>
         </div>
-        <div className="flex flex-col bg-gray-100  p-4 w-72 h-30 rounded-md">
+        <div className="cash-flow-box">
           <div>
             <p className="font-semibold	">Total Outcome</p>
           </div>
-          <div className="flex flex-row space-x-4 pt-2 text-[20px]">
+          <div className="cash-flow-icon">
             <div className="pt-1">
               <IoStatsChart style={{ color: '#3b757f' }} />
             </div>
