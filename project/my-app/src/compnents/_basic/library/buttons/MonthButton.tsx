@@ -5,7 +5,7 @@ export interface PmType {
   id?: string;
 }
 type MonthButtonProps = {
-  data: PmType | undefined;
+  data: PmType | null;
 };
 
 const MonthButton = ({ data }: MonthButtonProps) => {

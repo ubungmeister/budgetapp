@@ -20,7 +20,9 @@ const OverviewBox = ({
   // Generate a unique tooltip ID for each instance
   const tooltipId = `my-tooltip-${Math.random().toString(36).substring(7)}`;
 
-  const isIncome = boxType === 'income';
+  const isIncome = boxType === 'Income';
+  const isGoals = boxType === 'Goals';
+  const isExpense = boxType === 'Expense';
 
   const notEnoghDataText = `Don't have enough data for current or previous month to analyze your progree`;
 
@@ -46,7 +48,8 @@ const OverviewBox = ({
       >
         {percentage === 0 ? (
           <TiInfo style={{ color: '#54a3ab', fontSize: '24px' }} />
-        ) : (isIncome && percentage > 0) || (!isIncome && percentage < 0) ? (
+        ) : ((isIncome || isGoals) && percentage > 0) ||
+          (isExpense && percentage < 0) ? (
           <AiFillCaretUp style={{ color: '#27c662', fontSize: '24px' }} />
         ) : (
           <AiFillCaretDown style={{ color: '#ef4949', fontSize: '24px' }} />
@@ -55,7 +58,8 @@ const OverviewBox = ({
         {percentage !== 0 && (
           <p
             className={`text-sm pt-0.5 ${
-              (isIncome && percentage > 0) || (!isIncome && percentage < 0)
+              ((isIncome || isGoals) && percentage > 0) ||
+              (isExpense && percentage < 0)
                 ? 'text-info-green'
                 : 'text-info-red'
             }`}

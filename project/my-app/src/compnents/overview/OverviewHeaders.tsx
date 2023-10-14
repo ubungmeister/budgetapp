@@ -1,8 +1,10 @@
-import result from '../../assets/images/checklist.png';
+import tasks from '../../assets/images/clipboard.png';
 import minus from '../../assets/images/minus.png';
 import plus from '../../assets/images/plus.png';
+import wallet from '../../assets/images/wallet.png';
 import {
   expenseCalculation,
+  goalsCalculation,
   incomeCalculation,
   percentageBetweenTwoNumbers,
 } from '../_basic/helpers/utils';
@@ -13,6 +15,7 @@ const OverviewHeaders = ({
   cashFlow,
   previousMonthCashFlow,
   pocketMoney,
+  previousMonthPocketMoney,
 }: OverviewHeaderProps) => {
   const currentMonthAmounts = cashFlow.map((item) => item.amount);
   const currentMonthExpense = Math.abs(expenseCalculation(cashFlow));
@@ -22,19 +25,34 @@ const OverviewHeaders = ({
     expenseCalculation(previousMonthCashFlow)
   );
 
+  const currentMonthIncome =
+    incomeCalculation(currentMonthAmounts) + (pocketMoney?.amount || 0);
+  const previousMonthIncome =
+    incomeCalculation(previousMonthAmounts) +
+    (previousMonthPocketMoney?.amount || 0);
+
+  const currentMonthGoals = Math.abs(goalsCalculation(cashFlow));
+  const previousMonthGoals = goalsCalculation(previousMonthCashFlow);
+
+  const percentageGoals = percentageBetweenTwoNumbers(
+    currentMonthGoals,
+    previousMonthGoals
+  );
+
   const percentageExpenses = percentageBetweenTwoNumbers(
     currentMonthExpense,
     previousMonthExpense
   );
-
-  const currentMonthIncome = incomeCalculation(currentMonthAmounts);
-  const previousMonthIncome = incomeCalculation(previousMonthAmounts);
 
   const percentageIncomes = percentageBetweenTwoNumbers(
     currentMonthIncome,
     previousMonthIncome
   );
 
+  const popUpTextGoals = [
+    'Great! You saved more tnan in previous month. Keep it up 😄',
+    'Buddy, You saved less than in previuse month. No worry, you can do it better next month',
+  ];
   const popUpTextExpense = [
     'Buddy, You spent more tnan in previous month.Try to look after your expenses more properly',
     'Great! You spend less than in previuse month. Keep it up 😄',
@@ -48,23 +66,13 @@ const OverviewHeaders = ({
   return (
     <div className=" pt-2 flex px-5">
       <div className="flex flex-row space-x-10">
-        <div className="overview-box">
-          <div className="flex flex-row space-x-4 min-w-[8rem]  items-center justify-center ">
-            <img
-              className="w-12 h-12 cursor-pointer  p-1"
-              src={
-                result ||
-                'https://upload.wikimedia.org/wikipedia/commons/b/bd/Circle_Gainsboro.svg'
-              }
-              alt={''}
-            />
-          </div>
-          <div className="pl-8 pt-2">
-            <p className="">Total Goals: </p>
-            <p className=" ">Finished Goal this month:</p>
-            <p className="">Progress: </p>
-          </div>
-        </div>
+        <OverviewBox
+          amount={currentMonthGoals}
+          percentage={percentageGoals}
+          img={wallet}
+          text={popUpTextGoals}
+          boxType={'Goals'}
+        />
         <OverviewBox
           amount={currentMonthExpense}
           percentage={percentageExpenses}
@@ -79,20 +87,13 @@ const OverviewHeaders = ({
           text={popUpTextIncome}
           boxType={'Income'}
         />
-
-        <div className="overview-box">
-          <div>
-            <p className="font-semibold	">Total Outcome</p>
-          </div>
-          <div className="cash-flow-icon">
-            <div className="pt-1">eee</div>
-            <p>eee</p>
-          </div>
-          <div>
-            <p>Expense: </p>
-            <p>Savings on Goals: </p>
-          </div>
-        </div>
+        <OverviewBox
+          amount={2}
+          percentage={0}
+          img={tasks}
+          text={popUpTextIncome}
+          boxType={'Solved task'}
+        />
       </div>
     </div>
   );

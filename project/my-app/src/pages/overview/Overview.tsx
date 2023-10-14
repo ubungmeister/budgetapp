@@ -5,13 +5,16 @@ import { CashFlowProps } from '../../compnents/cash-flow/types';
 import OverviewControls from '../../compnents/overview/OverviewControls';
 import OverviewGraph from '../../compnents/overview/OverviewGraph';
 import OverviewHeaders from '../../compnents/overview/OverviewHeaders';
+import OverviewPeroformance from '../../compnents/overview/OverviewPeroformance';
 import { getPocketMoneyUser } from '../../compnents/pocket-money/api';
 import { PmType } from '../../compnents/pocket-money/types';
 import { UseAuthUser } from '../../hooks/UseAuth';
 
 const Overview = () => {
   const [isMonthChange, setIsMonthChange] = useState('');
-  const [pocketMoney, setPocketMoney] = useState<PmType | undefined>();
+  const [pocketMoney, setPocketMoney] = useState<PmType | null>(null);
+  const [previousMonthPocketMoney, setPreviousMonthPocketMoney] =
+    useState<PmType | null>(null);
   const [currentMonth, setCurrentMonth] = useState<Date>(new Date());
   const [cashFlow, setCashFlow] = useState<Array<CashFlowProps>>([]);
   const [previousMonthCashFlow, setPreviousMonthCashFlow] = useState<
@@ -63,8 +66,34 @@ const Overview = () => {
         });
       }
 
+      const previousMonthPocketMoney = await getPocketMoneyUser(
+        userID,
+        previousMonthDate
+      );
+      const previousMonthData = await previousMonthPocketMoney?.data
+        .pocketMoney;
+      if (!previousMonthData) {
+        const year = previousMonthDate.getFullYear();
+        const month = previousMonthDate.getMonth() + 1;
+
+        const newDate = new Date(year, month, 1);
+        newDate.setUTCHours(0, 0, 0, 0);
+
+        setPreviousMonthPocketMoney({
+          amount: 0,
+          month: newDate,
+          userId: userID as string,
+        });
+      } else {
+        setPreviousMonthPocketMoney({
+          id: previousMonthData.id,
+          amount: previousMonthData.amount,
+          month: new Date(previousMonthData.month),
+          userId: previousMonthData.userId,
+        });
+      }
+
       const cashFlow = await getCashFlow(userID, date);
-      // const cashFlowData = await cashFlow
       setCashFlow(cashFlow || []);
 
       const previousMonthCashFlow = await getCashFlow(
@@ -75,8 +104,6 @@ const Overview = () => {
     };
     fetchData();
   }, [isMonthChange]);
-
-  console.log('cashFlow', cashFlow, 'lastMonthCashFlow', previousMonthCashFlow);
 
   return (
     <div className="pt-8 pl-6 space-y-3">
@@ -91,8 +118,12 @@ const Overview = () => {
         cashFlow={cashFlow}
         previousMonthCashFlow={previousMonthCashFlow}
         pocketMoney={pocketMoney}
+        previousMonthPocketMoney={previousMonthPocketMoney}
       />
-      <OverviewGraph cashFlow={cashFlow} pocketMoney={pocketMoney} />
+      <div className="felex flex-row space-x-10 pt-2 flex px-5">
+        <OverviewPeroformance />
+        <OverviewGraph cashFlow={cashFlow} pocketMoney={pocketMoney} />
+      </div>
     </div>
   );
 };

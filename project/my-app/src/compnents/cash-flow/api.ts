@@ -3,7 +3,6 @@ import axios from 'axios';
 import { CashFlowProps } from './types';
 
 export const getCashFlow = async (userID: string, date: Date) => {
-  console.log('date', date);
   try {
     const result = await axios.get(
       'http://localhost:1000/cashflow/get-cash-flow',

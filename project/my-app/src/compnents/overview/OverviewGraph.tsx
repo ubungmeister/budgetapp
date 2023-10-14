@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import Select from 'react-select';
-import { Cell, Pie, PieChart } from 'recharts';
+import { Cell, Label, Legend, Pie, PieChart } from 'recharts';
 
 import {
   expenseCalculation,
@@ -65,6 +65,19 @@ const OverviewGraph = ({ cashFlow, pocketMoney }: OverviewGraphProps) => {
     return { category, totalAmount: absoluteTotalAmount };
   });
 
+  const categoryTotalsSum = categoryTotals.reduce(
+    (sum, item) => sum + item.totalAmount,
+    0
+  );
+
+  const customStyles = {
+    control: (provided: any) => ({
+      ...provided,
+      backgroundColor: '#f3f4f6', // Change this to your desired background color
+      outline: 'none',
+    }),
+  };
+
   //Barchaert shows the amount of money spend by category_type
   // First user chose from options which category he wants to see (dropdown)
   // Then we filter the array by category and inside the array we sum the amounts with the same category_type
@@ -76,55 +89,63 @@ const OverviewGraph = ({ cashFlow, pocketMoney }: OverviewGraphProps) => {
     '#FF0000',
     '#0000FF',
   ];
+  console.log('categoryTotals', categoryTotals);
   return (
-    <div>
-      <div className="items-center flex flex-col">
-        <div>Monthly income:{totalIncome}</div>
-        <div>Monthly spendings:{expense}</div>
-        <div>Total amount saved: {goals}</div>
+    <div className="overview-performance">
+      <div className="flex justify-between">
+        <p className="pt-1">Pie-Chart</p>
+        <div>
+          <Select
+            placeholder="Category"
+            classNamePrefix="Select"
+            className="w-40 "
+            value={category}
+            isSearchable={false}
+            styles={customStyles}
+            onChange={(e: any) =>
+              setCategory({ value: e.value, label: e.label })
+            }
+            options={options}
+          />
+        </div>
       </div>
-      <div>Pie chart</div>
-      <ul>
-        {/* <li onClick={()}>Incomes</li> */}
-        <li>
-          <div>
-            <Select
-              placeholder="Category"
-              classNamePrefix="Select"
-              className="w-40"
-              value={category}
-              isSearchable={false}
-              onChange={(e: any) =>
-                setCategory({ value: e.value, label: e.label })
-              }
-              options={options}
-            />
-          </div>
 
-          <PieChart width={500} height={300}>
-            <Pie
-              data={categoryTotals}
-              cx="50%"
-              cy="50%"
-              innerRadius={50}
-              outerRadius={90}
-              fill="#8884d8"
-              paddingAngle={5}
-              dataKey="totalAmount"
-              label={(entry: any) => entry.category}
-            >
-              {categoryTotals.map((category, index) => (
-                <Cell
-                  key={`cell-${index}`}
-                  fill={COLORS[index % COLORS.length]}
-                  fontSize={15}
-                />
-              ))}
-            </Pie>
-          </PieChart>
-        </li>
-        <li></li>
-      </ul>
+      <PieChart width={360} height={300}>
+        <Pie
+          data={categoryTotals}
+          cx="50%"
+          cy="50%"
+          innerRadius={50}
+          outerRadius={90}
+          fill="#8884d8"
+          paddingAngle={5}
+          dataKey="totalAmount"
+          label={(entry: any) => `${entry.totalAmount} €`}
+        >
+          <Label value={categoryTotalsSum + '€'} position="center" />
+
+          {categoryTotals.map((category, index) => (
+            <Cell
+              key={`cell-${index}`}
+              fill={COLORS[index % COLORS.length]}
+              fontSize={12}
+              fontWeight="bold"
+            />
+          ))}
+        </Pie>
+        <Legend
+          payload={categoryTotals.map((category, index) => ({
+            id: category.category,
+            type: 'circle',
+            value: category.category,
+            color: COLORS[index % COLORS.length],
+            fontSize: 8,
+          }))}
+          iconSize={8}
+          layout="horizontal"
+          align="left"
+        />
+      </PieChart>
     </div>
   );
 };

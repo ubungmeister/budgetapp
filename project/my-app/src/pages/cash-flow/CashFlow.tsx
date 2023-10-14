@@ -13,7 +13,7 @@ import { UseAuthUser } from '../../hooks/UseAuth';
 const CashFlow = () => {
   const [currentMonth, setCurrentMonth] = useState<Date>(new Date());
   const [isMonthChange, setIsMonthChange] = useState('');
-  const [pocketMoney, setPocketMoney] = useState<PmType | undefined>();
+  const [pocketMoney, setPocketMoney] = useState<PmType | null>(null);
   const [formOpen, setFormOpen] = useState(false);
   const [cashFlowDeleted, setCashFlowDeleted] = useState(false);
   const [cashFlow, setCashFlow] = useState<Array<CashFlowProps>>([]);
