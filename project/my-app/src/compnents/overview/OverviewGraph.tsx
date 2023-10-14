@@ -2,11 +2,6 @@ import { useState } from 'react';
 import Select from 'react-select';
 import { Cell, Label, Legend, Pie, PieChart } from 'recharts';
 
-import {
-  expenseCalculation,
-  goalsCalculation,
-  incomeCalculation,
-} from '../_basic/helpers/utils';
 import { OverviewGraphProps } from './types';
 
 const options = [
@@ -20,32 +15,9 @@ const OverviewGraph = ({ cashFlow, pocketMoney }: OverviewGraphProps) => {
     value: 'Income',
     label: 'Income',
   });
-  const sortedCashFlowByDate = cashFlow.sort(function (a, b) {
-    const dateA = new Date(a.start_date);
-    const dateB = new Date(b.start_date);
-
-    if (isNaN(dateA.getTime()) || isNaN(dateB.getTime())) {
-      // Handle invalid dates
-      return 0;
-    }
-
-    return dateB.getTime() - dateA.getTime();
-  });
-  const amounts = sortedCashFlowByDate.map((item) => item.amount);
-
-  const expense = expenseCalculation(sortedCashFlowByDate);
-  const income = incomeCalculation(amounts);
-  const totalIncome = income + (pocketMoney?.amount || 0);
-  const goals = goalsCalculation(sortedCashFlowByDate) * -1;
 
   // go though each item in the array and create categories
   // go through each category and sum the amounts
-  const categories = [] as Array<string>;
-  for (let i = 0; i < cashFlow.length; i++) {
-    // cashFlow[i].category_type.includes(categories)
-    !categories.includes(cashFlow[i].category_type) &&
-      categories.push(cashFlow[i].category_type);
-  }
 
   const dataCategoryType = cashFlow.filter(
     (categoty) => categoty.category_type === category.value
@@ -65,6 +37,14 @@ const OverviewGraph = ({ cashFlow, pocketMoney }: OverviewGraphProps) => {
     return { category, totalAmount: absoluteTotalAmount };
   });
 
+  // adding pocket money to the array since it is not in the cashflow array
+  if (category.value === 'Income') {
+    categoryTotals.push({
+      category: 'Pocket Money',
+      totalAmount: pocketMoney?.amount || 0,
+    });
+  }
+
   const categoryTotalsSum = categoryTotals.reduce(
     (sum, item) => sum + item.totalAmount,
     0
@@ -73,7 +53,7 @@ const OverviewGraph = ({ cashFlow, pocketMoney }: OverviewGraphProps) => {
   const customStyles = {
     control: (provided: any) => ({
       ...provided,
-      backgroundColor: '#f3f4f6', // Change this to your desired background color
+      backgroundColor: '#f3f4f6',
       outline: 'none',
     }),
   };
@@ -89,7 +69,6 @@ const OverviewGraph = ({ cashFlow, pocketMoney }: OverviewGraphProps) => {
     '#FF0000',
     '#0000FF',
   ];
-  console.log('categoryTotals', categoryTotals);
   return (
     <div className="overview-performance">
       <div className="flex justify-between">
