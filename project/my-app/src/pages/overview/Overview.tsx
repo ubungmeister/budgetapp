@@ -110,7 +110,6 @@ const Overview = () => {
   useEffect(() => {
     const fetchGoals = async () => {
       const data = await getAllGoals();
-      console.log('data', data);
       setGoals(data || []);
     };
     fetchGoals();
