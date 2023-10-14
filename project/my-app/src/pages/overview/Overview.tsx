@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react';
 
 import { getCashFlow } from '../../compnents/cash-flow/api';
 import { CashFlowProps } from '../../compnents/cash-flow/types';
+import { getAllGoals } from '../../compnents/goals/api';
+import { GoalProps } from '../../compnents/goals/types';
 import OverviewControls from '../../compnents/overview/OverviewControls';
 import OverviewGraph from '../../compnents/overview/OverviewGraph';
 import OverviewHeaders from '../../compnents/overview/OverviewHeaders';
@@ -20,7 +22,7 @@ const Overview = () => {
   const [previousMonthCashFlow, setPreviousMonthCashFlow] = useState<
     Array<CashFlowProps>
   >([]);
-
+  const [goals, setGoals] = useState<Array<GoalProps>>([]);
   UseAuthUser();
   const userID = window.localStorage.getItem('userID');
 
@@ -105,6 +107,15 @@ const Overview = () => {
     fetchData();
   }, [isMonthChange]);
 
+  useEffect(() => {
+    const fetchGoals = async () => {
+      const data = await getAllGoals();
+      console.log('data', data);
+      setGoals(data || []);
+    };
+    fetchGoals();
+  }, []);
+
   return (
     <div className="pt-8 pl-6 space-y-3">
       <OverviewControls
@@ -121,7 +132,7 @@ const Overview = () => {
         previousMonthPocketMoney={previousMonthPocketMoney}
       />
       <div className="felex flex-row space-x-10 pt-2 flex px-5">
-        <OverviewPeroformance />
+        <OverviewPeroformance goals={goals} />
         <OverviewGraph cashFlow={cashFlow} pocketMoney={pocketMoney} />
       </div>
     </div>
