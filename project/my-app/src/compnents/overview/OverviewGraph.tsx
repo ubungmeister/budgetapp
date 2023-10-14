@@ -62,9 +62,9 @@ const OverviewGraph = ({ cashFlow, pocketMoney }: OverviewGraphProps) => {
   // First user chose from options which category he wants to see (dropdown)
   // Then we filter the array by category and inside the array we sum the amounts with the same category_type
   const COLORS = [
-    '#0088FE',
-    '#00C49F',
     '#FFBB28',
+    '#27c662',
+    '#54a3ab',
     '#FF8042',
     '#FF0000',
     '#0000FF',
@@ -73,20 +73,16 @@ const OverviewGraph = ({ cashFlow, pocketMoney }: OverviewGraphProps) => {
     <div className="overview-performance">
       <div className="flex justify-between">
         <p className="pt-1">Pie-Chart</p>
-        <div>
-          <Select
-            placeholder="Category"
-            classNamePrefix="Select"
-            className="w-40 "
-            value={category}
-            isSearchable={false}
-            styles={customStyles}
-            onChange={(e: any) =>
-              setCategory({ value: e.value, label: e.label })
-            }
-            options={options}
-          />
-        </div>
+        <Select
+          placeholder="Category"
+          classNamePrefix="Select"
+          className="w-40 cursor-pointer"
+          value={category}
+          isSearchable={false}
+          styles={customStyles}
+          onChange={(e: any) => setCategory({ value: e.value, label: e.label })}
+          options={options}
+        />
       </div>
 
       <PieChart width={360} height={300}>

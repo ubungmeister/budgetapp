@@ -12,7 +12,7 @@ import { cashflowHeaderProps } from './types';
 const CashFlowHeader = ({ cashFlow, pocketMoney }: cashflowHeaderProps) => {
   const amounts = cashFlow.map((item) => item.amount);
 
-  const expense = expenseCalculation(cashFlow);
+  const expense = Math.abs(expenseCalculation(cashFlow));
   const income = incomeCalculation(amounts);
   const goals = Math.abs(goalsCalculation(cashFlow));
   const totalIncome = income + (pocketMoney?.amount || 0);
