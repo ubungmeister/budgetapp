@@ -15,7 +15,6 @@ const EditFormControls = ({
   setFormOpen,
   submitForm,
 }: EditUserControlsProps) => {
-  console.log('selectedGoal', form);
   return (
     <div className=" bg-gray-50 pt-6 pb-4 px-4 justify-center ">
       {form.id ? (

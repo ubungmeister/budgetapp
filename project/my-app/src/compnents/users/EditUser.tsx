@@ -91,7 +91,6 @@ const EditUser = ({
       }
     }
   };
-  console.log('userForm', userForm);
   return (
     <div className=" shadow-md rounded-md  max-w-[650px] min-w-[650px]">
       <form
