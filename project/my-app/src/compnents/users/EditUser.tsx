@@ -1,8 +1,8 @@
 import { useRef } from 'react';
 import { useState } from 'react';
 
+import EditFormControls from '../_basic/helpers/EditFormControls';
 import DeleteUserButtonProps from '../_basic/library/buttons/DeleteUserButton';
-import EditUserControls from './EditUserControls';
 import { createUser, deleteUser, getUsers, updateUser } from './api';
 import { UserData } from './types';
 import { EditUserProps } from './types';
@@ -91,7 +91,7 @@ const EditUser = ({
       }
     }
   };
-
+  console.log('userForm', userForm);
   return (
     <div className=" shadow-md rounded-md  max-w-[650px] min-w-[650px]">
       <form
@@ -101,8 +101,8 @@ const EditUser = ({
         }}
       >
         <div className="divide-solid divide-y">
-          <EditUserControls
-            userForm={userForm}
+          <EditFormControls
+            form={userForm}
             errorNotification={errorNotification}
             setFormOpen={setFormOpen}
             submitForm={submitForm}

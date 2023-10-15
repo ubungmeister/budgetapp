@@ -10,10 +10,13 @@ import { UseAuthUser } from '../../hooks/UseAuth';
 const Goals = () => {
   const userID = window.localStorage.getItem('userID');
   const [goals, setGoals] = useState<GoalProps[]>([]);
+  const [filteredGoals, setFilteredGoals] = useState<GoalProps[]>([]);
   const [isActive, setIsActive] = useState(true);
   const [formOpen, setFormOpen] = useState(false);
+  const [search, setSearch] = useState<string>('');
   const [selectedGoal, setSelectedGoal] = useState<GoalProps | null>(null);
   UseAuthUser();
+
   useEffect(() => {
     if (!userID) return;
     const fetchData = async () => {
@@ -23,29 +26,44 @@ const Goals = () => {
     fetchData();
   }, [formOpen, goals]);
 
-  const filteredGoals = isActive
-    ? goals.filter((goal) => goal.isActive)
-    : goals;
+  useEffect(() => {
+    if (search === '') {
+      setFilteredGoals(goals); // Reset filtered users to original list
+      return;
+    }
+    const filteredGoals = goals.filter((goal) => {
+      return goal.name.toLowerCase().includes(search.toLowerCase());
+    });
+
+    setFilteredGoals(filteredGoals);
+  }, [search, goals, isActive]);
+
+  //filter goals by active or inactive status
+  const activeGoals = isActive
+    ? filteredGoals.filter((goal) => goal.isActive)
+    : filteredGoals;
 
   return (
-    <div>
+    <div className="pt-8 pl-6 space-y-3">
       <GoalsControls
         setIsActive={setIsActive}
         isActive={isActive}
         setFormOpen={setFormOpen}
         setSelectedGoal={setSelectedGoal}
       />
-      {formOpen && (
-        <GoalsForm
-          formOpen={formOpen}
-          setFormOpen={setFormOpen}
-          selectedGoal={selectedGoal}
-        />
-      )}
+      <div className="px-5 pt-2">
+        <hr />
+      </div>
       <GoalsList
-        goals={filteredGoals}
+        goals={activeGoals}
         setSelectedGoal={setSelectedGoal}
         setFormOpen={setFormOpen}
+        setSearch={setSearch}
+      />
+      <GoalsForm
+        formOpen={formOpen}
+        setFormOpen={setFormOpen}
+        selectedGoal={selectedGoal}
       />
     </div>
   );

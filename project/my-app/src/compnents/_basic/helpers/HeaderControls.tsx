@@ -28,7 +28,11 @@ const HeaderControls = ({
       <div className="flex flex-row justify-start">
         <MonthChangeButton setIsMonthChange={setIsMonthChange} />
         <div className="flex space-x-3 px-10">
-          <SaveButton saveDiasbled={saveDiasbled} handleSave={handleSave} />
+          <SaveButton
+            saveDiasbled={saveDiasbled}
+            handleSave={handleSave}
+            buttonName={'Save'}
+          />
           <CancelButton setChangeCancel={setChangeCancel} />
           {saveDiasbled && (
             <Notification notification={'Budget limit exceeded !'} />

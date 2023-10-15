@@ -4,9 +4,14 @@ import { BsSave } from 'react-icons/bs';
 type SaveButtonProps = {
   handleSave: () => void;
   saveDiasbled?: boolean;
+  buttonName: string;
 };
 
-const SaveButton = ({ handleSave, saveDiasbled }: SaveButtonProps) => {
+const SaveButton = ({
+  handleSave,
+  saveDiasbled,
+  buttonName,
+}: SaveButtonProps) => {
   return (
     <div>
       <button
@@ -19,10 +24,12 @@ const SaveButton = ({ handleSave, saveDiasbled }: SaveButtonProps) => {
         <div className="py-1">
           <BsSave />
         </div>
-        <span>Save</span>
+        <span>{buttonName}</span>
       </button>
     </div>
   );
 };
 
 export default SaveButton;
+
+// save button make reusable for a Goals as well

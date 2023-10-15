@@ -1,22 +1,29 @@
-import CancelButton from '../_basic/library/buttons/CancelButton';
-import SaveButton from '../_basic/library/buttons/SaveButton';
-import Notification from '../_basic/library/notification/Notification';
-import { EditUserControlsProps } from './types';
+import CancelButton from '../library/buttons/CancelButton';
+import SaveButton from '../library/buttons/SaveButton';
+import Notification from '../library/notification/Notification';
 
-const EditUserControls = ({
-  userForm,
+type EditUserControlsProps = {
+  form: any;
+  errorNotification?: string;
+  setFormOpen: (value: React.SetStateAction<boolean>) => void;
+  submitForm: () => void;
+};
+
+const EditFormControls = ({
+  form,
   errorNotification,
   setFormOpen,
   submitForm,
 }: EditUserControlsProps) => {
+  console.log('selectedGoal', form);
   return (
     <div className=" bg-gray-50 pt-6 pb-4 px-4 justify-center ">
-      {userForm.id ? (
+      {form.id ? (
         <div className=" flex  justify-between ">
           <div className="pt-2 text-[18px]">
             <span className="text-info-content">Edit:</span>
             <span className="text-info-content font-semibold pl-1 ">
-              {userForm.username}
+              {form.username || form.name}
             </span>
           </div>
 
@@ -26,7 +33,7 @@ const EditUserControls = ({
             )}
           </div>
           <div className="flex space-x-5">
-            <SaveButton handleSave={submitForm} />
+            <SaveButton handleSave={submitForm} buttonName={'Edit'} />
             <CancelButton setFormOpen={setFormOpen} />
           </div>
         </div>
@@ -35,11 +42,11 @@ const EditUserControls = ({
           <div className="pt-2 text-[18px]">
             <span className="text-info-content">Create:</span>
             <span className="text-info-content font-semibold pl-1 ">
-              Add new user
+              {form.username ? 'Add new user' : 'Add new Goal'}
             </span>
           </div>
           <div className="flex space-x-5">
-            <SaveButton handleSave={submitForm} />
+            <SaveButton handleSave={submitForm} buttonName={'Save'} />
             <CancelButton setFormOpen={setFormOpen} />
           </div>
         </div>
@@ -48,4 +55,4 @@ const EditUserControls = ({
   );
 };
 
-export default EditUserControls;
+export default EditFormControls;
