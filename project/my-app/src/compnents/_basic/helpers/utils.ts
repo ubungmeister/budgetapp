@@ -1,4 +1,5 @@
 import { CashFlowProps } from '../../cash-flow/types';
+import { GoalProps } from '../../goals/types';
 
 export const formatDecimals = (item: number) => {
   return Number(item.toFixed(2));
@@ -40,4 +41,12 @@ export const percentageBetweenTwoNumbers = (num1: number, num2: number) => {
   }
   const result = ((num1 - num2) / num2) * 100;
   return formatDecimals(result);
+};
+
+export const performancePercentage = (goal: GoalProps | null) => {
+  if (!goal) {
+    return 0;
+  }
+  const percentage = (goal.currentAmount / goal.goalAmount) * 100;
+  return percentage;
 };
