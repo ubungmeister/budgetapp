@@ -16,8 +16,6 @@ const OverviewPeroformance = ({ goals }: OverviewPeroformanceProps) => {
     return percentage;
   };
 
-  const tooltipId = `my-tooltip-${Math.random().toString(36).substring(7)}`;
-
   return (
     <div className="overview-performance">
       <p className="pt-1 pb-6">Goals Performance</p>

@@ -1,12 +1,18 @@
 import { zodResolver } from '@hookform/resolvers/zod';
+import { Line } from 'rc-progress';
 import { useEffect, useRef, useState } from 'react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { Controller, useForm } from 'react-hook-form';
 import { SubmitHandler } from 'react-hook-form/dist/types/form';
+import Toggle from 'react-toggle';
+import 'react-toggle/style.css';
+import { Tooltip as ReactTooltip } from 'react-tooltip';
 import { z } from 'zod';
 
+// for ES6 modules
 import EditFormControls from '../_basic/helpers/EditFormControls';
+import { performancePercentage } from '../_basic/helpers/utils';
 import { createGoal, updateGoal } from './api';
 import { GoalFormProps } from './types';
 
@@ -24,7 +30,8 @@ const GoalsForm = ({ formOpen, setFormOpen, selectedGoal }: GoalFormProps) => {
     control,
     register,
     handleSubmit,
-    formState: { errors, isSubmitting },
+    reset,
+    formState: { errors },
   } = useForm<FormSchemaType>({
     resolver: zodResolver(FormSchema),
   });
@@ -32,6 +39,19 @@ const GoalsForm = ({ formOpen, setFormOpen, selectedGoal }: GoalFormProps) => {
   const formRef = useRef<HTMLFormElement | null>(null);
 
   const [isActive, setIsActive] = useState(false);
+
+  useEffect(() => {
+    //reset all input fields on Goal change
+    const startDate = new Date(selectedGoal?.start_date || new Date());
+    const endDate = new Date(selectedGoal?.end_date || new Date());
+    reset({
+      name: selectedGoal?.name || '',
+      goalAmount: selectedGoal?.goalAmount || 0,
+      description: selectedGoal?.description || '',
+      start_date: startDate,
+      end_date: endDate,
+    });
+  }, [selectedGoal, reset]);
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
@@ -47,7 +67,7 @@ const GoalsForm = ({ formOpen, setFormOpen, selectedGoal }: GoalFormProps) => {
     return () => {
       window.removeEventListener('keydown', handleKeyDown);
     };
-  }, [setFormOpen, formOpen]);
+  }, [setFormOpen, formOpen, selectedGoal]);
 
   if (!formOpen) {
     return null;
@@ -90,15 +110,7 @@ const GoalsForm = ({ formOpen, setFormOpen, selectedGoal }: GoalFormProps) => {
     }
   };
 
-  //  date format for date picker
-  const startDate = selectedGoal?.start_date
-    ? new Date(selectedGoal.start_date)
-    : null;
-
-  const endDate = selectedGoal?.end_date
-    ? new Date(selectedGoal.end_date)
-    : null;
-
+  //handle click on submit button
   const submitForm = () => {
     if (formRef.current) {
       const formElement = formRef.current;
@@ -121,81 +133,131 @@ const GoalsForm = ({ formOpen, setFormOpen, selectedGoal }: GoalFormProps) => {
           selectedGoal ? handleSubmit(handleUpdate) : handleSubmit(onSubmit)
         }
       >
-        <div className="divide-solid divide-y">
+        <div className="divide-solid">
           <EditFormControls
             form={selectedGoal}
             errorNotification={''}
             setFormOpen={setFormOpen}
             submitForm={submitForm}
           />
-          <div>Name</div>
-          <input
-            defaultValue={selectedGoal?.name || ''}
-            className="auth-input"
-            type="text"
-            {...register('name')}
-          />
-          {errors.name && <p className="auth-error">{errors.name.message}</p>}
-          <div>Amount</div>
-          <input
-            defaultValue={selectedGoal?.goalAmount || ''}
-            className="auth-input"
-            type="number"
-            {...register('goalAmount', { valueAsNumber: true })}
-          />
-          {errors.goalAmount && (
-            <p className="auth-error">{errors.goalAmount.message}</p>
-          )}
-          <div>Description</div>
-          <input
-            defaultValue={selectedGoal?.description || ''}
-            className="auth-input"
-            type="text"
-            {...register('description')}
-          />
-          {errors.description && (
-            <p className="auth-error">{errors.description.message}</p>
-          )}
-          <div>Start Date</div>
-          <Controller
-            control={control}
-            defaultValue={startDate || undefined}
-            name="start_date"
-            render={({ field }) => (
-              <DatePicker
-                placeholderText="Select date"
-                onChange={(date) => field.onChange(date)}
-                dateFormat="dd/MM/yyyy"
-                selected={field.value}
-              />
-            )}
-          />
-          {errors.start_date && (
-            <p className="auth-error">{errors.start_date.message}</p>
-          )}
-          <div>End Date</div>
-          <Controller
-            control={control}
-            defaultValue={endDate || undefined}
-            name="end_date"
-            render={({ field }) => (
-              <DatePicker
-                placeholderText="Select date"
-                onChange={(date) => field.onChange(date)}
-                dateFormat="dd/MM/yyyy"
-                selected={field.value}
-              />
-            )}
-          />
-          {errors.end_date && (
-            <p className="auth-error">{errors.end_date.message}</p>
-          )}
-          <div onClick={() => setIsActive(!isActive)}>
-            isActive: {isActive ? 'true' : 'false'}
+          <div className="px-4 py-10 space-x-5 flex">
+            <div className="space-y-2">
+              <div className="flex flex-col text-[15px]">
+                <p className="text-gray-600 pb-1">Name:</p>
+                <input
+                  className="input-table"
+                  type="text"
+                  {...register('name')}
+                />
+                {errors.name && (
+                  <p className="auth-error">{errors.name.message}</p>
+                )}
+              </div>
+              <div className="flex flex-col text-[15px]">
+                <p className="text-gray-600 pb-1">Amount:</p>
+                <input
+                  className="input-table"
+                  type="text"
+                  {...register('goalAmount')}
+                />
+                {errors.goalAmount && (
+                  <p className="auth-error">{errors.goalAmount.message}</p>
+                )}
+              </div>
+              <div className="flex flex-col text-[15px]">
+                <p className="text-gray-600 pb-1">Description:</p>
+                <textarea
+                  className="input-table"
+                  {...register('description')}
+                />
+                {errors.description && (
+                  <p className="auth-error">{errors.description.message}</p>
+                )}
+              </div>
+              <div className="flex flex-col text-[15px]">
+                <p className="text-gray-600 pb-1">Progress:</p>
+                <div className="flex flex-row justify-between">
+                  <div className="w-[255px]">
+                    <Line
+                      data-tooltip-id={selectedGoal?.id}
+                      className="cursor-pointer"
+                      percent={performancePercentage(selectedGoal)}
+                      strokeWidth={12}
+                      trailWidth={12}
+                      strokeColor={`${
+                        performancePercentage(selectedGoal) > 70
+                          ? '#ef4949'
+                          : performancePercentage(selectedGoal) > 30
+                          ? '#54a3ab'
+                          : '#FFBB28'
+                      }`}
+                    />
+                    <ReactTooltip id={selectedGoal?.id} aria-haspopup="true">
+                      <p>
+                        Left:
+                        {(selectedGoal?.goalAmount || 0) -
+                          (selectedGoal?.currentAmount || 0)}
+                        €
+                      </p>
+                    </ReactTooltip>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="space-y-2">
+              <div className="flex flex-col text-[15px]">
+                <p className="text-gray-600 pb-1">Start Date:</p>
+                <Controller
+                  control={control}
+                  defaultValue={selectedGoal?.start_date || new Date()}
+                  name="start_date"
+                  render={({ field }) => (
+                    <DatePicker
+                      className="input-table"
+                      placeholderText="Select date"
+                      onChange={(date) => field.onChange(date)}
+                      dateFormat="dd/MM/yyyy"
+                      selected={field.value}
+                    />
+                  )}
+                />
+                {errors.start_date && (
+                  <p className="auth-error">{errors.start_date.message}</p>
+                )}
+              </div>
+              <div className="flex flex-col text-[15px]">
+                <p className="text-gray-600 pb-1">End Date:</p>
+                <Controller
+                  control={control}
+                  defaultValue={selectedGoal?.end_date || undefined}
+                  name="end_date"
+                  render={({ field }) => (
+                    <DatePicker
+                      className="input-table"
+                      placeholderText="Select date"
+                      onChange={(date) => field.onChange(date)}
+                      dateFormat="dd/MM/yyyy"
+                      selected={field.value}
+                    />
+                  )}
+                />
+                {errors.end_date && (
+                  <p className="auth-error">{errors.end_date.message}</p>
+                )}
+              </div>
+
+              <div className="flex pt-8 space-x-4 pl-7">
+                <p className="text-gray-600">
+                  {isActive ? 'Active Goal' : 'Inactive Goal'}
+                </p>
+                <Toggle
+                  id="cheese-status"
+                  checked={isActive}
+                  onChange={() => setIsActive(!isActive)}
+                />
+              </div>
+            </div>
           </div>
-          <button className="auth-button" type="submit" disabled={isSubmitting}>
-            Submit
-          </button>
         </div>
       </form>
     </div>

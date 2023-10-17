@@ -54,17 +54,19 @@ const Goals = () => {
       <div className="px-5 pt-2">
         <hr />
       </div>
-      <GoalsList
-        goals={activeGoals}
-        setSelectedGoal={setSelectedGoal}
-        setFormOpen={setFormOpen}
-        setSearch={setSearch}
-      />
-      <GoalsForm
-        formOpen={formOpen}
-        setFormOpen={setFormOpen}
-        selectedGoal={selectedGoal}
-      />
+      <div className="flex flex-row pt-4 space-x-5">
+        <GoalsList
+          goals={activeGoals}
+          setSelectedGoal={setSelectedGoal}
+          setFormOpen={setFormOpen}
+          setSearch={setSearch}
+        />
+        <GoalsForm
+          formOpen={formOpen}
+          setFormOpen={setFormOpen}
+          selectedGoal={selectedGoal}
+        />
+      </div>
     </div>
   );
 };
