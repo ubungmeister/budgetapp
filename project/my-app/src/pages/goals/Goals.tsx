@@ -54,7 +54,7 @@ const Goals = () => {
       <div className="px-5 pt-2">
         <hr />
       </div>
-      <div className="flex flex-row pt-14 space-x-5">
+      <div className="flex flex-row pt-4 space-x-5">
         <GoalsList
           goals={activeGoals}
           setSelectedGoal={setSelectedGoal}
