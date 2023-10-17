@@ -54,7 +54,6 @@ const GoalsForm = ({ formOpen, setFormOpen, selectedGoal }: GoalFormProps) => {
   }, [selectedGoal, reset]);
 
   useEffect(() => {
-    console.log('here');
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === 'Escape') {
         setFormOpen(false);
