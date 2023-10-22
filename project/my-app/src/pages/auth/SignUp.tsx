@@ -20,12 +20,15 @@ const FormSchema = z
         async (email) => {
           try {
             const response = await axios.get(
-              `http://localhost:1000/users/get-user-email/${email}`
+              `http://localhost:1000/users/get-user-email?email=${email}`
             );
-            const { emailExists } = response.data;
-            return !emailExists; // Return true if email doesn't exist, false otherwise
+            const status = response.status;
+            if (status === 200) {
+              return true;
+            }
+            return false;
           } catch (error) {
-            return true; // Assuming an error means the email doesn't exist
+            return false; // Assuming an error means the email doesn't exist
           }
         },
         { message: 'Email already exists' }
@@ -84,13 +87,13 @@ const SignUp = () => {
             placeholder="Emial"
             {...register('email')}
           />
+          {errors.email && <p className="auth-error">{errors.email.message}</p>}
           <input
             className="auth-input"
             type="text"
             placeholder="Family Name"
             {...register('familyName')}
           />
-          {errors.email && <p className="auth-error">{errors.email.message}</p>}
           <input
             className="auth-input"
             placeholder="Password"

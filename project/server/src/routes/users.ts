@@ -136,6 +136,23 @@ router.get('/get-users', async (req, res) => {
   }
 });
 
+router.get('/get-user-email', async (req, res) => {
+  const userEmail = req.query.email as string;
+  if (!userEmail) {
+    return res.status(400).json({ message: 'No email provided' });
+  }
+  try {
+    const user = await prisma.user.findUnique({ where: { email: userEmail } });
+    if(user) {
+      return  res.status(400).json({ message: 'Email already exists' });
+    }
+    else{
+          res.status(200).json({ message: 'No user found' });
+    }
+  } catch (error) {
+    console.log(error);
+  }
+})
 
 
 export {router as usersRouter}
