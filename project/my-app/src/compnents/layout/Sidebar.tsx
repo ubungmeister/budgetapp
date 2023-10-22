@@ -20,19 +20,20 @@ const Sidebar = () => {
 
   const adminMenu = [
     { title: 'Admin', src: <FiHome />, navigate: '/admin' },
-    { title: 'Budget', src: <TbMoneybag />, navigate: '/budget' },
+    { title: 'Budget', src: <TbMoneybag />, navigate: '/admin/budget' },
     {
       title: 'Pocket money planning',
       src: <FiCreditCard />,
-      navigate: '/pocket-money',
+      navigate: '/admin/pocket-money',
     },
-    { title: 'Users', src: <FiUserPlus />, navigate: '/users' },
+    { title: 'Users', src: <FiUserPlus />, navigate: '/admin/users' },
+    { title: 'Tasks', src: <FiCoffee />, navigate: '/admin/tasks' },
   ];
   const userMenu = [
-    { title: 'Cash flow', src: <FiCreditCard />, navigate: '/cash-flow' },
-    { title: 'Overview', src: <FiBarChart2 />, navigate: '/overview' },
-    { title: 'Goals', src: <FiCrosshair />, navigate: '/goals' },
-    { title: 'Tasks', src: <FiCoffee />, navigate: '/tasks' },
+    { title: 'Cash flow', src: <FiCreditCard />, navigate: '/user/cash-flow' },
+    { title: 'Overview', src: <FiBarChart2 />, navigate: 'user/overview' },
+    { title: 'Goals', src: <FiCrosshair />, navigate: '/user/goals' },
+    { title: 'Tasks', src: <FiCoffee />, navigate: 'user/my-tasks' },
   ];
 
   useEffect(() => {

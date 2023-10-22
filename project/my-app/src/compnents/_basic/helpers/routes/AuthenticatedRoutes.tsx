@@ -1,12 +1,14 @@
 import { Route, Routes } from 'react-router-dom';
 
 import AdminPage from '../../../../pages/admin/Admin';
-import Budget from '../../../../pages/budget/Budget';
-import CashFlow from '../../../../pages/cash-flow/CashFlow';
-import Goals from '../../../../pages/goals/Goals';
-import Overview from '../../../../pages/overview/Overview';
-import PocketMoney from '../../../../pages/pocket-money/PocketMoney';
-import Users from '../../../../pages/users/Users';
+import Budget from '../../../../pages/admin/budget/Budget';
+import PocketMoney from '../../../../pages/admin/pocket-money/PocketMoney';
+import Tasks from '../../../../pages/admin/tasks/Tasks';
+import Users from '../../../../pages/admin/users/Users';
+import CashFlow from '../../../../pages/user/cash-flow/CashFlow';
+import Goals from '../../../../pages/user/goals/Goals';
+import MyTasks from '../../../../pages/user/my-tasks/MyTasks';
+import Overview from '../../../../pages/user/overview/Overview';
 import Header from '../../../layout/Header';
 import Sidebar from '../../../layout/Sidebar';
 
@@ -19,12 +21,14 @@ export const AuthenticatedRoutes = () => {
         <div className="flex-1 bg-white">
           <Routes>
             <Route path="/admin" element={<AdminPage />} />
-            <Route path="/budget" element={<Budget />} />
-            <Route path="/users" element={<Users />} />
-            <Route path="/pocket-money" element={<PocketMoney />} />
-            <Route path="/cash-flow" element={<CashFlow />} />
-            <Route path="/goals" element={<Goals />} />
-            <Route path="/overview" element={<Overview />} />
+            <Route path="/admin/budget" element={<Budget />} />
+            <Route path="/admin/users" element={<Users />} />
+            <Route path="/admin/pocket-money" element={<PocketMoney />} />
+            <Route path="/admin/tasks" element={<Tasks />} />
+            <Route path="/user/cash-flow" element={<CashFlow />} />
+            <Route path="/user/goals" element={<Goals />} />
+            <Route path="/user/overview" element={<Overview />} />
+            <Route path="/user/my-tasks" element={<MyTasks />} />
             <Route path="/" element={<Overview />} />
           </Routes>
         </div>

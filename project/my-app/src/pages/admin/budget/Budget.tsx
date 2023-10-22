@@ -1,32 +1,24 @@
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
-import HeaderControls from '../../compnents/_basic/helpers/HeaderControls';
-import { getBudget } from '../../compnents/budget/api';
-import { BudgetData } from '../../compnents/budget/types';
-import PmTable from '../../compnents/pocket-money/PmTable';
-import { editPocketMoney } from '../../compnents/pocket-money/api';
-import { getPocketMoney } from '../../compnents/pocket-money/api';
-import { PmType } from '../../compnents/pocket-money/types';
-import { getUsers } from '../../compnents/users/api';
-import { UserData } from '../../compnents/users/types';
-import { UseAuth } from '../../hooks/UseAuth';
+import HeaderControls from '../../../compnents/_basic/helpers/HeaderControls';
+import BudgetTable from '../../../compnents/budget/BudgetTable';
+import { getBudget, updateBudgets } from '../../../compnents/budget/api';
+import { BudgetData } from '../../../compnents/budget/types';
+import { UseAuth } from '../../../hooks/UseAuth';
 
-const PocketMoney = () => {
-  const [currentMonth, setCurrentMonth] = useState('');
-  const [isMonthChange, setIsMonthChange] = useState('');
-  const [monthsAndBudget, setMonthsAndBudget] = useState<Array<BudgetData>>([]);
-  const [pocketMoney, setPocketMoney] = useState<Array<PmType>>([]);
-  const [isChangeCancel, setChangeCancel] = useState<boolean>(false);
-  const [users, setUsers] = useState<Array<UserData>>([]);
-  const userID = window.localStorage.getItem('userID');
-  const [saveDiasbled, setSaveDisabled] = useState<boolean>(false);
-  const [sussessAlert, setSuccessAlert] = useState<boolean>(false);
-
+const Budget = () => {
   UseAuth();
+
+  const [isMonthChange, setIsMonthChange] = useState('');
+  const [currentMonth, setCurrentMonth] = useState('');
+  const [monthsAndBudget, setMonthsAndBudget] = useState<Array<BudgetData>>([]);
+  const [isChangeCancel, setChangeCancel] = useState<boolean>(false);
+
+  const userID = window.localStorage.getItem('userID');
 
   useEffect(() => {
     if (!userID) return;
-
     const getData = async () => {
       const date = new Date(currentMonth || new Date());
 
@@ -56,7 +48,7 @@ const PocketMoney = () => {
         //compare arrayofMonth and result.data and if there is no data for that month,
         // then create an object contains that date and amount 0
 
-        const data = budget?.data.budget;
+        const data = await budget?.data.budget;
 
         const monthsAndBudgetArray = [] as Array<any>;
 
@@ -73,26 +65,15 @@ const PocketMoney = () => {
       } catch (error) {
         console.error(error);
       }
-
-      const pocketMoney = await getPocketMoney(userID, date);
-      setPocketMoney(pocketMoney?.data.pocketMoney);
-
-      const users = await getUsers();
-      setUsers(users);
     };
 
     getData();
-
     setIsMonthChange('');
-    setChangeCancel(false);
   }, [isMonthChange, isChangeCancel]);
 
   const handleSave = async () => {
     if (!userID) return;
-    const result = await editPocketMoney(pocketMoney, userID);
-    if (result === 200) {
-      setSuccessAlert(true);
-    }
+    await updateBudgets(monthsAndBudget, userID);
   };
 
   return (
@@ -102,23 +83,19 @@ const PocketMoney = () => {
           setIsMonthChange={setIsMonthChange}
           handleSave={handleSave}
           setChangeCancel={setChangeCancel}
-          saveDiasbled={saveDiasbled}
-          sussessAlert={sussessAlert}
+          saveDiasbled={false}
+          sussessAlert={false}
         />
         <div className="px-5 pt-2">
           <hr />
         </div>
-        <PmTable
+        <BudgetTable
           monthsAndBudget={monthsAndBudget}
-          pocketMoney={pocketMoney}
-          users={users}
-          setPocketMoney={setPocketMoney}
-          setSaveDisabled={setSaveDisabled}
-          setSuccessAlert={setSuccessAlert}
+          setMonthsAndBudget={setMonthsAndBudget}
         />
       </div>
     </div>
   );
 };
 
-export default PocketMoney;
+export default Budget;
