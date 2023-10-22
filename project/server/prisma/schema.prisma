@@ -83,12 +83,22 @@ model Task {
   start_date    DateTime?
   end_date      DateTime?
   isActive    Boolean?
+  status     TaskStatus  @default(PENDING)
+  feedback   String?
   user       User       @relation(fields: [userId], references: [id])
 
 }
 
+enum TaskStatus {
+  PENDING    // Task is assigned but not yet started or completed by the user.
+  ON_REVIEW  // User has completed the task and is waiting for admin review.
+  APPROVED   
+  DECLINED    
+}
 
 enum Role {
   ADMIN
   USER
 }
+
+
