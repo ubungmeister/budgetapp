@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import EditUser from '../../compnents/users/EditUser';
-import UsersList from '../../compnents/users/UsersList';
-import { getUsers } from '../../compnents/users/api';
-import { UserData, initialUserData } from '../../compnents/users/types';
-import { UseAuth } from '../../hooks/UseAuth';
+import EditUser from '../../../compnents/users/EditUser';
+import UsersList from '../../../compnents/users/UsersList';
+import { getUsers } from '../../../compnents/users/api';
+import { UserData, initialUserData } from '../../../compnents/users/types';
+import { UseAuth } from '../../../hooks/UseAuth';
 
 const Users = () => {
   const [users, setUsers] = useState<UserData[]>([initialUserData]);

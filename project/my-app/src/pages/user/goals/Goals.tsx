@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react';
 
-import GoalsControls from '../../compnents/goals/GoalsControls';
-import GoalsForm from '../../compnents/goals/GoalsForm';
-import GoalsList from '../../compnents/goals/GoalsList';
-import { getAllGoals } from '../../compnents/goals/api';
-import { GoalProps } from '../../compnents/goals/types';
-import { UseAuthUser } from '../../hooks/UseAuth';
+import GoalsControls from '../../../compnents/goals/GoalsControls';
+import GoalsForm from '../../../compnents/goals/GoalsForm';
+import GoalsList from '../../../compnents/goals/GoalsList';
+import { getAllGoals } from '../../../compnents/goals/api';
+import { GoalProps } from '../../../compnents/goals/types';
+import { UseAuthUser } from '../../../hooks/UseAuth';
 
 const Goals = () => {
   const userID = window.localStorage.getItem('userID');
