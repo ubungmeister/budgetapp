@@ -27,13 +27,13 @@ const Sidebar = () => {
       navigate: '/admin/pocket-money',
     },
     { title: 'Users', src: <FiUserPlus />, navigate: '/admin/users' },
-    { title: 'Tasks', src: <FiCoffee />, navigate: '/admin/tasks' },
+    { title: 'Tasks', src: <FiCoffee />, navigate: 'tasks' },
   ];
   const userMenu = [
     { title: 'Cash flow', src: <FiCreditCard />, navigate: '/cash-flow' },
     { title: 'Overview', src: <FiBarChart2 />, navigate: '/overview' },
     { title: 'Goals', src: <FiCrosshair />, navigate: '/goals' },
-    { title: 'Tasks', src: <FiCoffee />, navigate: '/my-tasks' },
+    { title: 'Tasks', src: <FiCoffee />, navigate: '/tasks' },
   ];
 
   useEffect(() => {

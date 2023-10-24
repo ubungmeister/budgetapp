@@ -1,7 +1,8 @@
 import React from 'react';
 
-import SaveButton from '../_basic/library/buttons/SaveButton';
-import { GoalControlsProps } from './types';
+import { GoalControlsProps } from '../../goals/types';
+import { TaskStatus } from '../../tasks/types';
+import SaveButton from '../library/buttons/SaveButton';
 
 const initinalGoal = {
   id: '',
@@ -15,15 +16,36 @@ const initinalGoal = {
   isActive: true,
 };
 
-const GoalsControls = ({
+const initinalTask = {
+  id: '',
+  name: '',
+  description: '',
+  goalId: '',
+  userId: '',
+  amount: 0,
+  start_date: new Date(),
+  end_date: new Date(),
+  status: TaskStatus.PENDING,
+  feedback: '',
+  isActive: true,
+  isComplete: false,
+};
+
+const AddItemControls = ({
   isActive,
   setIsActive,
   setFormOpen,
   setSelectedGoal,
+  setSelectedTask,
 }: GoalControlsProps) => {
-  const onCreateGoal = () => {
+  const onCreateItem = () => {
     setFormOpen(true);
-    setSelectedGoal(initinalGoal);
+    if (setSelectedGoal) {
+      setSelectedGoal(initinalGoal);
+    }
+    if (setSelectedTask) {
+      setSelectedTask(initinalTask);
+    }
   };
   return (
     <div className="flex flex-row justify-start pl-5">
@@ -35,9 +57,9 @@ const GoalsControls = ({
       >
         <p>{isActive ? 'Currently Active' : 'All Goals'}</p>
       </button>
-      <SaveButton handleSave={onCreateGoal} buttonName={'Add Goal'} />
+      <SaveButton handleSave={onCreateItem} buttonName={'Add +'} />
     </div>
   );
 };
 
-export default GoalsControls;
+export default AddItemControls;

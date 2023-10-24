@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-import GoalsControls from '../../../compnents/goals/GoalsControls';
+import AddItemControls from '../../../compnents/_basic/helpers/AddItemControls';
 import GoalsForm from '../../../compnents/goals/GoalsForm';
 import GoalsList from '../../../compnents/goals/GoalsList';
 import { getAllGoals } from '../../../compnents/goals/api';
@@ -16,6 +16,8 @@ const Goals = () => {
   const [search, setSearch] = useState<string>('');
   const [selectedGoal, setSelectedGoal] = useState<GoalProps | null>(null);
   UseAuthUser();
+
+  console.log('goals', goals);
 
   useEffect(() => {
     if (!userID) return;
@@ -45,7 +47,7 @@ const Goals = () => {
 
   return (
     <div className="pt-8 pl-6 space-y-3">
-      <GoalsControls
+      <AddItemControls
         setIsActive={setIsActive}
         isActive={isActive}
         setFormOpen={setFormOpen}
@@ -56,8 +58,8 @@ const Goals = () => {
       </div>
       <div className="flex flex-row pt-4 space-x-5">
         <GoalsList
-          goals={activeGoals}
-          setSelectedGoal={setSelectedGoal}
+          items={activeGoals}
+          setSelectedItem={setSelectedGoal}
           setFormOpen={setFormOpen}
           setSearch={setSearch}
         />
