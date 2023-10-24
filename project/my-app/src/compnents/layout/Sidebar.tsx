@@ -30,10 +30,10 @@ const Sidebar = () => {
     { title: 'Tasks', src: <FiCoffee />, navigate: '/admin/tasks' },
   ];
   const userMenu = [
-    { title: 'Cash flow', src: <FiCreditCard />, navigate: '/user/cash-flow' },
-    { title: 'Overview', src: <FiBarChart2 />, navigate: 'user/overview' },
-    { title: 'Goals', src: <FiCrosshair />, navigate: '/user/goals' },
-    { title: 'Tasks', src: <FiCoffee />, navigate: 'user/my-tasks' },
+    { title: 'Cash flow', src: <FiCreditCard />, navigate: '/cash-flow' },
+    { title: 'Overview', src: <FiBarChart2 />, navigate: '/overview' },
+    { title: 'Goals', src: <FiCrosshair />, navigate: '/goals' },
+    { title: 'Tasks', src: <FiCoffee />, navigate: '/my-tasks' },
   ];
 
   useEffect(() => {

@@ -25,11 +25,11 @@ export const AuthenticatedRoutes = () => {
             <Route path="/admin/users" element={<Users />} />
             <Route path="/admin/pocket-money" element={<PocketMoney />} />
             <Route path="/admin/tasks" element={<Tasks />} />
-            <Route path="/user/cash-flow" element={<CashFlow />} />
-            <Route path="/user/goals" element={<Goals />} />
-            <Route path="/user/overview" element={<Overview />} />
-            <Route path="/user/my-tasks" element={<MyTasks />} />
             <Route path="/" element={<Overview />} />
+            <Route path="/cash-flow" element={<CashFlow />} />
+            <Route path="/goals" element={<Goals />} />
+            <Route path="/overview" element={<Overview />} />
+            <Route path="/my-tasks" element={<MyTasks />} />
           </Routes>
         </div>
       </div>

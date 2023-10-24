@@ -1,6 +1,7 @@
 import { Line } from 'rc-progress';
 import { Tooltip as ReactTooltip } from 'react-tooltip';
 
+import ProgressLine from '../_basic/library/progress-line/ProgressLine';
 import { GoalProps } from '../goals/types';
 import { capitalizeFirstLetter } from './../_basic/helpers/utils';
 
@@ -9,13 +10,6 @@ type OverviewPeroformanceProps = {
 };
 
 const OverviewPeroformance = ({ goals }: OverviewPeroformanceProps) => {
-  //  yellow < 30% blue > 30%, green > 70%,
-
-  const performancePercentage = (goal: GoalProps) => {
-    const percentage = (goal.currentAmount / goal.goalAmount) * 100;
-    return percentage;
-  };
-
   return (
     <div className="overview-performance">
       <p className="pt-1 pb-6">Goals Performance</p>
@@ -24,34 +18,10 @@ const OverviewPeroformance = ({ goals }: OverviewPeroformanceProps) => {
           {goals.map((goal, index) => (
             <li key={goal.id} className="flex flex-row py-4 ">
               <div className="flex flex-row">
-                <p className=" w-32 overflow-hidden truncate text-sm pr-2 text-gray-600">
+                <p className=" w-40 overflow-hidden truncate text-sm pr-2 text-gray-600 ">
                   {capitalizeFirstLetter(goal.name) || 'No name'}
                 </p>
-                <div className="flex flex-row justify-between">
-                  <div className="w-[170px]">
-                    <Line
-                      data-tooltip-id={goal.id}
-                      className="cursor-pointer"
-                      percent={performancePercentage(goal)}
-                      strokeWidth={12}
-                      trailWidth={12}
-                      strokeColor={`${
-                        performancePercentage(goal) > 70
-                          ? '#ef4949'
-                          : performancePercentage(goal) > 30
-                          ? '#54a3ab'
-                          : '#FFBB28'
-                      }`}
-                      strokeLinecap="round"
-                    />
-                  </div>
-                  <p className="px-2 text-center text-gray-600">
-                    {performancePercentage(goal)}%
-                  </p>
-                  <ReactTooltip id={goal.id} aria-haspopup="true">
-                    <p>Left:{goal.goalAmount - goal.currentAmount}€</p>
-                  </ReactTooltip>
-                </div>
+                <ProgressLine selectedGoal={goal} width={'170px'} />
               </div>
             </li>
           ))}

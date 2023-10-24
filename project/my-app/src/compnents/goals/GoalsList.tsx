@@ -40,7 +40,7 @@ const GoalsList = ({
     }
   };
 
-  const selectedUserHandler = (goal: GoalProps) => {
+  const selectedItemHandler = (goal: GoalProps) => {
     setSelectedGoal(goal);
     setFormOpen(true);
   };
@@ -58,7 +58,7 @@ const GoalsList = ({
 
       <ListItems
         listOfItems={goals}
-        selectedItemHandler={selectedUserHandler}
+        selectedItemHandler={selectedItemHandler}
       />
     </div>
   );

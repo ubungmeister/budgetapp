@@ -2,7 +2,7 @@ import { useRef } from 'react';
 import { useState } from 'react';
 
 import EditFormControls from '../_basic/helpers/EditFormControls';
-import DeleteUserButtonProps from '../_basic/library/buttons/DeleteUserButton';
+import DeleteButton from '../_basic/library/buttons/DeleteButton';
 import { createUser, deleteUser, getUsers, updateUser } from './api';
 import { UserData } from './types';
 import { EditUserProps } from './types';
@@ -132,7 +132,7 @@ const EditUser = ({
               />
             </div>
             {userForm.id && (
-              <DeleteUserButtonProps onDelete={onDelete} userForm={userForm} />
+              <DeleteButton onDelete={onDelete} userForm={userForm} />
             )}
           </div>
         </div>
