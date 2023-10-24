@@ -7,7 +7,6 @@ const prisma = new PrismaClient();
 
 
 router.get('/get-tasks', async (req, res) => {
-    console.log('get tasks')
     const { userID } = req.query
     try {
         const tasks = await prisma.task.findMany({
