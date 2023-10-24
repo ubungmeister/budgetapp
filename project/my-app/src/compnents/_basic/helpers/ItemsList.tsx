@@ -1,8 +1,8 @@
-import ListItems from '../_basic/library/list-items/ListItems';
-import SearchBox from '../_basic/library/search-box/SearchBox';
-import { GoalListProps } from './types';
+import { GoalListProps } from '../../goals/types';
+import ListItems from '../library/list-items/ListItems';
+import SearchBox from '../library/search-box/SearchBox';
 
-const GoalsList = ({
+const ItemsList = ({
   items,
   setSelectedItem,
   setFormOpen,
@@ -34,4 +34,4 @@ const GoalsList = ({
   );
 };
 
-export default GoalsList;
+export default ItemsList;

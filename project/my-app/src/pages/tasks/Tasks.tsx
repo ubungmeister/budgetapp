@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 
 import AddItemControls from '../../compnents/_basic/helpers/AddItemControls';
-import GoalsList from '../../compnents/goals/GoalsList';
+import ItemsList from '../../compnents/_basic/helpers/ItemsList';
 import { getTasks } from '../../compnents/tasks/api';
 import { TaskProps } from '../../compnents/tasks/types';
 
@@ -58,7 +58,7 @@ const Tasks = () => {
         <hr />
       </div>
       <div className="flex flex-row pt-4 space-x-5">
-        <GoalsList
+        <ItemsList
           items={activeTasks}
           setSelectedItem={setSelectedTask}
           setFormOpen={setFormOpen}
