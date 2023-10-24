@@ -1,3 +1,5 @@
+import { TaskProps } from '../tasks/types';
+
 export interface GoalProps {
   id?: string;
   name: string;
@@ -11,8 +13,8 @@ export interface GoalProps {
 }
 
 export interface GoalListProps {
-  goals: GoalProps[];
-  setSelectedGoal: (goal: GoalProps) => void;
+  items: any;
+  setSelectedItem?: (item: any) => void;
   setFormOpen: (value: React.SetStateAction<boolean>) => void;
   setSearch: (search: string) => void;
 }
@@ -21,7 +23,8 @@ export interface GoalControlsProps {
   isActive: boolean;
   setIsActive: (isActive: boolean) => void;
   setFormOpen: (value: React.SetStateAction<boolean>) => void;
-  setSelectedGoal: (goal: GoalProps | null) => void;
+  setSelectedGoal?: (goal: GoalProps | null) => void;
+  setSelectedTask?: (task: TaskProps | null) => void;
 }
 export interface GoalFormProps {
   formOpen: boolean;

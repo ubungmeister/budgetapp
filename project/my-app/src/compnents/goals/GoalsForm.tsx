@@ -7,12 +7,9 @@ import { Controller, useForm } from 'react-hook-form';
 import { SubmitHandler } from 'react-hook-form/dist/types/form';
 import Toggle from 'react-toggle';
 import 'react-toggle/style.css';
-import { Tooltip as ReactTooltip } from 'react-tooltip';
 import { z } from 'zod';
 
-// for ES6 modules
 import EditFormControls from '../_basic/helpers/EditFormControls';
-import { performancePercentage } from '../_basic/helpers/utils';
 import DeleteButton from '../_basic/library/buttons/DeleteButton';
 import ProgressLine from '../_basic/library/progress-line/ProgressLine';
 import { deleteGoal } from './api';
@@ -42,6 +39,7 @@ const GoalsForm = ({ formOpen, setFormOpen, selectedGoal }: GoalFormProps) => {
   const formRef = useRef<HTMLFormElement | null>(null);
 
   const [isActive, setIsActive] = useState(false);
+
   useEffect(() => {
     //reset all input fields on Goal change
     const startDate = new Date(selectedGoal?.start_date || new Date());
