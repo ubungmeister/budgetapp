@@ -47,4 +47,28 @@ router.get('/get-all-tasks', async (req, res) => {
     }
 })
 
+
+router.post('/add-task', async (req, res) => {
+    
+    const {name, description, amount, userId,start_date,end_date, isActive, status } = req.body
+
+    if(!userId) return res.status(400).json({ message: 'User id is required' });
+    await prisma.task.create({
+        data: {
+          name: name,
+          description: description,
+          userId: userId,
+          amount: amount,
+          start_date: start_date,
+          end_date: end_date,
+          isActive: isActive,
+          status: status,
+        }
+    })
+    res.status(200).json({ message: 'Task added successfully' });
+    
+})
+
+
+
 export { router as tasksRouter };

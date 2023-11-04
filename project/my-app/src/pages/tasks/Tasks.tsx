@@ -2,32 +2,46 @@ import { useEffect, useState } from 'react';
 
 import AddItemControls from '../../compnents/_basic/helpers/AddItemControls';
 import ItemsList from '../../compnents/_basic/helpers/ItemsList';
+import TasksForm from '../../compnents/tasks/TasksForm';
 import { getTasks } from '../../compnents/tasks/api';
-import { TaskProps } from '../../compnents/tasks/types';
+import { OptionType, TaskProps } from '../../compnents/tasks/types';
+import { getUsers } from '../../compnents/users/api';
 
 const Tasks = () => {
   const userID = window.localStorage.getItem('userID');
 
+  const [isAdmin, setIsAdmin] = useState(false);
   const [tasks, setTasks] = useState<TaskProps[]>([]);
   const [isActive, setIsActive] = useState(true);
   const [formOpen, setFormOpen] = useState(false);
   const [selectedTask, setSelectedTask] = useState<TaskProps | null>(null);
   const [search, setSearch] = useState<string>('');
   const [filteredTasks, setFilteredTasks] = useState<TaskProps[]>([]);
+  const [users, setUsers] = useState<OptionType[]>([]); // TODO: type this
 
-  console.log('tasks', tasks);
+  console.log('users', users);
   useEffect(() => {
     if (!userID) return;
 
+    const userRole = window.localStorage.getItem('userRole');
+    if (userRole !== 'ADMIN') {
+      setIsAdmin(false);
+    } else {
+      setIsAdmin(true);
+    }
+
     const getData = async () => {
       const fetchedTasks = await getTasks(userID);
-      return fetchedTasks;
+      setTasks(fetchedTasks?.data.tasks);
+      const fetchedUsers = await getUsers();
+      const mappedUsers = fetchedUsers.map((user: any) => ({
+        label: user.username,
+        value: user.id,
+      }));
+      setUsers(mappedUsers);
     };
 
-    (async () => {
-      const fetchedTasks = (await getData()) as any;
-      setTasks(fetchedTasks.data.tasks);
-    })();
+    getData();
   }, []);
 
   useEffect(() => {
@@ -63,6 +77,14 @@ const Tasks = () => {
           setSelectedItem={setSelectedTask}
           setFormOpen={setFormOpen}
           setSearch={setSearch}
+          itemName={'Tasks'}
+        />
+        <TasksForm
+          formOpen={formOpen}
+          setFormOpen={setFormOpen}
+          selectedTask={selectedTask}
+          isAdmin={isAdmin}
+          users={users}
         />
       </div>
     </div>
