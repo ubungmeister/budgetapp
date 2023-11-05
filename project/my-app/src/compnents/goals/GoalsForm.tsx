@@ -197,7 +197,11 @@ const GoalsForm = ({ formOpen, setFormOpen, selectedGoal }: GoalFormProps) => {
                 </div>
               )}
               {selectedGoal?.id && (
-                <DeleteButton onDelete={onDelete} selectedGoal={selectedGoal} />
+                <DeleteButton
+                  onDelete={onDelete}
+                  selectedItem={selectedGoal}
+                  buttonName={'Delete Goal'}
+                />
               )}
             </div>
             <div className="space-y-2">

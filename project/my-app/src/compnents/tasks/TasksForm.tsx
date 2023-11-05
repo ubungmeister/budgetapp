@@ -1,5 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { Controller, useForm } from 'react-hook-form';
@@ -12,8 +12,7 @@ import { z } from 'zod';
 import no_image from '../../assets/images/no_image.png';
 import EditFormControls from '../_basic/helpers/EditFormControls';
 import DeleteButton from '../_basic/library/buttons/DeleteButton';
-import ProgressLine from '../_basic/library/progress-line/ProgressLine';
-import { createTask } from './api';
+import { deleteTask, editTask } from './api';
 import { OptionType, TaskFormProps, TaskStatus } from './types';
 
 interface CustomOptionProps extends OptionProps<any> {
@@ -123,29 +122,12 @@ const TasksForm = ({
         status: selectedTask?.status || TaskStatus.PENDING,
       };
 
-      const result = await createTask(formData);
+      const result = await editTask(formData);
       if (result?.status === 400) {
         return;
       }
       setFormOpen(false);
-      alert('Task created successfully');
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const handleUpdate: SubmitHandler<FormSchemaType> = async (data) => {
-    try {
-      const formData = {
-        ...data,
-        id: selectedTask?.id,
-        isActive: isActive,
-        userId: selectedUser?.value || null,
-        status: selectedTask?.status || TaskStatus.PENDING,
-      };
-      //   await updateGoal(formData);
-      setFormOpen(false);
-      alert('Goal created successfully');
+      alert('Task saved successfully');
     } catch (error) {
       console.log(error);
     }
@@ -160,9 +142,7 @@ const TasksForm = ({
         formElement.dispatchEvent(submitEvent) &&
         !submitEvent.defaultPrevented
       ) {
-        !!selectedTask?.id
-          ? handleSubmit(handleUpdate)
-          : handleSubmit(onSubmit);
+        handleSubmit(onSubmit);
       }
     }
   };
@@ -174,7 +154,7 @@ const TasksForm = ({
       );
 
       if (shouldDelete) {
-        // await deleteGoal(value);
+        await deleteTask(value);
       }
     }
     setFormOpen(false);
@@ -186,14 +166,7 @@ const TasksForm = ({
 
   return (
     <div className=" shadow-md rounded-md  max-w-[650px] min-w-[650px]">
-      <form
-        ref={formRef}
-        onSubmit={
-          !!selectedTask?.id
-            ? handleSubmit(handleUpdate)
-            : handleSubmit(onSubmit)
-        }
-      >
+      <form ref={formRef} onSubmit={handleSubmit(onSubmit)}>
         <div className="divide-solid">
           <EditFormControls
             form={selectedTask}
@@ -247,16 +220,14 @@ const TasksForm = ({
                   components={{ Option: customOption }}
                 />
               </div>
-              <div>Comments: {selectedTask?.feedback}</div>
-              {/* {selectedTask?.id && (
-                <div className="flex flex-col text-[15px]">
-                  <p className="text-gray-600 pb-1">Progress:</p>
-                  <ProgressLine selectedGoal={selectedTask} width={'255px'} />
-                </div>
-              )} */}
-              {/* {selectedTask?.id && (
-                <DeleteButton onDelete={onDelete} selectedGoal={selectedTask} />
-              )} */}
+              {/* <div>Comments: {selectedTask?.feedback}</div> */}
+              {selectedTask?.id && (
+                <DeleteButton
+                  onDelete={onDelete}
+                  selectedItem={selectedTask}
+                  buttonName={'Delete Task'}
+                />
+              )}
             </div>
             <div className="space-y-2">
               <div className="flex flex-col text-[15px]">

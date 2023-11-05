@@ -132,7 +132,11 @@ const EditUser = ({
               />
             </div>
             {userForm.id && (
-              <DeleteButton onDelete={onDelete} userForm={userForm} />
+              <DeleteButton
+                onDelete={onDelete}
+                selectedItem={userForm}
+                buttonName={'Delete User'}
+              />
             )}
           </div>
         </div>

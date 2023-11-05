@@ -18,10 +18,10 @@ export const getTasks = async (userID: string) => {
   }
 };
 
-export const createTask = async (data: TaskProps) => {
+export const editTask = async (data: TaskProps) => {
   try {
     const result = await axios.post(
-      'http://localhost:1000/tasks/add-task',
+      'http://localhost:1000/tasks/edit-task',
       data
     );
     return result;
@@ -30,29 +30,14 @@ export const createTask = async (data: TaskProps) => {
   }
 };
 
-// export const updateGoal = async (data: GoalProps) => {
-//   try {
-//     const result = await axios.post(
-//       'http://localhost:1000/savinggoal/update-goal',
-//       data
-//     );
-//     return result;
-//   } catch (error) {
-//     console.log(error);
-//   }
-// };
-
-// export const deleteGoal = async (id: string) => {
-//   try {
-//     const result = await axios.post(
-//       'http://localhost:1000/savinggoal/delete-goal',
-//       {
-//         id,
-//         userId: window.localStorage.getItem('userID') || '',
-//       }
-//     );
-//     return result;
-//   } catch (error) {
-//     console.log(error);
-//   }
-// };
+export const deleteTask = async (id: string) => {
+  try {
+    const result = await axios.post('http://localhost:1000/tasks/delete-task', {
+      id,
+      userId: window.localStorage.getItem('userID') || '',
+    });
+    return result;
+  } catch (error) {
+    console.log(error);
+  }
+};
