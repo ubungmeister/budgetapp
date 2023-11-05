@@ -1,8 +1,6 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useEffect, useRef, useState } from 'react';
-import DatePicker from 'react-datepicker';
-import 'react-datepicker/dist/react-datepicker.css';
-import { Controller, useForm } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { SubmitHandler } from 'react-hook-form/dist/types/form';
 import Select, { OptionProps } from 'react-select';
 import Toggle from 'react-toggle';
@@ -12,6 +10,8 @@ import { z } from 'zod';
 import no_image from '../../assets/images/no_image.png';
 import EditFormControls from '../_basic/helpers/EditFormControls';
 import DeleteButton from '../_basic/library/buttons/DeleteButton';
+import DatePickerField from '../_basic/library/date-picker/DatePickerField';
+import InputField from '../_basic/library/inputs/InputField';
 import { deleteTask, editTask } from './api';
 import { OptionType, TaskFormProps, TaskStatus } from './types';
 
@@ -34,10 +34,10 @@ const customOption = ({ innerProps, label, data }: CustomOptionProps) => (
 );
 
 const FormSchema = z.object({
-  name: z.string().min(1, { message: 'Name is required' }),
-  description: z.string().min(1, { message: 'Description is required' }),
+  name: z.string().trim().min(1, { message: 'Name is required' }),
+  description: z.string().trim().min(1, { message: 'Description is required' }),
   userId: z.string(),
-  amount: z.number(),
+  amount: z.number().nonnegative({ message: 'Amount must be positive' }),
   start_date: z.date(),
   end_date: z.date(),
   status: z.nativeEnum(TaskStatus),
@@ -174,38 +174,27 @@ const TasksForm = ({
           />
           <div className="px-4 py-10 space-x-5 flex">
             <div className="space-y-2">
-              <div className="flex flex-col text-[15px]">
-                <p className="text-gray-600 pb-1">Task title:</p>
-                <input
-                  className="input-table"
-                  type="text"
-                  {...register('name')}
-                />
-                {errors.name && (
-                  <p className="auth-error">{errors.name.message}</p>
-                )}
-              </div>
-              <div className="flex flex-col text-[15px]">
-                <p className="text-gray-600 pb-1">Reward:</p>
-                <input
-                  className="input-table"
-                  type="float"
-                  {...register('amount', { valueAsNumber: true })}
-                />
-                {errors.amount && (
-                  <p className="auth-error">{errors.amount.message}</p>
-                )}
-              </div>
-              <div className="flex flex-col text-[15px]">
-                <p className="text-gray-600 pb-1">Description:</p>
-                <textarea
-                  className="input-table"
-                  {...register('description')}
-                />
-                {errors.description && (
-                  <p className="auth-error">{errors.description.message}</p>
-                )}
-              </div>
+              <InputField
+                label="Task Title:"
+                name="name"
+                type="string"
+                register={register}
+                errors={errors}
+              />
+              <InputField
+                label="Reward:"
+                name="amount"
+                type="number"
+                register={register}
+                errors={errors}
+              />
+              <InputField
+                label="Description:"
+                name="description"
+                type="textarea"
+                register={register}
+                errors={errors}
+              />
               <div>Status: {selectedTask?.status}</div>
               <div>
                 <div>Assigned User:</div>
@@ -228,47 +217,20 @@ const TasksForm = ({
               )}
             </div>
             <div className="space-y-2">
-              <div className="flex flex-col text-[15px]">
-                <p className="text-gray-600 pb-1">Start Date:</p>
-                <Controller
-                  control={control}
-                  defaultValue={selectedTask?.start_date || new Date()}
-                  name="start_date"
-                  render={({ field }) => (
-                    <DatePicker
-                      className="input-table"
-                      placeholderText="Select date"
-                      onChange={(date) => field.onChange(date)}
-                      dateFormat="dd/MM/yyyy"
-                      selected={field.value}
-                    />
-                  )}
-                />
-                {errors.start_date && (
-                  <p className="auth-error">{errors.start_date.message}</p>
-                )}
-              </div>
-              <div className="flex flex-col text-[15px]">
-                <p className="text-gray-600 pb-1">End Date:</p>
-                <Controller
-                  control={control}
-                  defaultValue={selectedTask?.end_date || undefined}
-                  name="end_date"
-                  render={({ field }) => (
-                    <DatePicker
-                      className="input-table"
-                      placeholderText="Select date"
-                      onChange={(date) => field.onChange(date)}
-                      dateFormat="dd/MM/yyyy"
-                      selected={field.value}
-                    />
-                  )}
-                />
-                {errors.end_date && (
-                  <p className="auth-error">{errors.end_date.message}</p>
-                )}
-              </div>
-
+              <DatePickerField
+                label="Start Date:"
+                name="start_date"
+                control={control}
+                errors={errors}
+                date={selectedTask?.start_date || new Date()}
+              />
+              <DatePickerField
+                label="End Date:"
+                name="end_date"
+                control={control}
+                errors={errors}
+                date={selectedTask?.end_date || new Date()}
+              />
               <div className="flex pt-8 space-x-4 pl-7">
                 <p className="text-gray-600">
                   {isActive ? 'Active Goal' : 'Inactive Goal'}

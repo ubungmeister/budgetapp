@@ -17,8 +17,8 @@ import { createGoal, updateGoal } from './api';
 import { GoalFormProps } from './types';
 
 const FormSchema = z.object({
-  name: z.string().min(1, { message: 'Name is required' }),
-  description: z.string().min(1, { message: 'Description is required' }),
+  name: z.string().trim().min(1, { message: 'Name is required' }),
+  description: z.string().trim().min(1, { message: 'Description is required' }),
   goalAmount: z.number(),
   start_date: z.date(),
   end_date: z.date(),

@@ -5,7 +5,7 @@ export interface TaskProps {
   name: string;
   description: string;
   userId: string;
-  amount: number;
+  amount: number | null;
   start_date?: Date;
   end_date?: Date;
   isActive: boolean;
