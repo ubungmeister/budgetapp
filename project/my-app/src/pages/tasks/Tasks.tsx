@@ -19,7 +19,6 @@ const Tasks = () => {
   const [filteredTasks, setFilteredTasks] = useState<TaskProps[]>([]);
   const [users, setUsers] = useState<OptionType[]>([]); // TODO: type this
 
-  console.log('users', users);
   useEffect(() => {
     if (!userID) return;
 

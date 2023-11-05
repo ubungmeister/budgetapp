@@ -66,8 +66,6 @@ const TasksForm = ({
   const [isActive, setIsActive] = useState(false);
   const [selectedUser, setSelectedUser] = useState<OptionType | null>();
 
-  console.log('selectedUser', selectedUser);
-
   useEffect(() => {
     //reset all input fields on Goal change
     const startDate = new Date(selectedTask?.start_date || new Date());
