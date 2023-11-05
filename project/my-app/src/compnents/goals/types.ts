@@ -17,6 +17,7 @@ export interface GoalListProps {
   setSelectedItem?: (item: any) => void;
   setFormOpen: (value: React.SetStateAction<boolean>) => void;
   setSearch: (search: string) => void;
+  itemName: string;
 }
 
 export interface GoalControlsProps {

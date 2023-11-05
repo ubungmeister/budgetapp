@@ -1,5 +1,7 @@
 import axios from 'axios';
 
+import { TaskProps } from './types';
+
 export const getTasks = async (userID: string) => {
   try {
     const pocketMoney = await axios.get(
@@ -13,5 +15,29 @@ export const getTasks = async (userID: string) => {
     return pocketMoney;
   } catch (error) {
     console.error(error);
+  }
+};
+
+export const editTask = async (data: TaskProps) => {
+  try {
+    const result = await axios.post(
+      'http://localhost:1000/tasks/edit-task',
+      data
+    );
+    return result;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const deleteTask = async (id: string) => {
+  try {
+    const result = await axios.post('http://localhost:1000/tasks/delete-task', {
+      id,
+      userId: window.localStorage.getItem('userID') || '',
+    });
+    return result;
+  } catch (error) {
+    console.log(error);
   }
 };

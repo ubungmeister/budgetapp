@@ -47,4 +47,60 @@ router.get('/get-all-tasks', async (req, res) => {
     }
 })
 
+
+router.post('/edit-task', async (req, res) => {
+    
+    const {name, description, amount, userId,start_date,end_date, isActive, status, id } = req.body
+    if(!userId) return res.status(400).json({ message: 'User id is required' });
+  
+    if(id){
+        await prisma.task.update({
+            where: {
+              id: id,
+            },
+            data: {
+              name: name,
+              description: description,
+              userId: userId,
+              amount: amount,
+              start_date: start_date,
+              end_date: end_date,
+              isActive: isActive,
+              status: status,
+            },
+          });
+          return res.status(200).json({ message: 'Task updated successfully' });
+    }
+    else{
+        await prisma.task.create({
+        data: {
+          name: name,
+          description: description,
+          userId: userId,
+          amount: amount,
+          start_date: start_date,
+          end_date: end_date,
+          isActive: isActive,
+          status: status,
+        }
+    })
+    res.status(200).json({ message: 'Task added successfully' });
+    }
+    
+})
+
+router.post('/delete-task', async (req, res) => {
+  const {id, userId } = req.body
+    const userIsAdmin = await prisma.user.findUnique({ where: { id: userId } });
+    if(userIsAdmin.role !== "ADMIN") return res.status(400).json({ message: 'Only admin can delete task' })
+
+    if(!id) return res.status(400).json({ message: 'Goal id is required' });
+
+    await prisma.task.delete({
+        where: {id: id}
+    })
+    res.status(200).json({ message: 'Task deleted successfully' });
+})
+
+
 export { router as tasksRouter };

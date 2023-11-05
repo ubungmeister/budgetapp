@@ -1,31 +1,56 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Line } from 'rc-progress';
 import { useEffect, useRef, useState } from 'react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { Controller, useForm } from 'react-hook-form';
 import { SubmitHandler } from 'react-hook-form/dist/types/form';
+import Select, { OptionProps } from 'react-select';
 import Toggle from 'react-toggle';
 import 'react-toggle/style.css';
 import { z } from 'zod';
 
+import no_image from '../../assets/images/no_image.png';
 import EditFormControls from '../_basic/helpers/EditFormControls';
 import DeleteButton from '../_basic/library/buttons/DeleteButton';
-import ProgressLine from '../_basic/library/progress-line/ProgressLine';
-import { deleteGoal } from './api';
-import { createGoal, updateGoal } from './api';
-import { GoalFormProps } from './types';
+import { deleteTask, editTask } from './api';
+import { OptionType, TaskFormProps, TaskStatus } from './types';
+
+interface CustomOptionProps extends OptionProps<any> {
+  data: {
+    src: string;
+  };
+}
+
+// custom option for select component, to add icon
+const customOption = ({ innerProps, label, data }: CustomOptionProps) => (
+  <div {...innerProps} className="flex flex-row px-3 my-2 hover:bg-slate-50">
+    <img
+      src={data.src || no_image}
+      alt={label}
+      style={{ width: '24px', marginRight: '8px' }}
+    />
+    <div>{label}</div>
+  </div>
+);
 
 const FormSchema = z.object({
   name: z.string().min(1, { message: 'Name is required' }),
   description: z.string().min(1, { message: 'Description is required' }),
-  goalAmount: z.number(),
+  userId: z.string(),
+  amount: z.number(),
   start_date: z.date(),
   end_date: z.date(),
+  status: z.nativeEnum(TaskStatus),
 });
 type FormSchemaType = z.infer<typeof FormSchema>;
 
-const GoalsForm = ({ formOpen, setFormOpen, selectedGoal }: GoalFormProps) => {
+const TasksForm = ({
+  formOpen,
+  setFormOpen,
+  selectedTask,
+  isAdmin,
+  users,
+}: TaskFormProps) => {
   const {
     control,
     register,
@@ -39,19 +64,31 @@ const GoalsForm = ({ formOpen, setFormOpen, selectedGoal }: GoalFormProps) => {
   const formRef = useRef<HTMLFormElement | null>(null);
 
   const [isActive, setIsActive] = useState(false);
+  const [selectedUser, setSelectedUser] = useState<OptionType | null>();
 
   useEffect(() => {
     //reset all input fields on Goal change
-    const startDate = new Date(selectedGoal?.start_date || new Date());
-    const endDate = new Date(selectedGoal?.end_date || new Date());
+    const startDate = new Date(selectedTask?.start_date || new Date());
+    const endDate = new Date(selectedTask?.end_date || new Date());
+
     reset({
-      name: selectedGoal?.name || '',
-      goalAmount: selectedGoal?.goalAmount || 0,
-      description: selectedGoal?.description || '',
+      name: selectedTask?.name || '',
+      userId: selectedTask?.userId || '',
+      amount: selectedTask?.amount || 0,
+      description: selectedTask?.description || '',
       start_date: startDate,
       end_date: endDate,
+      status: selectedTask?.status || TaskStatus.PENDING,
     });
-  }, [selectedGoal, reset]);
+
+    const selectedUser = users.find(
+      (user) => user.value === selectedTask?.userId
+    );
+    setSelectedUser({
+      value: selectedUser?.value || '',
+      label: selectedUser?.label || '',
+    });
+  }, [selectedTask, reset]);
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
@@ -62,12 +99,12 @@ const GoalsForm = ({ formOpen, setFormOpen, selectedGoal }: GoalFormProps) => {
 
     window.addEventListener('keydown', handleKeyDown);
 
-    selectedGoal ? setIsActive(selectedGoal.isActive) : setIsActive(false);
+    selectedTask ? setIsActive(selectedTask.isActive) : setIsActive(false);
 
     return () => {
       window.removeEventListener('keydown', handleKeyDown);
     };
-  }, [setFormOpen, formOpen, selectedGoal]);
+  }, [setFormOpen, formOpen, selectedTask]);
 
   if (!formOpen) {
     return null;
@@ -77,34 +114,18 @@ const GoalsForm = ({ formOpen, setFormOpen, selectedGoal }: GoalFormProps) => {
     try {
       const formData = {
         ...data,
+        id: selectedTask?.id,
         isActive: isActive,
-        userId: window.localStorage.getItem('userID') || '',
-        currentAmount: selectedGoal?.currentAmount || 0,
+        userId: selectedUser?.value || '',
+        status: selectedTask?.status || TaskStatus.PENDING,
       };
 
-      const result = await createGoal(formData);
+      const result = await editTask(formData);
       if (result?.status === 400) {
         return;
       }
       setFormOpen(false);
-      alert('Goal created successfully');
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const handleUpdate: SubmitHandler<FormSchemaType> = async (data) => {
-    try {
-      const formData = {
-        ...data,
-        id: selectedGoal?.id,
-        isActive: isActive,
-        userId: window.localStorage.getItem('userID') || '',
-        currentAmount: selectedGoal?.currentAmount || 0,
-      };
-      await updateGoal(formData);
-      setFormOpen(false);
-      alert('Goal created successfully');
+      alert('Task saved successfully');
     } catch (error) {
       console.log(error);
     }
@@ -119,9 +140,7 @@ const GoalsForm = ({ formOpen, setFormOpen, selectedGoal }: GoalFormProps) => {
         formElement.dispatchEvent(submitEvent) &&
         !submitEvent.defaultPrevented
       ) {
-        !!selectedGoal?.id
-          ? handleSubmit(handleUpdate)
-          : handleSubmit(onSubmit);
+        handleSubmit(onSubmit);
       }
     }
   };
@@ -133,25 +152,22 @@ const GoalsForm = ({ formOpen, setFormOpen, selectedGoal }: GoalFormProps) => {
       );
 
       if (shouldDelete) {
-        await deleteGoal(value);
+        await deleteTask(value);
       }
     }
     setFormOpen(false);
   };
 
+  const onSelectHandler = (option: OptionType) => {
+    setSelectedUser(option);
+  };
+
   return (
     <div className=" shadow-md rounded-md  max-w-[650px] min-w-[650px]">
-      <form
-        ref={formRef}
-        onSubmit={
-          !!selectedGoal?.id
-            ? handleSubmit(handleUpdate)
-            : handleSubmit(onSubmit)
-        }
-      >
+      <form ref={formRef} onSubmit={handleSubmit(onSubmit)}>
         <div className="divide-solid">
           <EditFormControls
-            form={selectedGoal}
+            form={selectedTask}
             errorNotification={''}
             setFormOpen={setFormOpen}
             submitForm={submitForm}
@@ -159,7 +175,7 @@ const GoalsForm = ({ formOpen, setFormOpen, selectedGoal }: GoalFormProps) => {
           <div className="px-4 py-10 space-x-5 flex">
             <div className="space-y-2">
               <div className="flex flex-col text-[15px]">
-                <p className="text-gray-600 pb-1">Name:</p>
+                <p className="text-gray-600 pb-1">Task title:</p>
                 <input
                   className="input-table"
                   type="text"
@@ -170,14 +186,14 @@ const GoalsForm = ({ formOpen, setFormOpen, selectedGoal }: GoalFormProps) => {
                 )}
               </div>
               <div className="flex flex-col text-[15px]">
-                <p className="text-gray-600 pb-1">Amount:</p>
+                <p className="text-gray-600 pb-1">Reward:</p>
                 <input
                   className="input-table"
                   type="float"
-                  {...register('goalAmount', { valueAsNumber: true })}
+                  {...register('amount', { valueAsNumber: true })}
                 />
-                {errors.goalAmount && (
-                  <p className="auth-error">{errors.goalAmount.message}</p>
+                {errors.amount && (
+                  <p className="auth-error">{errors.amount.message}</p>
                 )}
               </div>
               <div className="flex flex-col text-[15px]">
@@ -190,17 +206,24 @@ const GoalsForm = ({ formOpen, setFormOpen, selectedGoal }: GoalFormProps) => {
                   <p className="auth-error">{errors.description.message}</p>
                 )}
               </div>
-              {selectedGoal?.id && (
-                <div className="flex flex-col text-[15px]">
-                  <p className="text-gray-600 pb-1">Progress:</p>
-                  <ProgressLine selectedGoal={selectedGoal} width={'255px'} />
-                </div>
-              )}
-              {selectedGoal?.id && (
+              <div>Status: {selectedTask?.status}</div>
+              <div>
+                <div>Assigned User:</div>
+                <Select
+                  placeholder="Category"
+                  classNamePrefix="Select"
+                  value={selectedUser || null}
+                  options={users}
+                  onChange={onSelectHandler}
+                  components={{ Option: customOption }}
+                />
+              </div>
+              {/* <div>Comments: {selectedTask?.feedback}</div> */}
+              {selectedTask?.id && (
                 <DeleteButton
                   onDelete={onDelete}
-                  selectedItem={selectedGoal}
-                  buttonName={'Delete Goal'}
+                  selectedItem={selectedTask}
+                  buttonName={'Delete Task'}
                 />
               )}
             </div>
@@ -209,7 +232,7 @@ const GoalsForm = ({ formOpen, setFormOpen, selectedGoal }: GoalFormProps) => {
                 <p className="text-gray-600 pb-1">Start Date:</p>
                 <Controller
                   control={control}
-                  defaultValue={selectedGoal?.start_date || new Date()}
+                  defaultValue={selectedTask?.start_date || new Date()}
                   name="start_date"
                   render={({ field }) => (
                     <DatePicker
@@ -229,7 +252,7 @@ const GoalsForm = ({ formOpen, setFormOpen, selectedGoal }: GoalFormProps) => {
                 <p className="text-gray-600 pb-1">End Date:</p>
                 <Controller
                   control={control}
-                  defaultValue={selectedGoal?.end_date || undefined}
+                  defaultValue={selectedTask?.end_date || undefined}
                   name="end_date"
                   render={({ field }) => (
                     <DatePicker
@@ -263,5 +286,4 @@ const GoalsForm = ({ formOpen, setFormOpen, selectedGoal }: GoalFormProps) => {
     </div>
   );
 };
-
-export default GoalsForm;
+export default TasksForm;

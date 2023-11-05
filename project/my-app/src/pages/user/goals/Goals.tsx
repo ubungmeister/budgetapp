@@ -17,8 +17,6 @@ const Goals = () => {
   const [selectedGoal, setSelectedGoal] = useState<GoalProps | null>(null);
   UseAuthUser();
 
-  console.log('goals', goals);
-
   useEffect(() => {
     if (!userID) return;
     const fetchData = async () => {
@@ -62,6 +60,7 @@ const Goals = () => {
           setSelectedItem={setSelectedGoal}
           setFormOpen={setFormOpen}
           setSearch={setSearch}
+          itemName={'Goals'}
         />
         <GoalsForm
           formOpen={formOpen}
