@@ -39,9 +39,8 @@ const Tasks = () => {
       }));
       setUsers(mappedUsers);
     };
-
     getData();
-  }, []);
+  }, [formOpen, tasks]);
 
   useEffect(() => {
     if (search === '') {

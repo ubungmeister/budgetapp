@@ -1,5 +1,6 @@
-import axios from 'axios'
-import { GoalProps } from './types'
+import axios from 'axios';
+
+import { GoalProps } from './types';
 
 export const getAllGoals = async () => {
   try {
@@ -10,36 +11,24 @@ export const getAllGoals = async () => {
           userID: window.localStorage.getItem('userID'),
         },
       }
-    )
-    return goals.data
+    );
+    return goals.data;
   } catch (error) {
-    console.log(error)
+    console.log(error);
   }
-}
+};
 
-export const createGoal = async (data: GoalProps) => {
+export const editGoal = async (data: GoalProps) => {
   try {
     const result = await axios.post(
-      'http://localhost:1000/savinggoal/add-goal',
+      'http://localhost:1000/savinggoal/edit-goal',
       data
-    )
-    return result
+    );
+    return result;
   } catch (error) {
-    console.log(error)
+    console.log(error);
   }
-}
-
-export const updateGoal = async (data: GoalProps) => {
-  try {
-    const result = await axios.post(
-      'http://localhost:1000/savinggoal/update-goal',
-      data
-    )
-    return result
-  } catch (error) {
-    console.log(error)
-  }
-}
+};
 
 export const deleteGoal = async (id: string) => {
   try {
@@ -49,9 +38,9 @@ export const deleteGoal = async (id: string) => {
         id,
         userId: window.localStorage.getItem('userID') || '',
       }
-    )
-    return result
+    );
+    return result;
   } catch (error) {
-    console.log(error)
+    console.log(error);
   }
-}
+};
