@@ -9,11 +9,18 @@ import { z } from 'zod';
 
 import no_image from '../../assets/images/no_image.png';
 import EditFormControls from '../_basic/helpers/EditFormControls';
+import { statusLabel, statusOptions } from '../_basic/helpers/utils';
 import DeleteButton from '../_basic/library/buttons/DeleteButton';
 import DatePickerField from '../_basic/library/date-picker/DatePickerField';
 import InputField from '../_basic/library/inputs/InputField';
+import TaskReviewControl from './TaskReviewControl';
 import { deleteTask, editTask } from './api';
-import { OptionType, TaskFormProps, TaskStatus } from './types';
+import {
+  OptionStateType,
+  OptionType,
+  TaskFormProps,
+  TaskStatus,
+} from './types';
 
 interface CustomOptionProps extends OptionProps<any> {
   data: {
@@ -65,9 +72,12 @@ const TasksForm = ({
 
   const [isActive, setIsActive] = useState(false);
   const [selectedUser, setSelectedUser] = useState<OptionType | null>();
+  const [selectedStatus, setSelectedStatus] =
+    useState<OptionStateType | null>();
 
   useEffect(() => {
     //reset all input fields on Goal change
+    // if (!selectedTask) return;
     const startDate = new Date(selectedTask?.start_date || new Date());
     const endDate = new Date(selectedTask?.end_date || new Date());
 
@@ -87,6 +97,15 @@ const TasksForm = ({
     setSelectedUser({
       value: selectedUser?.value || '',
       label: selectedUser?.label || '',
+    });
+
+    const selectedStatus = statusOptions.find(
+      (option) => option.value === selectedTask?.status
+    );
+
+    setSelectedStatus({
+      value: selectedStatus?.value || (TaskStatus.PENDING as TaskStatus),
+      label: statusLabel(selectedStatus?.value || TaskStatus.PENDING),
     });
   }, [selectedTask, reset]);
 
@@ -117,7 +136,8 @@ const TasksForm = ({
         id: selectedTask?.id,
         isActive: isActive,
         userId: selectedUser?.value || '',
-        status: selectedTask?.status || TaskStatus.PENDING,
+        status:
+          selectedStatus?.value || selectedTask?.status || TaskStatus.PENDING,
       };
 
       const result = await editTask(formData);
@@ -162,16 +182,36 @@ const TasksForm = ({
     setSelectedUser(option);
   };
 
+  const onTaskStatusChange = (newStatus: TaskStatus) => {
+    try {
+      if (!selectedTask) return;
+      const selected = { ...selectedTask, status: newStatus };
+      editTask(selected);
+    } catch (error) {}
+  };
+
+  const onTaskStatusAdminChnage = (newStatus: any) => {
+    setSelectedStatus(newStatus);
+  };
+
   return (
     <div className=" shadow-md rounded-md  max-w-[650px] min-w-[650px]">
       <form ref={formRef} onSubmit={handleSubmit(onSubmit)}>
         <div className="divide-solid">
-          <EditFormControls
-            form={selectedTask}
-            errorNotification={''}
-            setFormOpen={setFormOpen}
-            submitForm={submitForm}
-          />
+          {isAdmin ? (
+            <EditFormControls
+              form={selectedTask}
+              errorNotification={''}
+              setFormOpen={setFormOpen}
+              submitForm={submitForm}
+            />
+          ) : (
+            <TaskReviewControl
+              setTaskStatus={onTaskStatusChange}
+              taskStatus={selectedTask?.status || TaskStatus.PENDING}
+            />
+          )}
+
           <div className="px-4 py-10 space-x-5 flex">
             <div className="space-y-2">
               <InputField
@@ -195,20 +235,21 @@ const TasksForm = ({
                 register={register}
                 errors={errors}
               />
-              <div>Status: {selectedTask?.status}</div>
-              <div>
-                <div>Assigned User:</div>
-                <Select
-                  placeholder="Category"
-                  classNamePrefix="Select"
-                  value={selectedUser || null}
-                  options={users}
-                  onChange={onSelectHandler}
-                  components={{ Option: customOption }}
-                />
-              </div>
+              {isAdmin && (
+                <div>
+                  <div className="text-gray-600">Assigned User:</div>
+                  <Select
+                    placeholder="Category"
+                    classNamePrefix="Select"
+                    value={selectedUser || null}
+                    options={users}
+                    onChange={onSelectHandler}
+                    components={{ Option: customOption }}
+                  />
+                </div>
+              )}
               {/* <div>Comments: {selectedTask?.feedback}</div> */}
-              {selectedTask?.id && (
+              {selectedTask?.id && isAdmin && (
                 <DeleteButton
                   onDelete={onDelete}
                   selectedItem={selectedTask}
@@ -231,7 +272,19 @@ const TasksForm = ({
                 errors={errors}
                 date={selectedTask?.end_date || new Date()}
               />
-              <div className="flex pt-8 space-x-4 pl-7">
+
+              <div className="flex text-gray-600 flex-col">
+                <div>Status:</div>
+                <Select
+                  placeholder="Status"
+                  classNamePrefix="Select"
+                  value={selectedStatus || null}
+                  options={statusOptions}
+                  onChange={onTaskStatusAdminChnage}
+                  components={{ Option: customOption }}
+                />
+              </div>
+              <div className="flex pt-8 space-x-4 pl-3">
                 <p className="text-gray-600">
                   {isActive ? 'Active Goal' : 'Inactive Goal'}
                 </p>

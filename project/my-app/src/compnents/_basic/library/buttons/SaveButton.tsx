@@ -24,7 +24,7 @@ const SaveButton = ({
         <div className="py-1">
           <BsSave />
         </div>
-        <span>{buttonName}</span>
+        <span>{saveDiasbled ? 'Pending...' : buttonName}</span>
       </button>
     </div>
   );

@@ -33,6 +33,7 @@ const Tasks = () => {
       const fetchedTasks = await getTasks(userID);
       setTasks(fetchedTasks?.data.tasks);
       const fetchedUsers = await getUsers();
+      if (!fetchedUsers) return;
       const mappedUsers = fetchedUsers.map((user: any) => ({
         label: user.username,
         value: user.id,
@@ -76,6 +77,7 @@ const Tasks = () => {
           setFormOpen={setFormOpen}
           setSearch={setSearch}
           itemName={'Tasks'}
+          isAdmin={isAdmin}
         />
         <TasksForm
           formOpen={formOpen}
