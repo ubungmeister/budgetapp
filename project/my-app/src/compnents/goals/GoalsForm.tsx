@@ -109,8 +109,6 @@ const GoalsForm = ({ formOpen, setFormOpen, selectedGoal }: GoalFormProps) => {
     setFormOpen(false);
   };
 
-  console.log(selectedGoal?.start_date, 'selectedGoal?.start_date');
-
   return (
     <div className=" shadow-md rounded-md  max-w-[650px] min-w-[650px]">
       <form ref={formRef} onSubmit={handleSubmit(onSubmit)}>

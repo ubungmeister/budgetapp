@@ -76,8 +76,6 @@ const TasksForm = ({
     useState<OptionStateType | null>();
 
   useEffect(() => {
-    //reset all input fields on Goal change
-    // if (!selectedTask) return;
     const startDate = new Date(selectedTask?.start_date || new Date());
     const endDate = new Date(selectedTask?.end_date || new Date());
 
