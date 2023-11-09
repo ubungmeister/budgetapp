@@ -8,6 +8,7 @@ const ItemsList = ({
   setFormOpen,
   setSearch,
   itemName,
+  isAdmin,
 }: GoalListProps) => {
   const selectedItemHandler = (item: any) => {
     if (setSelectedItem) {
@@ -19,7 +20,6 @@ const ItemsList = ({
   const handleSearch = (searchTerm: string) => {
     setSearch(searchTerm);
   };
-
   return (
     <div className=" pl-10 flex flex-col">
       <p className="text-[16px] py-2">
@@ -30,6 +30,7 @@ const ItemsList = ({
       <ListItems
         listOfItems={items}
         selectedItemHandler={selectedItemHandler}
+        isAdmin={isAdmin}
       />
     </div>
   );

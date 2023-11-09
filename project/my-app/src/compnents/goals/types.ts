@@ -18,6 +18,7 @@ export interface GoalListProps {
   setFormOpen: (value: React.SetStateAction<boolean>) => void;
   setSearch: (search: string) => void;
   itemName: string;
+  isAdmin?: boolean;
 }
 
 export interface GoalControlsProps {

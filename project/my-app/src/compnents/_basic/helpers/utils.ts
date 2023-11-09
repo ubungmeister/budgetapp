@@ -1,5 +1,6 @@
 import { CashFlowProps } from '../../cash-flow/types';
 import { GoalProps } from '../../goals/types';
+import { TaskStatus } from '../../tasks/types';
 
 export const formatDecimals = (item: number) => {
   return Number(item.toFixed(2));
@@ -49,4 +50,32 @@ export const performancePercentage = (goal: GoalProps | null) => {
   }
   const percentage = (goal.currentAmount / goal.goalAmount) * 100;
   return percentage;
+};
+
+export const statusOptions = [
+  {
+    value: TaskStatus.ON_REVIEW,
+    label: 'Review',
+  },
+  {
+    value: TaskStatus.APPROVED,
+    label: 'Approved',
+  },
+  {
+    value: TaskStatus.DECLINED,
+    label: 'Declined',
+  },
+];
+
+export const statusLabel = (status: TaskStatus) => {
+  switch (status) {
+    case TaskStatus.APPROVED:
+      return 'Approved';
+    case TaskStatus.ON_REVIEW:
+      return 'On review';
+    case TaskStatus.DECLINED:
+      return 'Declined';
+    default:
+      return 'Pending';
+  }
 };

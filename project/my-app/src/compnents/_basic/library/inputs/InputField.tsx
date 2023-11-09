@@ -5,6 +5,7 @@ type FormData = {
   name: string;
   amount: number;
   description: string;
+  goalAmount: number;
 };
 
 type InputFieldProps = {
@@ -23,7 +24,6 @@ const InputField = ({
   type,
 }: InputFieldProps) => {
   const isNumber = type === 'number' || 'float';
-  console.log(isNumber);
   const commonProps = {
     id: name,
     className: 'input-table',
@@ -31,8 +31,6 @@ const InputField = ({
       ? register(name, { valueAsNumber: true })
       : register(name)),
   };
-  console.log(label, errors.name, errors);
-
   return (
     <div className="flex flex-col text-[15px]">
       <p className="text-gray-600 pb-1">{label}</p>

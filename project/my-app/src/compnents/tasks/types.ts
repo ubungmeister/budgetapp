@@ -24,6 +24,10 @@ export interface OptionType {
   label: string;
   value: string;
 }
+export interface OptionStateType {
+  label: string;
+  value: TaskStatus;
+}
 export interface TaskFormProps {
   formOpen: boolean;
   setFormOpen: (value: React.SetStateAction<boolean>) => void;
