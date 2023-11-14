@@ -5,6 +5,7 @@ import { useCookies } from 'react-cookie';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { FiEye, FiEyeOff } from 'react-icons/fi';
 import { Link, useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import { z } from 'zod';
 
 import UseRedirect from '../../hooks/UseRedirect';
@@ -46,7 +47,7 @@ const SignIn = () => {
       window.localStorage.setItem('userRole', response.data.userRole);
       navigate('/');
     } catch (error: any) {
-      alert(error.response.data.message);
+      toast.error(error.response.data.message);
     }
   };
 

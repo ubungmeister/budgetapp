@@ -9,6 +9,8 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  --toastify-icon-color-success: rgba(84, 163, 171);
+  --toastify-color-progress-success: rgba(84, 163, 171);
 }
 
 code {

@@ -2,6 +2,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useEffect, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { SubmitHandler } from 'react-hook-form/dist/types/form';
+import { toast } from 'react-toastify';
 import Toggle from 'react-toggle';
 import 'react-toggle/style.css';
 import { z } from 'zod';
@@ -76,7 +77,9 @@ const GoalsForm = ({ formOpen, setFormOpen, selectedGoal }: GoalFormProps) => {
         return;
       }
       setFormOpen(false);
-      alert('Goal created successfully');
+      selectedGoal?.id
+        ? toast.success('Goal updated')
+        : toast.success('Goal created ');
     } catch (error) {
       console.log(error);
     }
@@ -107,6 +110,7 @@ const GoalsForm = ({ formOpen, setFormOpen, selectedGoal }: GoalFormProps) => {
       }
     }
     setFormOpen(false);
+    toast.success('Goal deleted ');
   };
 
   return (

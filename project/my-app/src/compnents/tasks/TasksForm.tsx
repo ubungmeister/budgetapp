@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { SubmitHandler } from 'react-hook-form/dist/types/form';
 import Select, { OptionProps } from 'react-select';
+import { toast } from 'react-toastify';
 import Toggle from 'react-toggle';
 import 'react-toggle/style.css';
 import { z } from 'zod';
@@ -156,7 +157,7 @@ const TasksForm = ({
       }
 
       setFormOpen(false);
-      alert('Task saved successfully');
+      toast.success('Task saved successfully');
     } catch (error) {
       console.log(error);
     }

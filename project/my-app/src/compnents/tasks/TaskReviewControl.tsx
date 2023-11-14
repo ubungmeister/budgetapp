@@ -1,5 +1,6 @@
 import { BsSave } from 'react-icons/bs';
 import { VscRocket } from 'react-icons/vsc';
+import { toast } from 'react-toastify';
 
 import { TaskStatus } from './types';
 
@@ -15,6 +16,7 @@ const TaskReviewControl = ({
   const isPending = taskStatus === TaskStatus.ON_REVIEW;
   const handleStatusChnage = () => {
     setTaskStatus(TaskStatus.ON_REVIEW);
+    toast.success('Task sended for review');
   };
   return (
     <div className=" bg-gray-50 pt-6 pb-4 px-8 flex justify-end ">

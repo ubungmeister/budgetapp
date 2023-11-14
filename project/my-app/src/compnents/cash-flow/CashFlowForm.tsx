@@ -7,6 +7,7 @@ import { Controller, useForm } from 'react-hook-form';
 import { SubmitHandler } from 'react-hook-form/dist/types/form';
 import { BsDatabaseAdd } from 'react-icons/bs';
 import { CgCloseR } from 'react-icons/cg';
+import { toast } from 'react-toastify';
 import { z } from 'zod';
 
 import { formatDecimals } from '../_basic/helpers/utils';
@@ -124,7 +125,9 @@ const CashFlowForm = ({
         await createCashFlow(formData);
       }
       setFormOpen(false);
-      alert('User created successfully');
+      console.log('here');
+
+      toast.success('Transaction created');
       setError('');
       setCategory({ category: '', saving_goal_Id: '' });
     } catch (error: any) {
@@ -177,7 +180,7 @@ const CashFlowForm = ({
         await updateCashFlow(formData);
       }
       setFormOpen(false);
-      alert('User created successfully');
+      toast.success('Transaction updated');
       setError('');
       setCategory({ category: '', saving_goal_Id: '' });
     } catch (error: any) {
