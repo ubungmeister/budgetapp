@@ -27,6 +27,7 @@ export interface GoalControlsProps {
   setFormOpen: (value: React.SetStateAction<boolean>) => void;
   setSelectedGoal?: (goal: GoalProps | null) => void;
   setSelectedTask?: (task: TaskProps | null) => void;
+  isDisabled?: boolean;
 }
 export interface GoalFormProps {
   formOpen: boolean;

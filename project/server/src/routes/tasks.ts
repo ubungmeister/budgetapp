@@ -59,7 +59,6 @@ router.post('/edit-task', async (req, res) => {
       activeTask = false
     }
 
-    console.log('status',status, isActive)
     if(id){
         await prisma.task.update({
             where: {

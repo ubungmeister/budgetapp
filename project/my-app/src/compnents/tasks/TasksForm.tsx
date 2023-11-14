@@ -14,7 +14,7 @@ import DeleteButton from '../_basic/library/buttons/DeleteButton';
 import DatePickerField from '../_basic/library/date-picker/DatePickerField';
 import InputField from '../_basic/library/inputs/InputField';
 import TaskReviewControl from './TaskReviewControl';
-import { deleteTask, editTask } from './api';
+import { createReward, deleteTask, editTask } from './api';
 import {
   OptionStateType,
   OptionType,
@@ -43,7 +43,7 @@ const customOption = ({ innerProps, label, data }: CustomOptionProps) => (
 const FormSchema = z.object({
   name: z.string().trim().min(1, { message: 'Name is required' }),
   description: z.string().trim().min(1, { message: 'Description is required' }),
-  userId: z.string().trim().min(1, { message: 'User is required' }),
+  userId: z.string(),
   amount: z.number().nonnegative({ message: 'Amount must be positive' }),
   start_date: z.date(),
   end_date: z.date(),
@@ -142,6 +142,19 @@ const TasksForm = ({
       if (result?.status === 400) {
         return;
       }
+
+      if (selectedStatus?.value === TaskStatus.APPROVED) {
+        const data = {
+          amount: selectedTask?.amount || 0,
+          category: 'Task',
+          description: 'Task Reward',
+          start_date: new Date(),
+          userId: selectedUser?.value || '',
+          category_type: 'Income',
+        };
+        const result = await createReward(data);
+      }
+
       setFormOpen(false);
       alert('Task saved successfully');
     } catch (error) {
@@ -286,8 +299,7 @@ const TasksForm = ({
                   value={selectedStatus || null}
                   options={statusOptions}
                   onChange={onTaskStatusAdminChnage}
-                  components={{ Option: customOption }}
-                  isDisabled={!isAdmin}
+                  isDisabled={!isAdmin || !selectedTask?.id}
                 />
               </div>
               <div className="flex pt-8 space-x-4 pl-3">

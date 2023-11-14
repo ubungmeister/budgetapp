@@ -1,5 +1,6 @@
 import axios from 'axios';
 
+import { CashFlowProps } from '../cash-flow/types';
 import { TaskProps } from './types';
 
 export const getTasks = async (userID: string) => {
@@ -36,6 +37,19 @@ export const deleteTask = async (id: string) => {
       id,
       userId: window.localStorage.getItem('userID') || '',
     });
+    return result;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const createReward = async (data: CashFlowProps) => {
+  try {
+    const result = await axios.post(
+      'http://localhost:1000/cashflow/add-cash-flow',
+      data
+    );
+
     return result;
   } catch (error) {
     console.log(error);

@@ -66,6 +66,7 @@ const Tasks = () => {
         isActive={isActive}
         setFormOpen={setFormOpen}
         setSelectedTask={setSelectedTask}
+        isDisabled={isAdmin}
       />
       <div className="px-5 pt-2">
         <hr />
