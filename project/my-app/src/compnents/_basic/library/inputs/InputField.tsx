@@ -14,6 +14,7 @@ type InputFieldProps = {
   register: UseFormRegister<any>;
   errors: FieldErrors<FormData>;
   type?: string;
+  isDisabled?: boolean;
 };
 
 const InputField = ({
@@ -22,8 +23,8 @@ const InputField = ({
   register,
   errors,
   type,
+  isDisabled,
 }: InputFieldProps) => {
-  const isNumber = type === 'number' || 'float';
   const commonProps = {
     id: name,
     className: 'input-table',
@@ -35,9 +36,13 @@ const InputField = ({
     <div className="flex flex-col text-[15px]">
       <p className="text-gray-600 pb-1">{label}</p>
       {type === 'textarea' ? (
-        <textarea className="input-table" {...register(name)} />
+        <textarea
+          className="input-table"
+          {...register(name)}
+          disabled={isDisabled || false}
+        />
       ) : (
-        <input type={type} {...commonProps} />
+        <input type={type} {...commonProps} disabled={isDisabled || false} />
       )}
       {errors && <p className="auth-error">{errors[name]?.message}</p>}
     </div>

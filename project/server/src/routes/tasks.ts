@@ -1,5 +1,5 @@
 import express from "express"
-import { PrismaClient } from "@prisma/client"
+import { PrismaClient, TaskStatus } from "@prisma/client"
 
 const router = express.Router();
 
@@ -52,7 +52,14 @@ router.post('/edit-task', async (req, res) => {
     
     const {name, description, amount, userId,start_date,end_date, isActive, status, id } = req.body
     if(!userId) return res.status(400).json({ message: 'User id is required' });
-  
+    
+    //change status to false when task approved
+    let activeTask = isActive
+    if(status === TaskStatus.APPROVED){
+      activeTask = false
+    }
+
+    console.log('status',status, isActive)
     if(id){
         await prisma.task.update({
             where: {
@@ -65,7 +72,7 @@ router.post('/edit-task', async (req, res) => {
               amount: amount,
               start_date: start_date,
               end_date: end_date,
-              isActive: isActive,
+              isActive: activeTask,
               status: status,
             },
           });
@@ -80,7 +87,7 @@ router.post('/edit-task', async (req, res) => {
           amount: amount,
           start_date: start_date,
           end_date: end_date,
-          isActive: isActive,
+          isActive: activeTask,
           status: status,
         }
     })

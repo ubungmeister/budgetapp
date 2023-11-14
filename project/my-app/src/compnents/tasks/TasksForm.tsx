@@ -43,7 +43,7 @@ const customOption = ({ innerProps, label, data }: CustomOptionProps) => (
 const FormSchema = z.object({
   name: z.string().trim().min(1, { message: 'Name is required' }),
   description: z.string().trim().min(1, { message: 'Description is required' }),
-  userId: z.string(),
+  userId: z.string().trim().min(1, { message: 'User is required' }),
   amount: z.number().nonnegative({ message: 'Amount must be positive' }),
   start_date: z.date(),
   end_date: z.date(),
@@ -218,6 +218,7 @@ const TasksForm = ({
                 type="string"
                 register={register}
                 errors={errors}
+                isDisabled={!isAdmin}
               />
               <InputField
                 label="Reward:"
@@ -225,6 +226,7 @@ const TasksForm = ({
                 type="number"
                 register={register}
                 errors={errors}
+                isDisabled={!isAdmin}
               />
               <InputField
                 label="Description:"
@@ -232,6 +234,7 @@ const TasksForm = ({
                 type="textarea"
                 register={register}
                 errors={errors}
+                isDisabled={!isAdmin}
               />
               {isAdmin && (
                 <div>
@@ -244,9 +247,11 @@ const TasksForm = ({
                     onChange={onSelectHandler}
                     components={{ Option: customOption }}
                   />
+                  {errors && (
+                    <p className="auth-error">{errors['userId']?.message}</p>
+                  )}
                 </div>
               )}
-              {/* <div>Comments: {selectedTask?.feedback}</div> */}
               {selectedTask?.id && isAdmin && (
                 <DeleteButton
                   onDelete={onDelete}
@@ -262,6 +267,7 @@ const TasksForm = ({
                 control={control}
                 errors={errors}
                 date={selectedTask?.start_date || new Date()}
+                isDisabled={!isAdmin}
               />
               <DatePickerField
                 label="End Date:"
@@ -269,6 +275,7 @@ const TasksForm = ({
                 control={control}
                 errors={errors}
                 date={selectedTask?.end_date || new Date()}
+                isDisabled={!isAdmin}
               />
 
               <div className="flex text-gray-600 flex-col">
@@ -280,15 +287,17 @@ const TasksForm = ({
                   options={statusOptions}
                   onChange={onTaskStatusAdminChnage}
                   components={{ Option: customOption }}
+                  isDisabled={!isAdmin}
                 />
               </div>
               <div className="flex pt-8 space-x-4 pl-3">
                 <p className="text-gray-600">
-                  {isActive ? 'Active Goal' : 'Inactive Goal'}
+                  {isActive ? 'Active Task' : 'Inactive Task'}
                 </p>
                 <Toggle
                   id="cheese-status"
                   checked={isActive}
+                  disabled={!isAdmin}
                   onChange={() => setIsActive(!isActive)}
                 />
               </div>
