@@ -23,7 +23,8 @@ const ItemsList = ({
   return (
     <div className=" pl-10 flex flex-col">
       <p className="text-[16px] py-2">
-        <span className="text-green-700	">{items.length}</span> {itemName} found
+        <span className="text-green-700	">{items?.length || 0}</span> {itemName}{' '}
+        found
       </p>
       <SearchBox onSearch={handleSearch} />
 

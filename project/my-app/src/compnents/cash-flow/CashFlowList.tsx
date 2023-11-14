@@ -28,6 +28,14 @@ const CashFlowList = ({
     setFormOpen(true);
   };
 
+  const disabledEditing = (item: CashFlowProps) => {
+    const isDisabled =
+      item.category_type !== 'Goals' &&
+      item.category !== 'Refund' &&
+      item.category !== 'Task';
+    return isDisabled;
+  };
+
   return (
     <div className="pl-5 ">
       <div className="bg-gray-100 w-[31.5rem] p-4 rounded-md">
@@ -84,23 +92,23 @@ const CashFlowList = ({
                     })}
                   </div>
                 </div>
-                {item.category_type !== 'Goals' &&
-                  item.category !== 'Refund' && (
-                    <div
-                      className=" cursor-pointer hover:text-info-content"
-                      onClick={() => onProjectSelect(item)}
-                    >
-                      <BiPencil />
-                    </div>
-                  )}
-                {item.category_type === 'Goals' && (
+                {disabledEditing(item) && (
+                  <div
+                    className=" cursor-pointer hover:text-info-content"
+                    onClick={() => onProjectSelect(item)}
+                  >
+                    <BiPencil />
+                  </div>
+                )}
+                {(item.category_type === 'Goals' ||
+                  item.category === 'Task') && (
                   <>
                     <div data-tooltip-id="my-tooltip-1">
                       <TbQuestionMark />
                     </div>
                     <ReactTooltip id="my-tooltip-1" aria-haspopup="true">
                       <div className="">
-                        <p>You can't edit goal amount.</p>
+                        <p>You can't edit amount.</p>
                         <p>If you want to edit goal go to</p>
                         <p>the Goal page and delete it</p>
                         <p>Money will be refunded.</p>

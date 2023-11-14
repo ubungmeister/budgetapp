@@ -48,7 +48,7 @@ code {
   @apply text-left mb-7 text-gray-500 text-sm;
 }
 .auth-error {
-  @apply text-left text-sm text-fuchsia-700;
+  @apply text-left text-sm text-fuchsia-700 pt-1;
 }
 .button-month {
   @apply bg-[#54a3ab] text-white rounded-md hover:bg-[#12486B] cursor-pointer;

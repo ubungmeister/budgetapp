@@ -1,7 +1,4 @@
-import { isDisabled } from '@testing-library/user-event/dist/utils';
-import React from 'react';
 import { BsSave } from 'react-icons/bs';
-import { CiViewTimeline } from 'react-icons/ci';
 import { VscRocket } from 'react-icons/vsc';
 
 import { TaskStatus } from './types';

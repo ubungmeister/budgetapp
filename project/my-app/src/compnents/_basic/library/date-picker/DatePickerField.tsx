@@ -1,8 +1,7 @@
-import React from 'react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { Control, Controller } from 'react-hook-form';
-import { FieldErrors, UseFormRegister } from 'react-hook-form';
+import { FieldErrors } from 'react-hook-form';
 
 type FormData = {
   start_date: Date;
@@ -15,6 +14,7 @@ type DatePickerProps = {
   control: Control<any>;
   date: Date;
   errors: FieldErrors<FormData>;
+  isDisabled?: boolean;
 };
 const DatePickerField = ({
   label,
@@ -22,6 +22,7 @@ const DatePickerField = ({
   control,
   date,
   errors,
+  isDisabled,
 }: DatePickerProps) => {
   return (
     <div className="flex flex-col text-[15px]">
@@ -37,6 +38,7 @@ const DatePickerField = ({
             onChange={(date) => field.onChange(date)}
             dateFormat="dd/MM/yyyy"
             selected={field.value}
+            disabled={isDisabled || false}
           />
         )}
       />

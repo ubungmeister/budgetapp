@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { GoalControlsProps } from '../../goals/types';
 import { TaskStatus } from '../../tasks/types';
 import SaveButton from '../library/buttons/SaveButton';
@@ -37,6 +35,7 @@ const AddItemControls = ({
   setFormOpen,
   setSelectedGoal,
   setSelectedTask,
+  isDisabled,
 }: GoalControlsProps) => {
   const onCreateItem = () => {
     setFormOpen(true);
@@ -47,6 +46,7 @@ const AddItemControls = ({
       setSelectedTask(initinalTask);
     }
   };
+
   return (
     <div className="flex flex-row justify-start pl-5">
       <button
@@ -57,7 +57,9 @@ const AddItemControls = ({
       >
         <p>{isActive ? 'Currently Active' : 'All Goals'}</p>
       </button>
-      <SaveButton handleSave={onCreateItem} buttonName={'Add +'} />
+      {isDisabled !== false && (
+        <SaveButton handleSave={onCreateItem} buttonName={'Add +'} />
+      )}
     </div>
   );
 };
