@@ -1,13 +1,11 @@
-import { UserData } from '../users/types';
-
 export interface TaskProps {
   id?: string;
   name: string;
   description: string;
   userId: string;
   amount: number | null;
-  start_date?: Date;
-  end_date?: Date;
+  start_date?: Date | null;
+  end_date?: Date | null;
   isActive: boolean;
   status: TaskStatus;
   feedback?: string;

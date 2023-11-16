@@ -19,6 +19,23 @@ export const getTasks = async (userID: string) => {
   }
 };
 
+export const getTasksByMonth = async (userID: string, date: Date) => {
+  try {
+    const pocketMoney = await axios.get(
+      'http://localhost:1000/tasks/get-tasks-month',
+      {
+        params: {
+          monthYear: date,
+          userID,
+        },
+      }
+    );
+    return pocketMoney;
+  } catch (error) {
+    console.error(error);
+  }
+};
+
 export const editTask = async (data: TaskProps) => {
   try {
     const result = await axios.post(

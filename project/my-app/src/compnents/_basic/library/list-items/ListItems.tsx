@@ -27,7 +27,7 @@ const ListItems = ({
 
   return (
     <div className="divide-solid divide-y">
-      {listOfItems.map((item, index) => (
+      {listOfItems?.map((item, index) => (
         <div
           className={`w-350px max-h-450px overflow-hidden flex flex-row justify-between items-center p-3 hover:bg-indigo-50
                 ${bgColor(item.status, index)}`}

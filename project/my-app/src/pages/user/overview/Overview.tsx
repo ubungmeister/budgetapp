@@ -10,9 +10,13 @@ import OverviewHeaders from '../../../compnents/overview/OverviewHeaders';
 import OverviewPeroformance from '../../../compnents/overview/OverviewPeroformance';
 import { getPocketMoneyUser } from '../../../compnents/pocket-money/api';
 import { PmType } from '../../../compnents/pocket-money/types';
+import { getTasksByMonth } from '../../../compnents/tasks/api';
+import { TaskProps } from '../../../compnents/tasks/types';
 import { UseAuthUser } from '../../../hooks/UseAuth';
 
 const Overview = () => {
+  UseAuthUser();
+
   const [isMonthChange, setIsMonthChange] = useState('');
   const [pocketMoney, setPocketMoney] = useState<PmType | null>(null);
   const [previousMonthPocketMoney, setPreviousMonthPocketMoney] =
@@ -23,7 +27,8 @@ const Overview = () => {
     Array<CashFlowProps>
   >([]);
   const [goals, setGoals] = useState<Array<GoalProps>>([]);
-  UseAuthUser();
+  const [tasks, setTasks] = useState<Array<TaskProps>>([]);
+
   const userID = window.localStorage.getItem('userID');
 
   useEffect(() => {
@@ -103,7 +108,14 @@ const Overview = () => {
         previousMonthDate
       );
       setPreviousMonthCashFlow(previousMonthCashFlow || []);
+
+      const tasks = await getTasksByMonth(userID, date);
+      const filteredTasks = tasks?.data.tasks.filter(
+        (task: TaskProps) => task.status === 'APPROVED'
+      );
+      setTasks(filteredTasks);
     };
+
     fetchData();
   }, [isMonthChange]);
 
@@ -129,6 +141,7 @@ const Overview = () => {
         previousMonthCashFlow={previousMonthCashFlow}
         pocketMoney={pocketMoney}
         previousMonthPocketMoney={previousMonthPocketMoney}
+        tasks={tasks}
       />
       <div className="felex flex-row space-x-10 pt-2 flex px-5">
         <OverviewPeroformance goals={goals} />
