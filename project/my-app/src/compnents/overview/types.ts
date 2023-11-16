@@ -1,5 +1,6 @@
 import { PmType } from '../../compnents/pocket-money/types';
 import { CashFlowProps } from '../cash-flow/types';
+import { TaskProps } from '../tasks/types';
 
 export interface OverviewControlsProps {
   setIsMonthChange: React.Dispatch<React.SetStateAction<string>>;
@@ -16,4 +17,5 @@ export interface OverviewHeaderProps {
   previousMonthCashFlow: CashFlowProps[];
   pocketMoney: PmType | null;
   previousMonthPocketMoney: PmType | null;
+  tasks: TaskProps[] | null;
 }

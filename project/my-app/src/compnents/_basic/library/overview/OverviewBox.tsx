@@ -23,8 +23,9 @@ const OverviewBox = ({
   const isIncome = boxType === 'Income';
   const isGoals = boxType === 'Goals';
   const isExpense = boxType === 'Expense';
+  const isTasks = boxType === 'Solved task';
 
-  const notEnoghDataText = `Don't have enough data for current or previous month to analyze your progree`;
+  const notEnoghDataText = `Don't have enough data for current or previous month to analyze your progress`;
 
   return (
     <div className="overview-box">
@@ -71,7 +72,9 @@ const OverviewBox = ({
 
       <ReactTooltip id={tooltipId} aria-haspopup="true">
         <p>
-          {percentage === 0
+          {percentage === 0 && isTasks
+            ? text[0]
+            : percentage === 0
             ? notEnoghDataText
             : percentage > 0
             ? text[0]

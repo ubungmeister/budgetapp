@@ -48,6 +48,65 @@ router.get('/get-all-tasks', async (req, res) => {
 })
 
 
+router.get('/get-tasks-month', async (req, res) => {
+
+  const { monthYear, userID } = req.query as { monthYear: string, userID: string }
+
+  if (!userID) return res.status(400).json({ message: 'No userID provided' });
+
+  const date = new Date(monthYear as string);
+  const year = date.getFullYear();
+  const month = date.getMonth()+1;
+
+  const newDate = new Date(year, month - 1, 1);
+  newDate.setUTCHours(0, 0, 0, 0);
+
+
+  const nextMonth = month === 12 ? 1 : month + 1;
+  const nextYear = month === 12 ? year + 1 : year;
+  const endOfMonth = new Date(nextYear, nextMonth - 1, 1);
+  endOfMonth.setUTCHours(0, 0, 0, 0);
+
+  
+  try{
+    const user = await prisma.user.findUnique({ where: { id: userID } });
+    if (!user) return res.status(400).json({ message: 'No user found' });
+     let tasks 
+     if(user.role === "USER"){
+        tasks =  await prisma.task.findMany({
+        where: {
+            userId: userID,
+             end_date: {
+        gt: newDate,
+        lte: endOfMonth,}
+        }
+    });
+     }
+     else if(user.role === "ADMIN"){
+        const familyID =  user.familyID;
+        tasks = await await prisma.task.findMany({
+        where: {
+            user: {
+                family: { id: familyID },
+            },
+            end_date: {
+        gt: newDate,
+        lte: endOfMonth,}
+        }
+    });
+     }
+      res.status(200).json({ tasks });
+
+  }catch (error) {
+        console.error(error);
+        res.status(500).json({ error: "Internal Server Error" });
+    }
+})
+
+
+
+
+
 router.post('/edit-task', async (req, res) => {
     
     const {name, description, amount, userId,start_date,end_date, isActive, status, id } = req.body

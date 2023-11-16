@@ -1,4 +1,4 @@
-import tasks from '../../assets/images/clipboard.png';
+import tasksImg from '../../assets/images/clipboard.png';
 import minus from '../../assets/images/minus.png';
 import plus from '../../assets/images/plus.png';
 import wallet from '../../assets/images/wallet.png';
@@ -16,6 +16,7 @@ const OverviewHeaders = ({
   previousMonthCashFlow,
   pocketMoney,
   previousMonthPocketMoney,
+  tasks,
 }: OverviewHeaderProps) => {
   const currentMonthAmounts = cashFlow.map((item) => item.amount);
   const currentMonthExpense = Math.abs(expenseCalculation(cashFlow));
@@ -49,6 +50,8 @@ const OverviewHeaders = ({
     previousMonthIncome
   );
 
+  const tasksAmount = tasks?.length || 0;
+
   const popUpTextGoals = [
     'Great! You saved more tnan in previous month. Keep it up 😄',
     'Buddy, You saved less than in previuse month. No worry, you can do it better next month',
@@ -62,6 +65,7 @@ const OverviewHeaders = ({
     'Great! You earned more tnan in previous month. Keep it up 😄',
     'Buddy, You earned less than in previuse month. No worry, you can do it better next month',
   ];
+  const tasksText = ['Well done!'];
 
   return (
     <div className=" pt-2 flex px-5">
@@ -88,10 +92,10 @@ const OverviewHeaders = ({
           boxType={'Income'}
         />
         <OverviewBox
-          amount={2}
+          amount={tasksAmount}
           percentage={0}
-          img={tasks}
-          text={popUpTextIncome}
+          img={tasksImg}
+          text={tasksText}
           boxType={'Solved task'}
         />
       </div>
