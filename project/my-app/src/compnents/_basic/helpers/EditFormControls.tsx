@@ -37,12 +37,17 @@ const EditFormControls = ({
           </div>
         </div>
       ) : (
-        <div className="flex  justify-between space-x-36">
+        <div className="flex  justify-between ">
           <div className="pt-2 text-[18px]">
             <span className="text-info-content">Create:</span>
             <span className="text-info-content font-semibold pl-1 ">
               {form.username ? 'Add new user' : 'Add new Goal'}
             </span>
+          </div>
+          <div>
+            {errorNotification && (
+              <Notification notification={errorNotification} />
+            )}
           </div>
           <div className="flex space-x-5">
             <SaveButton handleSave={submitForm} buttonName={'Save'} />

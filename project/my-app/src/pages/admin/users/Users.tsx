@@ -1,25 +1,23 @@
-import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useEffect, useState } from 'react';
 
+import ItemsList from '../../../compnents/_basic/helpers/ItemsList';
+import AddUser from '../../../compnents/users/AddUser';
 import EditUser from '../../../compnents/users/EditUser';
-import UsersList from '../../../compnents/users/UsersList';
 import { getUsers } from '../../../compnents/users/api';
 import { UserData, initialUserData } from '../../../compnents/users/types';
 import { UseAuth } from '../../../hooks/UseAuth';
 
 const Users = () => {
+  UseAuth();
+  const userId = window.localStorage.getItem('userID');
+
   const [users, setUsers] = useState<UserData[]>([initialUserData]);
   const [search, setSearch] = useState<string>('');
   const [filteredUsers, setFilteredUsers] = useState<UserData[]>([
     initialUserData,
   ]);
-  const [selectedUser, setSetSelectedUser] = useState<string>('');
-  const [userForm, setUserForm] = useState<UserData>(initialUserData);
+  const [selectedUser, setSetSelectedUser] = useState<UserData | null>(null);
   const [formOpen, setFormOpen] = useState<boolean>(false);
-
-  UseAuth();
-
-  const userId = window.localStorage.getItem('userID');
 
   useEffect(() => {
     const fetchData = async () => {
@@ -46,29 +44,25 @@ const Users = () => {
     setFilteredUsers(filteredUsers);
   }, [search, users]);
 
-  useEffect(() => {
-    if (selectedUser) {
-      const user = users.find((user) => user.id === selectedUser);
-      if (user) {
-        setUserForm(user);
-      }
-    }
-  }, [selectedUser]);
-
   return (
     <div className="flex pt-14 space-x-5 ">
-      <UsersList
-        setSearch={setSearch}
-        filteredUsers={filteredUsers}
-        setSetSelectedUser={setSetSelectedUser}
-        setFormOpen={setFormOpen}
-        setUserForm={setUserForm}
-      />
+      <div className="flex flex-col">
+        <ItemsList
+          items={filteredUsers}
+          setSelectedItem={setSetSelectedUser}
+          setFormOpen={setFormOpen}
+          setSearch={setSearch}
+          itemName={'Users'}
+        />
+        <AddUser
+          setSetSelectedUser={setSetSelectedUser}
+          setFormOpen={setFormOpen}
+        />
+      </div>
       <EditUser
-        userForm={userForm}
+        userForm={selectedUser}
         formOpen={formOpen}
         setFormOpen={setFormOpen}
-        setUserForm={setUserForm}
       />
     </div>
   );
