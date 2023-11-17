@@ -4,14 +4,16 @@ import { useState } from 'react';
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { SubmitHandler } from 'react-hook-form/dist/types/form';
+import { toast } from 'react-toastify';
 import { z } from 'zod';
 
 import EditFormControls from '../_basic/helpers/EditFormControls';
 import DeleteButton from '../_basic/library/buttons/DeleteButton';
 import InputField from '../_basic/library/inputs/InputField';
+import { getUsers } from '../users/api';
 import { createUser, deleteUser, updateUser } from './api';
 import { Role } from './types';
-import { EditUserProps } from './types';
+import { EditUserProps, UserData } from './types';
 
 const FormSchema = z.object({
   username: z.string().trim().min(1, { message: 'Name is required' }),
@@ -24,7 +26,7 @@ const EditUser = ({ userForm, formOpen, setFormOpen }: EditUserProps) => {
     register,
     handleSubmit,
     reset,
-    formState: { errors },
+    formState: { errors, isDirty },
   } = useForm<FormSchemaType>({
     resolver: zodResolver(FormSchema),
   });
@@ -41,35 +43,32 @@ const EditUser = ({ userForm, formOpen, setFormOpen }: EditUserProps) => {
       username: userForm?.username || '',
       email: userForm?.email || '',
     });
+    setErrorNotification('');
   }, [userForm, reset]);
 
-  // const userValidation = async (userForm: UserData) => {
-  //   if (!userForm.username.trim()) {
-  //     setErrorNotification('Please enter a username');
-  //     return false;
-  //   }
-  //   if (!userForm.email.trim() || !userForm.email.includes('@')) {
-  //     setErrorNotification('Please enter a valid email');
-  //     return false;
-  //   }
+  useEffect(() => {
+    setErrorNotification('');
+  }, [isDirty]);
 
-  //   const allUsers = await getUsers();
+  const isEmailExist = async (userForm: UserData) => {
+    const allUsers = await getUsers();
 
-  //   if (allUsers.some((user: UserData) => user.email === userForm.email)) {
-  //     if (userForm.id) {
-  //       const user = allUsers.find((user: UserData) => user.id === userForm.id);
-  //       if (user && user.email === userForm.email) {
-  //         return true;
-  //       }
-  //     }
-  //     setErrorNotification('Email already exists');
-  //     return false;
-  //   }
-  //   return true;
-  // };
+    if (allUsers.some((user: UserData) => user.email === userForm.email)) {
+      if (userForm.id) {
+        const user = allUsers.find((user: UserData) => user.id === userForm.id);
+        if (user && user.email === userForm.email) {
+          return false;
+        }
+      }
+
+      setErrorNotification('Email already exists');
+
+      return true;
+    }
+    return false;
+  };
 
   const onSubmit: SubmitHandler<FormSchemaType> = async (data) => {
-    console.log(data);
     try {
       const formData = {
         ...data,
@@ -77,12 +76,22 @@ const EditUser = ({ userForm, formOpen, setFormOpen }: EditUserProps) => {
         id: userForm?.id || '',
         role: userForm?.role || Role.USER,
       };
-      console.log(formData);
+      // reset all inputs fields on submit to triger isDirty useEffect if userEmailValidation is true
+      reset({
+        username: data.username,
+        email: data.email,
+      });
+
+      const userEmailValidation = await isEmailExist(formData);
+      if (userEmailValidation) {
+        return;
+      }
       if (formData.id) {
         await updateUser(formData);
       } else if (userID) {
         await createUser(formData, userID);
       }
+      toast.success('User updated');
       setFormOpen(false);
     } catch (error) {
       console.log(error);
@@ -103,11 +112,11 @@ const EditUser = ({ userForm, formOpen, setFormOpen }: EditUserProps) => {
         await deleteUser(value);
       }
     }
+    toast.success('User deleted');
     setFormOpen(false);
   };
 
   const submitForm = () => {
-    console.log('submitForm');
     if (formRef.current) {
       const formElement = formRef.current;
       const submitEvent = new Event('submit', { cancelable: true });
