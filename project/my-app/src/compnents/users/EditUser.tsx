@@ -17,7 +17,7 @@ import { EditUserProps, UserData } from './types';
 
 const FormSchema = z.object({
   username: z.string().trim().min(1, { message: 'Name is required' }),
-  email: z.string().trim().min(1, { message: 'Email is required' }),
+  email: z.string().email({ message: 'Please enter a valid email' }),
 });
 type FormSchemaType = z.infer<typeof FormSchema>;
 

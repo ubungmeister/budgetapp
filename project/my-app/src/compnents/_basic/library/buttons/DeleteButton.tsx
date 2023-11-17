@@ -13,8 +13,8 @@ const DeleteButton = ({
   buttonName,
 }: DeleteButtonProps) => {
   return (
-    <div className="pt-4">
-      <button
+    <div className="pt-4 flex max-w-40  ">
+      <div
         className="flex flex-row space-x-2 button-delete px-4 py-2 bg-red-100"
         onClick={() => onDelete(selectedItem?.id || '')}
       >
@@ -22,7 +22,7 @@ const DeleteButton = ({
           {selectedItem?.username ? <AiOutlineUserDelete /> : <TbTargetArrow />}
         </div>
         <span>{buttonName}</span>
-      </button>
+      </div>
     </div>
   );
 };
