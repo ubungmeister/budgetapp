@@ -48,9 +48,6 @@ type FormSchemaType = z.infer<typeof FormSchema>;
 
 const SignUp = () => {
   UseRedirect();
-
-  const [error, setError] = useState('');
-
   const {
     register,
     handleSubmit,
@@ -58,6 +55,8 @@ const SignUp = () => {
   } = useForm<FormSchemaType>({
     resolver: zodResolver(FormSchema),
   });
+
+  const [error, setError] = useState('');
 
   const onSubmit: SubmitHandler<FormSchemaType> = async (data) => {
     try {
