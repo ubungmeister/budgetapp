@@ -12,6 +12,7 @@ const ItemsList = ({
 }: GoalListProps) => {
   const selectedItemHandler = (item: any) => {
     if (setSelectedItem) {
+      console.log('item', item);
       setSelectedItem(item);
     }
     setFormOpen(true);

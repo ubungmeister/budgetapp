@@ -5,6 +5,7 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import { Link } from 'react-router-dom';
 import { z } from 'zod';
 
+import { getUsers } from '../../compnents/users/api';
 import UseRedirect from '../../hooks/UseRedirect';
 import withAuthLayout from './layout';
 
@@ -59,6 +60,9 @@ const SignUp = () => {
   });
 
   const onSubmit: SubmitHandler<FormSchemaType> = async (data) => {
+    const existingUsers = await getUsers();
+    console.log(existingUsers);
+    // const userExists = existingUsers.find((user:any) => user.email === data.email);
     try {
       await axios.post('http://localhost:1000/auth/signup', data);
       alert('User created successfully');

@@ -85,20 +85,6 @@ const GoalsForm = ({ formOpen, setFormOpen, selectedGoal }: GoalFormProps) => {
     }
   };
 
-  //handle click on submit button
-  const submitForm = () => {
-    if (formRef.current) {
-      const formElement = formRef.current;
-      const submitEvent = new Event('submit', { cancelable: true });
-      if (
-        formElement.dispatchEvent(submitEvent) &&
-        !submitEvent.defaultPrevented
-      ) {
-        handleSubmit(onSubmit);
-      }
-    }
-  };
-
   const onDelete = async (value: string) => {
     if (value) {
       const shouldDelete = window.confirm(
@@ -111,6 +97,20 @@ const GoalsForm = ({ formOpen, setFormOpen, selectedGoal }: GoalFormProps) => {
     }
     setFormOpen(false);
     toast.success('Goal deleted ');
+  };
+
+  //handle click on submit button
+  const submitForm = () => {
+    if (formRef.current) {
+      const formElement = formRef.current;
+      const submitEvent = new Event('submit', { cancelable: true });
+      if (
+        formElement.dispatchEvent(submitEvent) &&
+        !submitEvent.defaultPrevented
+      ) {
+        handleSubmit(onSubmit);
+      }
+    }
   };
 
   return (

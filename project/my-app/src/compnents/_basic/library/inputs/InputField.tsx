@@ -6,6 +6,8 @@ type FormData = {
   amount: number;
   description: string;
   goalAmount: number;
+  email: string;
+  username: string;
 };
 
 type InputFieldProps = {

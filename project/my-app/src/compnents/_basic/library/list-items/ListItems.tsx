@@ -34,7 +34,7 @@ const ListItems = ({
           key={item.id}
           onClick={() => selectedItemHandler(item)}
         >
-          <p className="w-20 overflow-hidden truncate">
+          <p className="w-24 overflow-hidden truncate">
             {item.username ?? item.name}
           </p>
           {isAdmin && item.status === 'ON_REVIEW' && (
