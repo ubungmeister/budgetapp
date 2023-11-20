@@ -38,6 +38,8 @@ model User {
   savingGoal   SavingGoal[]
   family    Family?  @relation(fields: [familyID], references: [id])
   task    Task[]
+  resetToken       String?         @unique
+  resetTokenExpiry DateTime?
 }
 
  model PocketMoney {
