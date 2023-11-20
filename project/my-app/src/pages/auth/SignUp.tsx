@@ -5,7 +5,6 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import { Link } from 'react-router-dom';
 import { z } from 'zod';
 
-import { getUsers } from '../../compnents/users/api';
 import UseRedirect from '../../hooks/UseRedirect';
 import withAuthLayout from './layout';
 
@@ -48,6 +47,7 @@ type FormSchemaType = z.infer<typeof FormSchema>;
 
 const SignUp = () => {
   UseRedirect();
+
   const {
     register,
     handleSubmit,

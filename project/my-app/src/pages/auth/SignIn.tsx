@@ -1,6 +1,6 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import axios from 'axios';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import { useCookies } from 'react-cookie';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { FiEye, FiEyeOff } from 'react-icons/fi';
@@ -9,6 +9,7 @@ import { toast } from 'react-toastify';
 import { z } from 'zod';
 
 import UseRedirect from '../../hooks/UseRedirect';
+import { RecoveryContext } from './RecoveryProvider';
 import withAuthLayout from './layout';
 
 const FormSchema = z.object({
@@ -22,6 +23,7 @@ export type FormSchemaType = z.infer<typeof FormSchema>;
 
 const SignIn = () => {
   UseRedirect();
+  const { setPage } = useContext(RecoveryContext);
 
   const [isShowPassword, setIsShowPassword] = useState(false);
 
@@ -88,8 +90,6 @@ const SignIn = () => {
             <p className="auth-error mb-5">{errors.password.message}</p>
           )}
 
-          <div className="auth-credentials"> Forget your credential?</div>
-
           <button className="auth-button type:submit" disabled={isSubmitting}>
             SingIn
           </button>
@@ -98,6 +98,15 @@ const SignIn = () => {
             <p className="mr-2">Don't have an account?</p>
             <p className="text-green-700 hover:text-green-800 cursor-pointer">
               <Link to="/auth/signUp">SignUp</Link>
+            </p>
+          </div>
+          <div className="flex flex-row justify-center">
+            <p className="mr-2">Forgot your password?</p>
+            <p
+              className="text-green-700 hover:text-green-800 cursor-pointer"
+              onClick={() => setPage('email')}
+            >
+              <Link to="/reset-password ">Reset</Link>
             </p>
           </div>
         </div>
