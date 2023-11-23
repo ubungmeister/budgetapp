@@ -9,6 +9,7 @@ import { pocketMoneyRouter } from './routes/pocketmoney';
 import { cashFlowRouter } from './routes/cashflow';
 import { savingGoalRouter } from './routes/savinggoal';
 import { tasksRouter } from './routes/tasks';
+require('dotenv').config()
 const app = express();
 app.use(express.json());
 app.use(cors());

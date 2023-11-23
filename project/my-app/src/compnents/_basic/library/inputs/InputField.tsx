@@ -8,6 +8,8 @@ type FormData = {
   goalAmount: number;
   email: string;
   username: string;
+  password: string;
+  confirmPassword: string;
 };
 
 type InputFieldProps = {

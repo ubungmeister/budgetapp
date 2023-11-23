@@ -1,11 +1,12 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import axios from 'axios';
-import { useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import { z } from 'zod';
 
-import { getUsers } from '../../compnents/users/api';
+import AuthInputField from '../../compnents/_basic/library/inputs/AuthInputField';
 import UseRedirect from '../../hooks/UseRedirect';
 import withAuthLayout from './layout';
 
@@ -34,7 +35,9 @@ const FormSchema = z
         },
         { message: 'Email already exists' }
       ),
-    familyName: z.string(),
+    familyName: z
+      .string()
+      .min(3, { message: 'Family name must be at least 3 characters long' }),
     password: z
       .string()
       .min(6, { message: 'Password must be at least 6 characters long' }),
@@ -48,6 +51,8 @@ type FormSchemaType = z.infer<typeof FormSchema>;
 
 const SignUp = () => {
   UseRedirect();
+  const navigate = useNavigate();
+
   const {
     register,
     handleSubmit,
@@ -56,15 +61,18 @@ const SignUp = () => {
     resolver: zodResolver(FormSchema),
   });
 
-  const [error, setError] = useState('');
-
   const onSubmit: SubmitHandler<FormSchemaType> = async (data) => {
     try {
-      await axios.post('http://localhost:1000/auth/signup', data);
-      alert('User created successfully');
-      setError('');
+      const result = await axios.post(
+        'http://localhost:1000/auth/signup',
+        data
+      );
+      if (result.status === 200) {
+        toast.success('User created successfully');
+        navigate('/auth/signIn');
+      }
     } catch (error: any) {
-      setError(error.response.data.message);
+      toast.error(error.response.data.message);
     }
   };
 
@@ -73,44 +81,36 @@ const SignUp = () => {
       <form className="auth" onSubmit={handleSubmit(onSubmit)}>
         <div>
           <p className="my-5 text-center text-lg">SignUp form</p>
-          <input
-            className="auth-input"
-            type="text"
-            placeholder="Name"
-            {...register('username')}
+          <AuthInputField
+            name="username"
+            register={register}
+            errors={errors}
+            placeholder={'Name'}
           />
-          {errors.username && (
-            <p className="auth-error">{errors.username.message}</p>
-          )}
-          <input
-            className="auth-input"
-            placeholder="Emial"
-            {...register('email')}
+          <AuthInputField
+            name="email"
+            register={register}
+            errors={errors}
+            placeholder={'Email'}
           />
-          {errors.email && <p className="auth-error">{errors.email.message}</p>}
-          <input
-            className="auth-input"
-            type="text"
-            placeholder="Family Name"
-            {...register('familyName')}
+          <AuthInputField
+            name="familyName"
+            register={register}
+            errors={errors}
+            placeholder={'Family Name'}
           />
-          <input
-            className="auth-input"
-            placeholder="Password"
-            {...register('password')}
+          <AuthInputField
+            name="password"
+            register={register}
+            errors={errors}
+            placeholder={'Password'}
           />
-          {errors.password && (
-            <p className="auth-error">{errors.password.message}</p>
-          )}
-          <input
-            className="auth-input"
-            placeholder="Confirm Password"
-            {...register('confirmPassword')}
+          <AuthInputField
+            name="confirmPassword"
+            register={register}
+            errors={errors}
+            placeholder={'Confirm password'}
           />
-          {errors.confirmPassword && (
-            <p className="auth-error mb-5">{errors.confirmPassword.message}</p>
-          )}
-          {error && <p className="auth-error mb-5">{error}</p>}
           <button className="auth-button type:submit" disabled={isSubmitting}>
             SingUp
           </button>

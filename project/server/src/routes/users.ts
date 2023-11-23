@@ -1,9 +1,7 @@
 import express from "express"
 import bcrypt from "bcrypt"
 import { PrismaClient } from "@prisma/client"
-import jwt from "jsonwebtoken"
-
-const nodemailer = require("nodemailer");
+import { transporter} from '../utils/helpers';
 
 const prisma = new PrismaClient();
 
@@ -41,13 +39,6 @@ router.post('/create-user', async (req, res) => {
     });
 
     // Send email to the newly created user
-    const transporter = nodemailer.createTransport({
-    service: 'gmail',
-    auth: {
-        user: 'kidbugetapp@gmail.com',
-        pass: 'xrwneibpcoeiwkwe'
-  }
-    });
 
     const mailOptions = {
       from: 'kidbugetapp@gmail.com',

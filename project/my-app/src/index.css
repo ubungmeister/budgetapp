@@ -38,7 +38,7 @@ code {
 }
 
 .auth {
-  @apply md:max-w-[30rem] max-w-min relative top-7 flex w-auto min-w-[20rem] flex-col rounded-xl bg-white p-8 shadow-xl font-mono;
+  @apply md:max-w-[30rem]  relative top-7 flex w-auto min-w-[25rem] flex-col rounded-xl bg-white p-8 shadow-xl font-mono;
 }
 .auth-input {
   @apply border rounded-md mt-2 px-3 py-2 w-full mb-4 border-fuchsia-300;
@@ -51,6 +51,12 @@ code {
 }
 .auth-error {
   @apply text-left text-sm text-fuchsia-700 pt-1;
+}
+.input-error {
+  @apply border border-red-600;
+}
+.otp-input {
+  @apply w-full text-lg bg-white h-full flex flex-col items-center justify-center text-center px-5 outline-none rounded-xl border;
 }
 .button-month {
   @apply bg-[#54a3ab] text-white rounded-md hover:bg-[#12486B] cursor-pointer;

@@ -153,7 +153,7 @@ const TasksForm = ({
           userId: selectedUser?.value || '',
           category_type: 'Income',
         };
-        const result = await createReward(data);
+        await createReward(data);
       }
 
       setFormOpen(false);
@@ -190,11 +190,8 @@ const TasksForm = ({
     setFormOpen(false);
   };
 
-  const onSelectHandler = (option: OptionType) => {
-    setSelectedUser(option);
-  };
-
-  const onTaskStatusChange = (newStatus: TaskStatus) => {
+  //task status handle for user
+  const onTaskStatusUserChange = (newStatus: TaskStatus) => {
     try {
       if (!selectedTask) return;
       const selected = { ...selectedTask, status: newStatus };
@@ -202,6 +199,7 @@ const TasksForm = ({
     } catch (error) {}
   };
 
+  //task status handle for admin
   const onTaskStatusAdminChnage = (newStatus: any) => {
     setSelectedStatus(newStatus);
   };
@@ -219,7 +217,7 @@ const TasksForm = ({
             />
           ) : (
             <TaskReviewControl
-              setTaskStatus={onTaskStatusChange}
+              setTaskStatus={onTaskStatusUserChange}
               taskStatus={selectedTask?.status || TaskStatus.PENDING}
             />
           )}
@@ -258,7 +256,7 @@ const TasksForm = ({
                     classNamePrefix="Select"
                     value={selectedUser || null}
                     options={users}
-                    onChange={onSelectHandler}
+                    onChange={(option: OptionType) => setSelectedUser(option)}
                     components={{ Option: customOption }}
                   />
                   {errors && (

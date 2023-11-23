@@ -244,7 +244,6 @@ const CashFlowForm = ({
                 categoryType={categoryType}
               />
             </div>
-
             <CategorySelector
               category={category}
               setCategory={setCategory}
