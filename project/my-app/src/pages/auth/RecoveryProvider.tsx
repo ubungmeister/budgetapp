@@ -2,8 +2,9 @@ import { createContext, useState } from 'react';
 
 import EmailInput from '../../compnents/auth/EmailInput';
 import OTPInput from '../../compnents/auth/OTPInput';
-import RecoveredPassword from '../../compnents/auth/RecoveredPassword';
 import ResetPassword from '../../compnents/auth/ResetPassword';
+import SignIn from './SignIn';
+import withAuthLayout from './layout';
 
 export const RecoveryContext = createContext({
   page: '',
@@ -16,7 +17,7 @@ export const RecoveryContext = createContext({
 
 // export const RecoveryContext = createContext();
 
-export const RecoveryProvider = () => {
+const RecoveryProvider = () => {
   const [page, setPage] = useState('email');
   const [email, setEmail] = useState('');
   const [verifiedToken, setVerifiedToken] = useState('');
@@ -28,7 +29,7 @@ export const RecoveryProvider = () => {
     if (page === 'otp') return <OTPInput />;
     if (page === 'reset') return <ResetPassword />;
 
-    return <RecoveredPassword />;
+    return <SignIn />;
   }
 
   return (
@@ -48,3 +49,5 @@ export const RecoveryProvider = () => {
     </RecoveryContext.Provider>
   );
 };
+
+export default withAuthLayout(RecoveryProvider);

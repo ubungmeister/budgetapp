@@ -5,7 +5,7 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import { z } from 'zod';
 
 import { RecoveryContext } from '../../pages/auth/RecoveryProvider';
-import InputField from '../_basic/library/inputs/InputField';
+import AuthInputField from './../_basic/library/inputs/AuthInputField';
 
 const FormSchema = z.object({
   email: z.string().email({ message: 'Please enter a valid email' }),
@@ -30,28 +30,21 @@ export default function EmailInput() {
       setPage('otp');
       setEmail(data.email);
     } catch (error: any) {
-      console.log(error.response.data.message);
+      //even if user doesn't exist, we will send the same message to avoid user enumeration
+      setPage('otp');
     }
   };
 
   return (
-    <form className="auth p-10" onSubmit={handleSubmit(onSubmit)}>
-      <div>Enter your email address.</div>
-      <InputField
-        label=""
-        name="email"
-        type="string"
-        register={register}
-        errors={errors}
-      />
-      <div className="py-5">
-        <button
-          disabled={!!errors.email || isSubmitting}
-          className="flex flex-row cursor-pointer items-center justify-center text-center w-full border rounded-xl outline-none py-5 bg-blue-700 border-none text-white text-sm shadow-sm"
-        >
-          Verify Email
-        </button>
-      </div>
+    <form className="auth " onSubmit={handleSubmit(onSubmit)}>
+      <p className="my-5 text-center text-lg">Enter your email address</p>
+      <AuthInputField name="email" register={register} errors={errors} />
+      <button
+        disabled={!!errors.email || isSubmitting}
+        className="auth-button type:submit"
+      >
+        Verify Email
+      </button>
     </form>
   );
 }

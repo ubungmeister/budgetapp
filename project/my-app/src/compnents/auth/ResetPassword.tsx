@@ -1,11 +1,13 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import axios from 'axios';
-import { useContext, useState } from 'react';
+import { useContext } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
+import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import { z } from 'zod';
 
 import { RecoveryContext } from '../../pages/auth/RecoveryProvider';
-import InputField from '../_basic/library/inputs/InputField';
+import AuthInputField from '../_basic/library/inputs/AuthInputField';
 
 const FormSchema = z
   .object({
@@ -22,8 +24,8 @@ const FormSchema = z
 export type FormSchemaType = z.infer<typeof FormSchema>;
 
 export default function ResetPassword() {
-  const { setPage, verifiedToken } = useContext(RecoveryContext);
-
+  const { verifiedToken } = useContext(RecoveryContext);
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
@@ -44,40 +46,33 @@ export default function ResetPassword() {
         formData
       );
       if (result.status === 200) {
-        console.log('Password changed');
+        toast.success('Password changed');
+        navigate('/auth/signin');
       }
     } catch (error: any) {
-      console.log(error.response.data.message);
+      toast.error(error.response.data.message);
     }
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <div className="bg-gray-50 w-screen dark:bg-gray-900">
-        <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
-          <div className="w-full p-6 bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md dark:bg-gray-800 dark:border-gray-700 sm:p-8">
-            <h2 className="mb-1 text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
-              Change Password
-            </h2>
-            <div className="mt-4 space-y-4 lg:mt-5 md:space-y-5">
-              <InputField
-                label="Password:"
-                name="password"
-                type="string"
-                register={register}
-                errors={errors}
-              />
-              <InputField
-                label="Confirm Password:"
-                name="confirmPassword"
-                type="string"
-                register={register}
-                errors={errors}
-              />
-              <button type="submit">Reset passwod</button>
-            </div>
-          </div>
-        </div>
+    <form className="auth" onSubmit={handleSubmit(onSubmit)}>
+      <p className="my-5 text-center text-lg">Change Password</p>
+      <div className="flex flex-col">
+        <AuthInputField
+          name="password"
+          placeholder="Password:"
+          register={register}
+          errors={errors}
+        />
+        <AuthInputField
+          placeholder="Confirm Password:"
+          name="confirmPassword"
+          register={register}
+          errors={errors}
+        />
+        <button disabled={isSubmitting} className="auth-button type:submit">
+          Reset passwod
+        </button>
       </div>
     </form>
   );

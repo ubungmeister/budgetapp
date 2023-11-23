@@ -1,6 +1,6 @@
 import { Route, Routes } from 'react-router-dom';
 
-import { RecoveryProvider } from '../../../../pages/auth/RecoveryProvider';
+import RecoveryProvider from '../../../../pages/auth/RecoveryProvider';
 import SignIn from '../../../../pages/auth/SignIn';
 import SignUp from '../../../../pages/auth/SignUp';
 

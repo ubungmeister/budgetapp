@@ -7,6 +7,7 @@ type FormData = {
   password: string;
   confirmPassword: string;
   familyName: string;
+  otp: string;
 };
 
 type FieldProps = {

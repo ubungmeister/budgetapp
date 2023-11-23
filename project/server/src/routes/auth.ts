@@ -57,7 +57,6 @@ router.post("/signin", async (req, res) => {
     res.status(400).json({message: "Email or password is incorrect"})
     return;
 }
-    console.log(existingUserWithEmail)
     const token =  jwt.sign({email: existingUserWithEmail.email, id: existingUserWithEmail.id}, "test", {expiresIn: "1h"})
 
     res.json({userID:existingUserWithEmail.id, userRole:existingUserWithEmail.role, token})
@@ -69,7 +68,7 @@ router.post('/request-otp', async (req, res) => {
   const otp = Math.floor(100000 + Math.random() * 900000).toString(); 
   const hashedOTP = await bcrypt.hash(otp, 10) as string;
   const otpExpiry = new Date(Date.now() + 5 * 60000); // 5 minutes from now
-    console.log('email', email)
+  
   try {
       const user = await prisma.user.update({
          where: { email: email },
@@ -117,7 +116,6 @@ router.post('/verify-otp', async (req, res) => {
 router.post('/reset-password', async (req, res) => {
   const {newPassword,verifiedToken } = req.body;
 
-  console.log(newPassword, verifiedToken , 'here')
 
   try {
     // Verify the token and extract the payload

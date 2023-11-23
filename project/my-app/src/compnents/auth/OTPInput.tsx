@@ -6,15 +6,10 @@ import { Link } from 'react-router-dom';
 import { z } from 'zod';
 
 import { RecoveryContext } from '../../pages/auth/RecoveryProvider';
-import RecoveryInputField from '../_basic/library/inputs/RecoveryInputField';
+import AuthInputField from '../_basic/library/inputs/AuthInputField';
 
 const FormSchema = z.object({
-  otp1: z.string(),
-  otp2: z.string(),
-  otp3: z.string(),
-  otp4: z.string(),
-  otp5: z.string(),
-  otp6: z.string(),
+  otp: z.string().min(6, { message: 'OTP must be 6 characters long' }),
 });
 
 export type FormSchemaType = z.infer<typeof FormSchema>;
@@ -22,14 +17,14 @@ export type FormSchemaType = z.infer<typeof FormSchema>;
 export default function OTPInput() {
   const { email, setPage, setVerifiedToken } = useContext(RecoveryContext);
 
-  const [error, setError] = useState('');
+  const [error, setError] = useState(''); //error message from server
   const [minutes, setMinutes] = useState(1);
   const [seconds, setSeconds] = useState(59);
   const {
     register,
     handleSubmit,
     reset,
-    formState: { isSubmitting },
+    formState: { isSubmitting, errors },
   } = useForm<FormSchemaType>({
     resolver: zodResolver(FormSchema),
   });
@@ -58,9 +53,8 @@ export default function OTPInput() {
   }, []);
 
   const onSubmit: SubmitHandler<FormSchemaType> = async (data) => {
-    const otp = `${data.otp1}${data.otp2}${data.otp3}${data.otp4}${data.otp5}${data.otp6}`;
     const formData = {
-      otp: otp,
+      otp: data.otp,
       email: email,
     };
     try {
@@ -85,95 +79,63 @@ export default function OTPInput() {
     handleSubmit(onSubmit);
   };
   return (
-    <form
-      onSubmit={handleSubmit(onSubmit)}
-      className="flex justify-center items-center w-screen h-screen bg-gray-50"
-    >
-      <div className="bg-white px-6 pt-10 pb-9 shadow-xl mx-auto w-full max-w-lg rounded-2xl">
-        <div className="mx-auto flex w-full max-w-md flex-col space-y-16">
-          <div className="flex flex-col items-center justify-center text-center space-y-2">
-            <div className="font-semibold text-3xl">
-              <p>Email Verification</p>
-            </div>
-            <div className="flex flex-row text-sm font-medium text-gray-400">
-              <p>We have sent a code to your email {email}</p>
-            </div>
+    <form onSubmit={handleSubmit(onSubmit)} className="auth">
+      <div className="mx-auto flex w-full max-w-md flex-col space-y-12">
+        <div className="flex flex-col items-center justify-center text-center space-y-2">
+          <div className="font-semibold text-2xl">
+            <p>Email Verification</p>
           </div>
-          <div className="flex flex-col space-y-14 ">
-            <div className="flex flex-col">
-              <div className="flex flex-row items-center justify-center mx-auto w-full max-w-xs">
-                <RecoveryInputField
-                  name="otp1"
-                  register={register}
-                  error={error}
-                />
-                <RecoveryInputField
-                  name="otp2"
-                  register={register}
-                  error={error}
-                />
-                <RecoveryInputField
-                  name="otp3"
-                  register={register}
-                  error={error}
-                />
-                <RecoveryInputField
-                  name="otp4"
-                  register={register}
-                  error={error}
-                />
-                <RecoveryInputField
-                  name="otp5"
-                  register={register}
-                  error={error}
-                />
-                <RecoveryInputField
-                  name="otp6"
-                  register={register}
-                  error={error}
-                />
-              </div>
-              {error && (
-                <p className="pt-2 text-center text-sm text-fuchsia-700">
-                  {error}
-                </p>
-              )}
+          <div className="flex flex-row text-sm font-medium text-gray-400">
+            <p>We have sent a code to your email {email}</p>
+          </div>
+        </div>
+        <div className="flex flex-col  ">
+          <div className="flex flex-col">
+            <AuthInputField
+              name="otp"
+              register={register}
+              errors={errors}
+              placeholder="OTP"
+            />
+            {error && (
+              <p className="pt-2 text-center text-sm text-fuchsia-700">
+                {error}
+              </p>
+            )}
+          </div>
+          <div className="flex flex-col space-y-2 pt-2">
+            <div>
+              <button
+                type="submit"
+                className="auth-button"
+                disabled={isSubmitting}
+              >
+                Verify Account
+              </button>
             </div>
-
-            <div className="flex flex-col space-y-3">
-              <div>
-                <button
-                  type="submit"
-                  className="auth-button"
-                  disabled={isSubmitting}
-                >
-                  Verify Account
-                </button>
+            <div className="flex justify-between ">
+              <div className="flex-row flex space-x-2">
+                <p className="pr-2"> Time remaining:</p>
+                {minutes < 10 ? `0${minutes}` : minutes}:
+                {seconds < 10 ? `0${seconds}` : seconds}
               </div>
-              <div className="flex justify-between ">
-                <div className="flex-row flex space-x-2">
-                  <p className="pr-2"> Time remaining:</p>
-                  {minutes < 10 ? `0${minutes}` : minutes}:
-                  {seconds < 10 ? `0${seconds}` : seconds}
-                </div>
-                <button
-                  disabled={minutes > 0 || seconds > 0}
-                  onClick={resetOTPHandler}
-                  className={`${
-                    minutes > 0 && seconds > 0
-                      ? 'text-gray-400 px-1 border-gray-400 cursor-not-allowed'
-                      : 'text-green-700 hover:text-green-800 cursor-pointer px-1 '
-                  }'}`}
-                >
-                  Resend OTP
-                </button>
-              </div>
-              <div className="flex flex-row">
-                <p className="mr-2">Go back to</p>
-                <p className="text-green-700 hover:text-green-800 cursor-pointer">
-                  <Link to="/auth/signIn">Sign In</Link>
-                </p>
-              </div>
+              <button
+                disabled={minutes > 0 || seconds > 0}
+                onClick={resetOTPHandler}
+                className={`${
+                  minutes > 0 && seconds > 0
+                    ? 'text-gray-400 px-1 border-gray-400 cursor-not-allowed'
+                    : 'text-green-700 hover:text-green-800 cursor-pointer px-1 '
+                }'}`}
+              >
+                Resend OTP
+              </button>
+            </div>
+            <div className="flex flex-row">
+              <p className="mr-2">Go back to</p>
+              <p className="text-green-700 hover:text-green-800 cursor-pointer">
+                <Link to="/auth/signIn">Sign In</Link>
+              </p>
             </div>
           </div>
         </div>
