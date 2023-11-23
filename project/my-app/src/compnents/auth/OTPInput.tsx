@@ -25,7 +25,6 @@ export default function OTPInput() {
   const [error, setError] = useState('');
   const [minutes, setMinutes] = useState(1);
   const [seconds, setSeconds] = useState(59);
-  console.log(minutes, seconds);
   const {
     register,
     handleSubmit,

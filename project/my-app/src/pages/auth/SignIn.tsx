@@ -8,6 +8,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { z } from 'zod';
 
+import AuthInputField from '../../compnents/_basic/library/inputs/AuthInputField';
 import UseRedirect from '../../hooks/UseRedirect';
 import { RecoveryContext } from './RecoveryProvider';
 import withAuthLayout from './layout';
@@ -62,12 +63,7 @@ const SignIn = () => {
       <form className="auth" onSubmit={handleSubmit(onSubmit)}>
         <div className="min-w-[22rem]">
           <p className="my-5 text-center text-lg">SignIn</p>
-          <input
-            className="auth-input"
-            placeholder="Your email"
-            {...register('email')}
-          />
-          {errors.email && <p className="auth-error">{errors.email.message}</p>}
+          <AuthInputField name="email" register={register} errors={errors} />
           <div className="relative">
             <input
               type={`${isShowPassword ? 'text' : 'password'}`}
@@ -86,9 +82,6 @@ const SignIn = () => {
               )}
             </svg>
           </div>
-          {errors.password && (
-            <p className="auth-error mb-5">{errors.password.message}</p>
-          )}
 
           <button className="auth-button type:submit" disabled={isSubmitting}>
             SingIn

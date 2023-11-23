@@ -1,6 +1,6 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import axios from 'axios';
-import { useContext, useState } from 'react';
+import { useContext } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { z } from 'zod';
 
@@ -14,7 +14,7 @@ const FormSchema = z.object({
 export type FormSchemaType = z.infer<typeof FormSchema>;
 
 export default function EmailInput() {
-  const { setEmail, setPage, email } = useContext(RecoveryContext);
+  const { setEmail, setPage } = useContext(RecoveryContext);
 
   const {
     register,
@@ -35,27 +35,18 @@ export default function EmailInput() {
   };
 
   return (
-    <form className="auth " onSubmit={handleSubmit(onSubmit)}>
+    <form className="auth p-10" onSubmit={handleSubmit(onSubmit)}>
+      <div>Enter your email address.</div>
       <InputField
-        label="Password:"
+        label=""
         name="email"
         type="string"
         register={register}
         errors={errors}
       />
-      {/* <div className="min-w-[22rem]">
-     
-        <p className="my-5 text-center text-lg">Enter your email</p>
-        <input
-          className="auth-input"
-          placeholder="Your email"
-          {...register('email')}
-        />
-        {errors.email && <p className="auth-error">{errors.email.message}</p>}
-      </div> */}
-      <div>
+      <div className="py-5">
         <button
-          disabled={!!errors.email}
+          disabled={!!errors.email || isSubmitting}
           className="flex flex-row cursor-pointer items-center justify-center text-center w-full border rounded-xl outline-none py-5 bg-blue-700 border-none text-white text-sm shadow-sm"
         >
           Verify Email

@@ -38,9 +38,8 @@ router.post("/signup", async (req, res) => {
             familyID: createUniqID
         }
     })
-
-    res.json({message: "User created"})
-})
+    res.json(200).json({message: "User created successfully"})
+  })
 
 router.post("/signin", async (req, res) => {
     const {email, password} = req.body;

@@ -38,7 +38,7 @@ const InputField = ({
   };
   return (
     <div className="flex flex-col text-[15px]">
-      <p className="text-gray-600 pb-1">Enter your email:</p>
+      <p className="text-gray-600 pb-1">{label}</p>
       {type === 'textarea' ? (
         <textarea
           className="input-table"

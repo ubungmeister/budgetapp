@@ -1,4 +1,4 @@
-import { Control, FieldErrors, UseFormRegister } from 'react-hook-form';
+import { FieldErrors, UseFormRegister } from 'react-hook-form';
 
 type FormData = {
   name: string;
@@ -6,36 +6,29 @@ type FormData = {
   username: string;
   password: string;
   confirmPassword: string;
+  familyName: string;
 };
 
 type FieldProps = {
-  label: string;
   name: keyof FormData;
   register: UseFormRegister<any>;
   errors: FieldErrors<FormData>;
-  type?: string;
-  isDisabled?: boolean;
+  placeholder?: string;
 };
 
 const AuthInputField = ({
-  label,
   name,
   register,
   errors,
-  type,
-  isDisabled,
+  placeholder,
 }: FieldProps) => {
-  const commonProps = {
-    id: name,
-    className: 'input-table',
-    ...(type === ('number' || 'float')
-      ? register(name, { valueAsNumber: true })
-      : register(name)),
-  };
   return (
-    <div className="flex flex-col text-[15px]">
-      <p className="my-5 text-center text-lg">SignIn</p>
-      <input type={type} {...commonProps} disabled={isDisabled || false} />
+    <div className="relative">
+      <input
+        className="auth-input"
+        {...register(name)}
+        placeholder={placeholder}
+      />
       {errors && <p className="auth-error">{errors[name]?.message}</p>}
     </div>
   );
