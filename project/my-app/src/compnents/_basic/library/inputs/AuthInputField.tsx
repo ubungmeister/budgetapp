@@ -1,18 +1,14 @@
-import React from 'react';
 import { Control, FieldErrors, UseFormRegister } from 'react-hook-form';
 
 type FormData = {
   name: string;
-  amount: number;
-  description: string;
-  goalAmount: number;
   email: string;
   username: string;
   password: string;
   confirmPassword: string;
 };
 
-type InputFieldProps = {
+type FieldProps = {
   label: string;
   name: keyof FormData;
   register: UseFormRegister<any>;
@@ -21,14 +17,14 @@ type InputFieldProps = {
   isDisabled?: boolean;
 };
 
-const InputField = ({
+const AuthInputField = ({
   label,
   name,
   register,
   errors,
   type,
   isDisabled,
-}: InputFieldProps) => {
+}: FieldProps) => {
   const commonProps = {
     id: name,
     className: 'input-table',
@@ -38,19 +34,10 @@ const InputField = ({
   };
   return (
     <div className="flex flex-col text-[15px]">
-      <p className="text-gray-600 pb-1">Enter your email:</p>
-      {type === 'textarea' ? (
-        <textarea
-          className="input-table"
-          {...register(name)}
-          disabled={isDisabled || false}
-        />
-      ) : (
-        <input type={type} {...commonProps} disabled={isDisabled || false} />
-      )}
+      <p className="my-5 text-center text-lg">SignIn</p>
+      <input type={type} {...commonProps} disabled={isDisabled || false} />
       {errors && <p className="auth-error">{errors[name]?.message}</p>}
     </div>
   );
 };
-
-export default InputField;
+export default AuthInputField;

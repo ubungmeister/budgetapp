@@ -52,6 +52,12 @@ code {
 .auth-error {
   @apply text-left text-sm text-fuchsia-700 pt-1;
 }
+.input-error {
+  @apply border border-red-600;
+}
+.otp-input {
+  @apply w-full text-lg bg-white h-full flex flex-col items-center justify-center text-center px-5 outline-none rounded-xl border;
+}
 .button-month {
   @apply bg-[#54a3ab] text-white rounded-md hover:bg-[#12486B] cursor-pointer;
 }

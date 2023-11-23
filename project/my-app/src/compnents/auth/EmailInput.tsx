@@ -1,9 +1,11 @@
 import { zodResolver } from '@hookform/resolvers/zod';
+import axios from 'axios';
 import { useContext, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { z } from 'zod';
 
 import { RecoveryContext } from '../../pages/auth/RecoveryProvider';
+import InputField from '../_basic/library/inputs/InputField';
 
 const FormSchema = z.object({
   email: z.string().email({ message: 'Please enter a valid email' }),
@@ -12,7 +14,7 @@ const FormSchema = z.object({
 export type FormSchemaType = z.infer<typeof FormSchema>;
 
 export default function EmailInput() {
-  const { setEmail, setPage, email, setOTP } = useContext(RecoveryContext);
+  const { setEmail, setPage, email } = useContext(RecoveryContext);
 
   const {
     register,
@@ -24,13 +26,25 @@ export default function EmailInput() {
 
   const onSubmit: SubmitHandler<FormSchemaType> = async (data) => {
     try {
+      await axios.post('http://localhost:1000/auth/request-otp', data);
       setPage('otp');
-    } catch (error: any) {}
+      setEmail(data.email);
+    } catch (error: any) {
+      console.log(error.response.data.message);
+    }
   };
 
   return (
     <form className="auth " onSubmit={handleSubmit(onSubmit)}>
-      <div className="min-w-[22rem]">
+      <InputField
+        label="Password:"
+        name="email"
+        type="string"
+        register={register}
+        errors={errors}
+      />
+      {/* <div className="min-w-[22rem]">
+     
         <p className="my-5 text-center text-lg">Enter your email</p>
         <input
           className="auth-input"
@@ -38,7 +52,7 @@ export default function EmailInput() {
           {...register('email')}
         />
         {errors.email && <p className="auth-error">{errors.email.message}</p>}
-      </div>
+      </div> */}
       <div>
         <button
           disabled={!!errors.email}

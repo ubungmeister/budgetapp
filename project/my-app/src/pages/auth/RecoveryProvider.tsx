@@ -8,8 +8,8 @@ import ResetPassword from '../../compnents/auth/ResetPassword';
 export const RecoveryContext = createContext({
   page: '',
   setPage: (value: string) => {},
-  otp: 0,
-  setOTP: (value: number) => {},
+  verifiedToken: '',
+  setVerifiedToken: (value: string) => {},
   setEmail: (value: string) => {},
   email: '',
 });
@@ -19,9 +19,9 @@ export const RecoveryContext = createContext({
 export const RecoveryProvider = () => {
   const [page, setPage] = useState('email');
   const [email, setEmail] = useState('');
-  const [otp, setOTP] = useState<number>(0);
+  const [verifiedToken, setVerifiedToken] = useState('');
 
-  console.log('otp', otp);
+  console.log(verifiedToken);
 
   function NavigateComponents() {
     if (page === 'email') return <EmailInput />;
@@ -33,7 +33,14 @@ export const RecoveryProvider = () => {
 
   return (
     <RecoveryContext.Provider
-      value={{ page, setPage, otp, setOTP, setEmail, email }}
+      value={{
+        page,
+        setPage,
+        verifiedToken,
+        setVerifiedToken,
+        setEmail,
+        email,
+      }}
     >
       <div className="flex justify-center items-center bg-cover min-h-screen">
         <NavigateComponents />
