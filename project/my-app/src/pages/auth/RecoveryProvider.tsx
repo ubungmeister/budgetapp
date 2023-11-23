@@ -22,8 +22,6 @@ const RecoveryProvider = () => {
   const [email, setEmail] = useState('');
   const [verifiedToken, setVerifiedToken] = useState('');
 
-  console.log(verifiedToken);
-
   function NavigateComponents() {
     if (page === 'email') return <EmailInput />;
     if (page === 'otp') return <OTPInput />;

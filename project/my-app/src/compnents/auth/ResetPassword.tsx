@@ -35,7 +35,6 @@ export default function ResetPassword() {
   });
 
   const onSubmit: SubmitHandler<FormSchemaType> = async (data) => {
-    console.log('here');
     const formData = {
       newPassword: data.password,
       verifiedToken: verifiedToken,
