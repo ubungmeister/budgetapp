@@ -73,7 +73,6 @@ const GoalsForm = ({ formOpen, setFormOpen, selectedGoal }: GoalFormProps) => {
       };
 
       const result = await editGoal(formData);
-      console.log('result?.status ', result?.status);
       if (result?.status === 400) {
         return;
       }
