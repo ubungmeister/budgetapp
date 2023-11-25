@@ -19,6 +19,7 @@ type InputFieldProps = {
   errors: FieldErrors<FormData>;
   type?: string;
   isDisabled?: boolean;
+  className?: string;
 };
 
 const InputField = ({
@@ -28,10 +29,11 @@ const InputField = ({
   errors,
   type,
   isDisabled,
+  className,
 }: InputFieldProps) => {
   const commonProps = {
     id: name,
-    className: 'input-table',
+    className: `${className}`,
     ...(type === ('number' || 'float')
       ? register(name, { valueAsNumber: true })
       : register(name)),
@@ -41,7 +43,7 @@ const InputField = ({
       <p className="text-gray-600 pb-1">{label}</p>
       {type === 'textarea' ? (
         <textarea
-          className="input-table"
+          className={`${className}`}
           {...register(name)}
           disabled={isDisabled || false}
         />

@@ -131,6 +131,7 @@ const GoalsForm = ({ formOpen, setFormOpen, selectedGoal }: GoalFormProps) => {
                 type="string"
                 register={register}
                 errors={errors}
+                className="input-table"
               />
               <InputField
                 label="Goal Amount:"
@@ -138,6 +139,7 @@ const GoalsForm = ({ formOpen, setFormOpen, selectedGoal }: GoalFormProps) => {
                 type="number"
                 register={register}
                 errors={errors}
+                className="input-table"
               />
               <InputField
                 label="Description:"
@@ -145,6 +147,7 @@ const GoalsForm = ({ formOpen, setFormOpen, selectedGoal }: GoalFormProps) => {
                 type="textarea"
                 register={register}
                 errors={errors}
+                className="input-table"
               />
               {selectedGoal?.id && (
                 <div className="flex flex-col text-[15px]">
@@ -160,13 +163,14 @@ const GoalsForm = ({ formOpen, setFormOpen, selectedGoal }: GoalFormProps) => {
                 />
               )}
             </div>
-            <div className="space-y-2">
+            <div className="space-y-3">
               <DatePickerField
                 label="Start Date:"
                 name="start_date"
                 control={control}
                 errors={errors}
                 date={selectedGoal?.start_date || new Date()}
+                className="input-table"
               />
               <DatePickerField
                 label="End Date:"
@@ -174,6 +178,7 @@ const GoalsForm = ({ formOpen, setFormOpen, selectedGoal }: GoalFormProps) => {
                 control={control}
                 errors={errors}
                 date={selectedGoal?.end_date || new Date()}
+                className="input-table"
               />
               <div className="flex pt-8 space-x-4 pl-7">
                 <p className="text-gray-600">

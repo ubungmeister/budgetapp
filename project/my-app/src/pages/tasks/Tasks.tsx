@@ -7,6 +7,9 @@ import { getTasks } from '../../compnents/tasks/api';
 import { OptionType, TaskProps } from '../../compnents/tasks/types';
 import { getUsers } from '../../compnents/users/api';
 
+
+// Tasks page is used by Admin to Add and Edit Tasks, and Users to view their Tasks and submit them
+
 const Tasks = () => {
   const userID = window.localStorage.getItem('userID');
 
