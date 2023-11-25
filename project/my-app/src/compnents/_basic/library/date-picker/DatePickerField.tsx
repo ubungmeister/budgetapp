@@ -15,6 +15,7 @@ type DatePickerProps = {
   date: Date;
   errors: FieldErrors<FormData>;
   isDisabled?: boolean;
+  className?: string;
 };
 const DatePickerField = ({
   label,
@@ -23,6 +24,7 @@ const DatePickerField = ({
   date,
   errors,
   isDisabled,
+  className,
 }: DatePickerProps) => {
   return (
     <div className="flex flex-col text-[15px]">
@@ -33,7 +35,7 @@ const DatePickerField = ({
         name={name}
         render={({ field }) => (
           <DatePicker
-            className="input-table"
+            className={`${className}`}
             placeholderText="Select date"
             onChange={(date) => field.onChange(date)}
             dateFormat="dd/MM/yyyy"

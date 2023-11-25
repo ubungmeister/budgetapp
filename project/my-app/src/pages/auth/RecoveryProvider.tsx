@@ -15,7 +15,7 @@ export const RecoveryContext = createContext({
   email: '',
 });
 
-// export const RecoveryContext = createContext();
+// Reset Password context, which will be used to navigate between the different components
 
 const RecoveryProvider = () => {
   const [page, setPage] = useState('email');

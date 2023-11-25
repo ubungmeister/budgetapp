@@ -78,40 +78,50 @@ router.post('/update-goal-amount', async (req, res) => {
 })
 
 router.post('/edit-goal', async (req, res) => {
-    const {name, description, goalAmount, userId,start_date,end_date, isActive, id, currentAmount } = req.body
-    if(!userId) return res.status(400).json({ message: 'User id is required' });
-    if(id){
-      await prisma.savingGoal.update({
-        where: {id: id},
+  const { name, description, goalAmount, userId, start_date, end_date, isActive, id, currentAmount } = req.body;
+  
+  if (!userId) {
+    return res.status(400).json({ message: 'User id is required' });
+  }
+
+  try {
+    if (id) {
+      // If an ID is provided, update the existing goal
+      const updatedGoal = await prisma.savingGoal.update({
+        where: { id: id },
         data: {
-          name: name,
-          description: description,
-          goalAmount: goalAmount,
-          currentAmount: currentAmount,
-          userId: userId,
-          start_date: start_date,
-          end_date: end_date,
-          isActive: isActive,
+          name,
+          description,
+          goalAmount,
+          currentAmount,
+          userId,
+          start_date,
+          end_date,
+          isActive,
         }
-    })
-    res.status(200).json({ message: 'Goal added successfully' });
-    }
-    else{
-      await prisma.savingGoal.create({
+      });
+      res.status(200).json({ message: 'Goal updated successfully', goal: updatedGoal });
+    } else {
+      // If no ID is provided, create a new goal
+      const newGoal = await prisma.savingGoal.create({
         data: {
-          name: name,
-          description: description,
-          goalAmount: goalAmount,
-          currentAmount: 0,
-          userId: userId,
-          start_date: start_date,
-          end_date: end_date,
-          isActive: isActive,
+          name,
+          description,
+          goalAmount,
+          currentAmount,
+          userId,
+          start_date,
+          end_date,
+          isActive,
         }
-    })
-    res.status(200).json({ message: 'Goal added successfully' });
+      });
+      res.status(201).json({ message: 'Goal added successfully', goal: newGoal });
     }
-})
+  } catch (error) {
+    console.error('Error editing/adding goal:', error);
+    return res.status(500).json({ message: 'An error occurred while processing your request', error: error.message });
+  }
+});
 
 
 router.post('/delete-goal', async (req, res) => {

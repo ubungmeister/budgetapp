@@ -60,6 +60,7 @@ export const checkForm = ({
   if (categoryType === 'Expense' || categoryType === 'Goals') {
     if (totalIncome < Math.abs(expense) + Math.abs(amount)) {
       setError(`You don't have enough money`);
+      amount = false;
       return;
     }
     amount = Math.abs(amount) * -1;
@@ -68,4 +69,21 @@ export const checkForm = ({
     amount = Math.abs(amount);
   }
   return amount;
+};
+
+export const formattedDate = (date: Date) => {
+  const newDate = new Date(date);
+  return newDate.toLocaleString('en-us', {
+    month: 'short',
+    day: 'numeric',
+    year: 'numeric',
+  });
+};
+
+export const disabledEditing = (item: CashFlowProps) => {
+  const isDisabled =
+    item.category_type !== 'Goals' &&
+    item.category !== 'Refund' &&
+    item.category !== 'Task';
+  return isDisabled;
 };

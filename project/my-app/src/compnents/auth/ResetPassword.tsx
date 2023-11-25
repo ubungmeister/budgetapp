@@ -25,7 +25,9 @@ export type FormSchemaType = z.infer<typeof FormSchema>;
 
 export default function ResetPassword() {
   const { verifiedToken } = useContext(RecoveryContext);
+
   const navigate = useNavigate();
+
   const {
     register,
     handleSubmit,

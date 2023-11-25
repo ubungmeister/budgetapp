@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 
 import { CashFlowProps } from './types';
 
@@ -37,10 +37,28 @@ export const getAllGoals = async () => {
 
 export const updateGoals = async (data: CashFlowProps) => {
   try {
-    const result = await axios.post(
+    const response = await axios.post(
       'http://localhost:1000/savinggoal/update-goal-amount',
       data
     );
+    return { success: true, response: response };
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      console.log('Error status:', error.response?.status); // Log the error status
+      return { success: false, error: error.response };
+    }
+    console.error('An unexpected error occurred:', error);
+    return { success: false, error: null };
+  }
+};
+
+export const editCashFlow = async (data: CashFlowProps) => {
+  try {
+    const result = await axios.post(
+      'http://localhost:1000/cashflow/edit-cash-flow',
+      data
+    );
+
     return result;
   } catch (error) {
     console.log(error);

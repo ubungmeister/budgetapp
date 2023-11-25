@@ -20,6 +20,8 @@ const CashFlow = () => {
   const [selectedCashFlow, setSelectedCashFlow] =
     useState<CashFlowProps | null>(null);
 
+  console.log('selectedCashFlow', selectedCashFlow);
+
   UseAuthUser();
   const userID = window.localStorage.getItem('userID');
 
