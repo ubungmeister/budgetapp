@@ -80,6 +80,7 @@ router.post('/edit-cash-flow', async (req, res) => {
 })
 
 router.delete('/delete-cash-flow', async (req, res) => {
+    //
     const { id } = req.body;
     const deletedCashFlow = await prisma.incomeOutcome.delete({
         where: {id: id as string}
