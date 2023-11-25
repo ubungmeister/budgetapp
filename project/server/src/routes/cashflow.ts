@@ -48,11 +48,17 @@ router.get('/get-cash-flow', async (req, res) => {
 
 router.post('/edit-cash-flow', async (req, res) => {
     const { id, amount, category, description, start_date, userId, saving_goal_Id,category_type} = req.body;
+    
+    let amountNumber = amount
+    if(category_type === 'Income'){
+        amountNumber = Math.abs(amount)
+    }
+    
     if(id){
         const updatedCashFlow = await prisma.incomeOutcome.update({
             where: {id: id as string},
             data: {
-                amount: amount,
+                amount: amountNumber,
                 category: category,
                 description: description,
                 start_date: start_date,
@@ -66,7 +72,7 @@ router.post('/edit-cash-flow', async (req, res) => {
      else{
         const newCashFlow = await prisma.incomeOutcome.create({
             data: {
-                amount: amount,
+                amount: amountNumber,
                 category: category,
                 description: description,
                 start_date: start_date,
