@@ -1,6 +1,5 @@
 import { getAllGoals } from '../cash-flow/api';
 import { CashFlowProps } from '../cash-flow/types';
-import { CategoryType } from './types';
 
 type FindCategoryProps = {
   selectedCashFlow: CashFlowProps | null;
@@ -8,15 +7,6 @@ type FindCategoryProps = {
     React.SetStateAction<{ category: string; saving_goal_Id: string }>
   >;
   setCategoryType: React.Dispatch<React.SetStateAction<string>>;
-};
-
-type checkFormProps = {
-  category: CategoryType;
-  categoryType: string;
-  setError: React.Dispatch<React.SetStateAction<string>>;
-  data: any;
-  totalIncome: number;
-  expense: number;
 };
 
 export const findCategory = async ({
@@ -38,37 +28,6 @@ export const findCategory = async ({
     });
     setCategoryType(selectedCashFlow?.category_type || '');
   }
-};
-
-export const checkForm = ({
-  category,
-  categoryType,
-  data,
-  setError,
-  totalIncome,
-  expense,
-}: checkFormProps) => {
-  let amount = data.amount;
-  if (!categoryType) {
-    setError('Please select a category type');
-    return;
-  }
-  if (!category.category) {
-    setError('Please select a category');
-    return;
-  }
-  if (categoryType === 'Expense' || categoryType === 'Goals') {
-    if (totalIncome < Math.abs(expense) + Math.abs(amount)) {
-      setError(`You don't have enough money`);
-      amount = false;
-      return;
-    }
-    amount = Math.abs(amount) * -1;
-  }
-  if (categoryType === 'Income') {
-    amount = Math.abs(amount);
-  }
-  return amount;
 };
 
 export const formattedDate = (date: Date) => {
