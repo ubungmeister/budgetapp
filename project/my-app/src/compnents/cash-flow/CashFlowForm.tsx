@@ -25,7 +25,7 @@ import { CashFlowFormProps, CategoryType } from './types';
 import { findCategory } from './utils';
 
 const FormSchema = z.object({
-  amount: z.number().min(1, { message: `Amount can't be zero` }),
+  amount: z.number(),
   description: z.string().min(1, { message: 'Description is required' }),
   start_date: z.date(),
 });
