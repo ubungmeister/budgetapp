@@ -231,6 +231,7 @@ const TasksForm = ({
                 register={register}
                 errors={errors}
                 isDisabled={!isAdmin}
+                className="input-table"
               />
               <InputField
                 label="Reward:"
@@ -239,6 +240,7 @@ const TasksForm = ({
                 register={register}
                 errors={errors}
                 isDisabled={!isAdmin}
+                className="input-table"
               />
               <InputField
                 label="Description:"
@@ -247,6 +249,7 @@ const TasksForm = ({
                 register={register}
                 errors={errors}
                 isDisabled={!isAdmin}
+                className="input-table"
               />
               {isAdmin && (
                 <div>
@@ -280,6 +283,7 @@ const TasksForm = ({
                 errors={errors}
                 date={selectedTask?.start_date || new Date()}
                 isDisabled={!isAdmin}
+                className="input-table"
               />
               <DatePickerField
                 label="End Date:"
@@ -288,6 +292,7 @@ const TasksForm = ({
                 errors={errors}
                 date={selectedTask?.end_date || new Date()}
                 isDisabled={!isAdmin}
+                className="input-table"
               />
 
               <div className="flex text-gray-600 flex-col">

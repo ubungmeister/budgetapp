@@ -50,7 +50,7 @@ const InputField = ({
       ) : (
         <input type={type} {...commonProps} disabled={isDisabled || false} />
       )}
-      {errors && <p className="auth-error">{errors[name]?.message}</p>}
+      {errors && <p className="text-fuchsia-700">{errors[name]?.message}</p>}
     </div>
   );
 };

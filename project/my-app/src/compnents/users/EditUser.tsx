@@ -146,6 +146,7 @@ const EditUser = ({ userForm, formOpen, setFormOpen }: EditUserProps) => {
               type="string"
               register={register}
               errors={errors}
+              className="input-table"
             />
             <InputField
               label="Email:"
@@ -153,6 +154,7 @@ const EditUser = ({ userForm, formOpen, setFormOpen }: EditUserProps) => {
               type="string"
               register={register}
               errors={errors}
+              className="input-table"
             />
             {userForm?.id && (
               <DeleteButton
