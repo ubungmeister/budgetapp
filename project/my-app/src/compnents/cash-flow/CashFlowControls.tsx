@@ -19,7 +19,7 @@ const CashFlowControls = ({
     <div>
       <div className="flex flex-row justify-start">
         <MonthChangeButton setIsMonthChange={setIsMonthChange} />
-        <MonthButton data={pocketMoney} />
+        <MonthButton month={pocketMoney?.month || null} />
         <SaveButton
           handleSave={onCreateTransaction}
           buttonName={'Add Transaction'}

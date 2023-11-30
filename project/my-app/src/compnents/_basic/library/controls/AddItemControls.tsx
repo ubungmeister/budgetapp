@@ -1,6 +1,6 @@
-import { GoalControlsProps } from '../../goals/types';
-import { TaskStatus } from '../../tasks/types';
-import SaveButton from '../library/buttons/SaveButton';
+import { GoalControlsProps } from '../../../goals/types';
+import { TaskStatus } from '../../../tasks/types';
+import SaveButton from '../buttons/SaveButton';
 
 const initinalGoal = {
   id: '',

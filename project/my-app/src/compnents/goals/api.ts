@@ -18,6 +18,19 @@ export const getAllGoals = async () => {
   }
 };
 
+// export const getAllFamilyGoals = async (month: Date) => {
+//   const res = await axios.get(
+//     'http://localhost:1000/savinggoal/get-goals-family',
+//     {
+//       params: {
+//         userID: window.localStorage.getItem('userID'),
+//         monthYear: month,
+//       },
+//     }
+//   );
+//   return await res.data;
+// };
+
 export const editGoal = async (data: GoalProps) => {
   try {
     const result = await axios.post(
@@ -40,6 +53,23 @@ export const deleteGoal = async (id: string) => {
       }
     );
     return result;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const getAllFamalyGoals = async (date: Date) => {
+  try {
+    const goals = await axios.get(
+      'http://localhost:1000/savinggoal/get-goals-family',
+      {
+        params: {
+          userID: window.localStorage.getItem('userID'),
+          monthYear: date,
+        },
+      }
+    );
+    return goals.data;
   } catch (error) {
     console.log(error);
   }

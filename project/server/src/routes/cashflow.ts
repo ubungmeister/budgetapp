@@ -1,26 +1,17 @@
 import express from "express"
 import { PrismaClient } from "@prisma/client"
-
+import { monthFunction } from "../utils/helpers"
 const router = express.Router();
 
 const prisma = new PrismaClient();
+
+
 
 router.get('/get-cash-flow', async (req, res) => {
     const { monthYear, userID } = req.query;
     if(!userID) return res.status(400).json({ message: 'No userId provided' });
     
-    const date = new Date(monthYear as string);
-    const year = date.getFullYear();
-    const month = date.getMonth()+1;
-
-    const newDate = new Date(year, month - 1, 1);
-  newDate.setUTCHours(0, 0, 0, 0);
-
-
-  const nextMonth = month === 12 ? 1 : month + 1;
-  const nextYear = month === 12 ? year + 1 : year;
-  const endOfMonth = new Date(nextYear, nextMonth - 1, 1);
-  endOfMonth.setUTCHours(0, 0, 0, 0);
+    const {newDate, endOfMonth} = monthFunction(monthYear as string);
 
 
     const pocketMoney = await prisma.pocketMoney.findFirst({
@@ -86,12 +77,46 @@ router.post('/edit-cash-flow', async (req, res) => {
 })
 
 router.delete('/delete-cash-flow', async (req, res) => {
-    //
+    
     const { id } = req.body;
     const deletedCashFlow = await prisma.incomeOutcome.delete({
         where: {id: id as string}
     })
     res.status(200).json({ deletedCashFlow })
+})
+
+router.get('/get-cash-flow-family', async (req, res) => {
+    // getting all incomes and outcomes for a family for a given month
+    const { monthYear, userID } = req.query;
+    if(!userID) return res.status(400).json({ message: 'No userId provided' });    
+
+    const admin = await prisma.user.findUnique({where: {id:userID as string}})
+    if(admin.role !== "ADMIN") return res.status(400).json({ message: 'Only admin can delete task' })
+
+    const users = await prisma.user.findMany({
+        where: {
+            family: {
+                id: admin.familyID
+            }
+        }
+    
+    })
+    
+    const {newDate, endOfMonth} = monthFunction(monthYear as string);
+
+    const cashFlow = await prisma.incomeOutcome.findMany({
+        where: {
+            userId: {
+                in: users.map(user => user.id)
+            },
+             start_date: {
+        gt: newDate,
+        lte: endOfMonth,
+      },
+        }
+    })
+    console.log(cashFlow)
+    res.status(200).json(cashFlow);
 })
 
 

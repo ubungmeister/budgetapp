@@ -19,6 +19,40 @@ export const getCashFlow = async (userID: string, date: Date) => {
   }
 };
 
+// export const getCashFamilyFlow = async (date: Date) => {
+//   const userID = window.localStorage.getItem('userID');
+//   console.log('userID', userID);
+//   try {
+//     const result = await axios.get(
+//       'http://localhost:1000/cashflow/get-cash-flow-family',
+//       {
+//         params: {
+//           monthYear: date,
+//           userID,
+//         },
+//       }
+//     );
+//     return result.data.cashFlow;
+//   } catch (error) {
+//     console.error(error);
+//   }
+// };
+
+// export const getCashFamilyFlow = async (date: Date) => {
+//   const userID = window.localStorage.getItem('userID');
+
+//   const res = await axios.get(
+//     'http://localhost:1000/cashflow/get-cash-flow-family',
+//     {
+//       params: {
+//         monthYear: date,
+//         userID,
+//       },
+//     }
+//   );
+//   return res.data;
+// };
+
 export const getAllGoals = async () => {
   try {
     const goals = await axios.get(
@@ -59,31 +93,6 @@ export const editCashFlow = async (data: CashFlowProps) => {
       data
     );
 
-    return result;
-  } catch (error) {
-    console.log(error);
-  }
-};
-
-export const createCashFlow = async (data: CashFlowProps) => {
-  try {
-    const result = await axios.post(
-      'http://localhost:1000/cashflow/add-cash-flow',
-      data
-    );
-
-    return result;
-  } catch (error) {
-    console.log(error);
-  }
-};
-
-export const updateCashFlow = async (data: CashFlowProps) => {
-  try {
-    const result = await axios.post(
-      'http://localhost:1000/cashflow/update-cash-flow',
-      data
-    );
     return result;
   } catch (error) {
     console.log(error);

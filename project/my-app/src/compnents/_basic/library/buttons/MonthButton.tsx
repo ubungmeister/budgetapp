@@ -1,18 +1,12 @@
-export interface PmType {
-  month: Date;
-  amount: number;
-  userId: string;
-  id?: string;
-}
 type MonthButtonProps = {
-  data: PmType | null;
+  month: Date | null;
 };
 
-const MonthButton = ({ data }: MonthButtonProps) => {
+const MonthButton = ({ month }: MonthButtonProps) => {
   return (
     <div className="text-center justify-center button-disabled px-2 min-w-[10rem] max-w-[8rem] mr-5 py-2">
       <p className="">
-        {data?.month.toLocaleString('en-DE', {
+        {month?.toLocaleString('en-DE', {
           month: 'long',
           year: 'numeric',
         })}

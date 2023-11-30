@@ -1,6 +1,6 @@
-import CancelButton from '../library/buttons/CancelButton';
-import SaveButton from '../library/buttons/SaveButton';
-import Notification from '../library/notification/Notification';
+import CancelButton from '../buttons/CancelButton';
+import SaveButton from '../buttons/SaveButton';
+import Notification from '../notification/Notification';
 
 type EditUserControlsProps = {
   form: any;

@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-import ItemsList from '../../../compnents/_basic/helpers/ItemsList';
+import ItemsList from '../../../compnents/_basic/library/list/ItemsList';
 import AddUser from '../../../compnents/users/AddUser';
 import EditUser from '../../../compnents/users/EditUser';
 import { getUsers } from '../../../compnents/users/api';

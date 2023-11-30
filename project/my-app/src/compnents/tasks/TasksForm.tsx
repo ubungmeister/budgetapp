@@ -9,9 +9,9 @@ import 'react-toggle/style.css';
 import { z } from 'zod';
 
 import no_image from '../../assets/images/no_image.png';
-import EditFormControls from '../_basic/helpers/EditFormControls';
 import { statusLabel, statusOptions } from '../_basic/helpers/utils';
 import DeleteButton from '../_basic/library/buttons/DeleteButton';
+import EditFormControls from '../_basic/library/controls/EditFormControls';
 import DatePickerField from '../_basic/library/date-picker/DatePickerField';
 import InputField from '../_basic/library/inputs/InputField';
 import TaskReviewControl from './TaskReviewControl';
