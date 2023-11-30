@@ -1,6 +1,6 @@
-import { GoalListProps } from '../../goals/types';
-import ListItems from '../library/list-items/ListItems';
-import SearchBox from '../library/search-box/SearchBox';
+import { GoalListProps } from '../../../goals/types';
+import ListItems from '../list-items/ListItems';
+import SearchBox from '../search-box/SearchBox';
 
 const ItemsList = ({
   items,

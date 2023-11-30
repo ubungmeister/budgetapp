@@ -4,12 +4,12 @@ import { OverviewControlsProps } from './types';
 
 const OverviewControls = ({
   setIsMonthChange,
-  pocketMoney,
+  month,
 }: OverviewControlsProps) => {
   return (
     <div className="flex flex-row justify-start ">
       <MonthChangeButton setIsMonthChange={setIsMonthChange} />
-      <MonthButton data={pocketMoney} />
+      <MonthButton month={month} />
     </div>
   );
 };

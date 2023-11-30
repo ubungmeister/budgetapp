@@ -1,5 +1,6 @@
 import express from "express"
 import { PrismaClient } from "@prisma/client"
+import { monthFunction } from "../utils/helpers"
 
 const router = express.Router();
 
@@ -19,6 +20,39 @@ router.get('/get-all-goals', async (req, res) => {
         console.log(error)
         res.status(500).json({ error })
     }
+})
+
+router.get('/get-goals-family', async (req, res) => {
+    // getting all incomes and outcomes for a family for a given month
+    const { monthYear, userID } = req.query;
+    if(!userID) return res.status(400).json({ message: 'No userId provided' });    
+
+    const admin = await prisma.user.findUnique({where: {id:userID as string}})
+    if(admin.role !== "ADMIN") return res.status(400).json({ message: 'Only admin can delete task' })
+
+    const users = await prisma.user.findMany({
+        where: {
+            family: {
+                id: admin.familyID
+            }
+        }
+    
+    })
+    
+    const {newDate, endOfMonth} = monthFunction(monthYear as string);
+
+    const goals = await prisma.savingGoal.findMany({
+        where: {
+            userId: {
+                in: users.map(user => user.id)
+            },
+             end_date: {
+        gt: newDate,
+        lte: endOfMonth,
+      },
+        }
+    })
+    res.status(200).json(goals);
 })
 
 router.post('/update-goal-amount', async (req, res) => {

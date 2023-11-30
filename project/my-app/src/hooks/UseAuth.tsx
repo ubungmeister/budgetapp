@@ -33,7 +33,7 @@ export const UseAuthUser = () => {
     ) {
       navigate('/auth/signin');
     } else if (userRole !== 'USER') {
-      navigate('/admin');
+      navigate('/admin/overview');
     }
   }, [cookies.token, navigate]);
 };

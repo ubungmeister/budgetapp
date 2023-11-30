@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-import HeaderControls from '../../../compnents/_basic/helpers/HeaderControls';
+import HeaderControls from '../../../compnents/_basic/library/controls/HeaderControls';
 import { getBudget } from '../../../compnents/budget/api';
 import { BudgetData } from '../../../compnents/budget/types';
 import PmTable from '../../../compnents/pocket-money/PmTable';

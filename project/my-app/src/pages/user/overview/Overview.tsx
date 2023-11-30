@@ -47,6 +47,7 @@ const Overview = () => {
         setCurrentMonth(date);
       }
     }
+
     setIsMonthChange('');
     const fetchData = async () => {
       const pocketMoney = await getPocketMoneyUser(userID, date);
@@ -131,7 +132,7 @@ const Overview = () => {
     <div className="pt-8 pl-6 space-y-3">
       <OverviewControls
         setIsMonthChange={setIsMonthChange}
-        pocketMoney={pocketMoney}
+        month={pocketMoney?.month || null}
       />
       <div className="px-5 pt-2">
         <hr />

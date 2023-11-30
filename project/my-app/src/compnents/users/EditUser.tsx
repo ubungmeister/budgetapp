@@ -7,8 +7,8 @@ import { SubmitHandler } from 'react-hook-form/dist/types/form';
 import { toast } from 'react-toastify';
 import { z } from 'zod';
 
-import EditFormControls from '../_basic/helpers/EditFormControls';
 import DeleteButton from '../_basic/library/buttons/DeleteButton';
+import EditFormControls from '../_basic/library/controls/EditFormControls';
 import InputField from '../_basic/library/inputs/InputField';
 import { getUsers } from '../users/api';
 import { createUser, deleteUser, updateUser } from './api';
@@ -146,6 +146,7 @@ const EditUser = ({ userForm, formOpen, setFormOpen }: EditUserProps) => {
               type="string"
               register={register}
               errors={errors}
+              className="input-table"
             />
             <InputField
               label="Email:"
@@ -153,6 +154,7 @@ const EditUser = ({ userForm, formOpen, setFormOpen }: EditUserProps) => {
               type="string"
               register={register}
               errors={errors}
+              className="input-table"
             />
             {userForm?.id && (
               <DeleteButton

@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 
-import AddItemControls from '../../../compnents/_basic/helpers/AddItemControls';
-import ItemsList from '../../../compnents/_basic/helpers/ItemsList';
+import AddItemControls from '../../../compnents/_basic/library/controls/AddItemControls';
+import ItemsList from '../../../compnents/_basic/library/list/ItemsList';
 import GoalsForm from '../../../compnents/goals/GoalsForm';
 import { getAllGoals } from '../../../compnents/goals/api';
 import { GoalProps } from '../../../compnents/goals/types';

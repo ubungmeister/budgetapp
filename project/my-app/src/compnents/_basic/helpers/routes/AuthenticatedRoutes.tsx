@@ -1,7 +1,7 @@
 import { Route, Routes } from 'react-router-dom';
 
-import AdminPage from '../../../../pages/admin/Admin';
 import Budget from '../../../../pages/admin/budget/Budget';
+import AdminPage from '../../../../pages/admin/overview/AdminOverview';
 import PocketMoney from '../../../../pages/admin/pocket-money/PocketMoney';
 import Users from '../../../../pages/admin/users/Users';
 import Tasks from '../../../../pages/tasks/Tasks';
@@ -19,7 +19,7 @@ export const AuthenticatedRoutes = () => {
         <Sidebar />
         <div className="flex-1 bg-white">
           <Routes>
-            <Route path="/admin" element={<AdminPage />} />
+            <Route path="/admin/overview" element={<AdminPage />} />
             <Route path="/admin/budget" element={<Budget />} />
             <Route path="/admin/users" element={<Users />} />
             <Route path="/admin/pocket-money" element={<PocketMoney />} />

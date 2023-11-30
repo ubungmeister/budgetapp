@@ -1,10 +1,10 @@
 import React from 'react';
 
-import CancelButton from '../library/buttons/CancelButton';
-import MonthChangeButton from '../library/buttons/MonthChangeButton';
-import SaveButton from '../library/buttons/SaveButton';
-import Notification from '../library/notification/Notification';
-import NotificationSuccess from '../library/notification/NotificationSuccess';
+import CancelButton from '../buttons/CancelButton';
+import MonthChangeButton from '../buttons/MonthChangeButton';
+import SaveButton from '../buttons/SaveButton';
+import Notification from '../notification/Notification';
+import NotificationSuccess from '../notification/NotificationSuccess';
 
 export interface ControlsProps {
   handleSave: () => void;

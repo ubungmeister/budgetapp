@@ -65,31 +65,6 @@ export const editCashFlow = async (data: CashFlowProps) => {
   }
 };
 
-export const createCashFlow = async (data: CashFlowProps) => {
-  try {
-    const result = await axios.post(
-      'http://localhost:1000/cashflow/add-cash-flow',
-      data
-    );
-
-    return result;
-  } catch (error) {
-    console.log(error);
-  }
-};
-
-export const updateCashFlow = async (data: CashFlowProps) => {
-  try {
-    const result = await axios.post(
-      'http://localhost:1000/cashflow/update-cash-flow',
-      data
-    );
-    return result;
-  } catch (error) {
-    console.log(error);
-  }
-};
-
 export const deleteCashFlow = async (id: string) => {
   try {
     const result = await axios.delete(

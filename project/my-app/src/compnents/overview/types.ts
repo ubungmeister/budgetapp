@@ -4,7 +4,7 @@ import { TaskProps } from '../tasks/types';
 
 export interface OverviewControlsProps {
   setIsMonthChange: React.Dispatch<React.SetStateAction<string>>;
-  pocketMoney: PmType | null;
+  month: Date | null;
 }
 
 export interface OverviewGraphProps {

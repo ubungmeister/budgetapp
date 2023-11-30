@@ -44,3 +44,20 @@ export const deleteGoal = async (id: string) => {
     console.log(error);
   }
 };
+
+export const getAllFamalyGoals = async (date: Date) => {
+  try {
+    const goals = await axios.get(
+      'http://localhost:1000/savinggoal/get-goals-family',
+      {
+        params: {
+          userID: window.localStorage.getItem('userID'),
+          monthYear: date,
+        },
+      }
+    );
+    return goals.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
