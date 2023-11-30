@@ -19,40 +19,6 @@ export const getCashFlow = async (userID: string, date: Date) => {
   }
 };
 
-// export const getCashFamilyFlow = async (date: Date) => {
-//   const userID = window.localStorage.getItem('userID');
-//   console.log('userID', userID);
-//   try {
-//     const result = await axios.get(
-//       'http://localhost:1000/cashflow/get-cash-flow-family',
-//       {
-//         params: {
-//           monthYear: date,
-//           userID,
-//         },
-//       }
-//     );
-//     return result.data.cashFlow;
-//   } catch (error) {
-//     console.error(error);
-//   }
-// };
-
-// export const getCashFamilyFlow = async (date: Date) => {
-//   const userID = window.localStorage.getItem('userID');
-
-//   const res = await axios.get(
-//     'http://localhost:1000/cashflow/get-cash-flow-family',
-//     {
-//       params: {
-//         monthYear: date,
-//         userID,
-//       },
-//     }
-//   );
-//   return res.data;
-// };
-
 export const getAllGoals = async () => {
   try {
     const goals = await axios.get(

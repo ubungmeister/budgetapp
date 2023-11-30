@@ -18,19 +18,6 @@ export const getAllGoals = async () => {
   }
 };
 
-// export const getAllFamilyGoals = async (month: Date) => {
-//   const res = await axios.get(
-//     'http://localhost:1000/savinggoal/get-goals-family',
-//     {
-//       params: {
-//         userID: window.localStorage.getItem('userID'),
-//         monthYear: month,
-//       },
-//     }
-//   );
-//   return await res.data;
-// };
-
 export const editGoal = async (data: GoalProps) => {
   try {
     const result = await axios.post(
