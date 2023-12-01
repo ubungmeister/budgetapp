@@ -1,17 +1,17 @@
 import { useEffect, useState } from 'react';
 
-import { getCashFlow } from '../../../compnents/cash-flow/api';
+import { getCashFlow } from '../../../api/cash-flow';
+import { getAllGoals } from '../../../api/goals';
+import { getPocketMoneyUser } from '../../../api/pocket-money';
+import { getTasksByMonth } from '../../../api/tasks';
 import { CashFlowProps } from '../../../compnents/cash-flow/types';
-import { getAllGoals } from '../../../compnents/goals/api';
 import { GoalProps } from '../../../compnents/goals/types';
-import OverviewControls from '../../../compnents/overview/OverviewControls';
-import OverviewGraph from '../../../compnents/overview/OverviewGraph';
-import OverviewHeaders from '../../../compnents/overview/OverviewHeaders';
-import OverviewPeroformance from '../../../compnents/overview/OverviewPeroformance';
-import { getPocketMoneyUser } from '../../../compnents/pocket-money/api';
 import { PmType } from '../../../compnents/pocket-money/types';
-import { getTasksByMonth } from '../../../compnents/tasks/api';
 import { TaskProps } from '../../../compnents/tasks/types';
+import OverviewControls from '../../../compnents/user-overview/OverviewControls';
+import OverviewGraph from '../../../compnents/user-overview/OverviewGraph';
+import OverviewHeaders from '../../../compnents/user-overview/OverviewHeaders';
+import OverviewPeroformance from '../../../compnents/user-overview/OverviewPeroformance';
 import { UseAuthUser } from '../../../hooks/UseAuth';
 
 const Overview = () => {

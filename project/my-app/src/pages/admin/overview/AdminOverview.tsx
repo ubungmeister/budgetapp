@@ -1,9 +1,14 @@
 import { useEffect, useState } from 'react';
 
 import AdminOverviewHeaders from '../../../compnents/admin-overview/AdminOverviewHeaders';
-import OverviewControls from '../../../compnents/overview/OverviewControls';
+import OverviewControls from '../../../compnents/user-overview/OverviewControls';
 import { UseAuth } from '../../../hooks/UseAuth';
-import { useAdminCashFlow, useAdminGoals } from '../../../hooks/UseQueryAdmin';
+import {
+  useAdminBudget,
+  useAdminCashFlow,
+  useAdminGoals,
+  useAdminTasks,
+} from '../../../hooks/UseQueryAdmin';
 
 const AdminPage = () => {
   UseAuth();
@@ -25,6 +30,9 @@ const AdminPage = () => {
     previousMonthDate
   );
 
+  const { data: tasks } = useAdminTasks('tasks', month);
+  const { data: budget } = useAdminBudget('budget', month);
+  console.log('budget', budget);
   useEffect(() => {
     const date = new Date(month || new Date());
     const previousMonthDate = new Date(month || new Date());
@@ -56,6 +64,7 @@ const AdminPage = () => {
         previousMonthCashFlow={previousMonthCashFlow}
         goals={goals}
         previousMonthGoals={previousMonthGoals}
+        tasks={tasks}
       />
     </div>
   );

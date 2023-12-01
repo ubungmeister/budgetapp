@@ -1,9 +1,9 @@
 import { Line } from 'rc-progress';
 import { Tooltip as ReactTooltip } from 'react-tooltip';
 
+import { capitalizeFirstLetter } from '../_basic/helpers/utils';
 import ProgressLine from '../_basic/library/progress-line/ProgressLine';
 import { GoalProps } from '../goals/types';
-import { capitalizeFirstLetter } from './../_basic/helpers/utils';
 
 type OverviewPeroformanceProps = {
   goals: GoalProps[];

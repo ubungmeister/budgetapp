@@ -44,6 +44,11 @@ export const percentageBetweenTwoNumbers = (num1: number, num2: number) => {
   return formatDecimals(result);
 };
 
+export const differenceBetweenTwoNumbers = (num1: number, num2: number) => {
+  const result = num1 - num2;
+  return formatDecimals(result);
+};
+
 export const performancePercentage = (goal: GoalProps | null) => {
   if (!goal) {
     return 0;

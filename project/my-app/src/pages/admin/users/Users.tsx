@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
 
+import { getUsers } from '../../../api/users';
 import ItemsList from '../../../compnents/_basic/library/list/ItemsList';
 import AddUser from '../../../compnents/users/AddUser';
 import EditUser from '../../../compnents/users/EditUser';
-import { getUsers } from '../../../compnents/users/api';
 import { UserData, initialUserData } from '../../../compnents/users/types';
 import { UseAuth } from '../../../hooks/UseAuth';
 

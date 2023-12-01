@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react';
 
+import { getTasks } from '../../api/tasks';
+import { getUsers } from '../../api/users';
 import AddItemControls from '../../compnents/_basic/library/controls/AddItemControls';
 import ItemsList from '../../compnents/_basic/library/list/ItemsList';
 import TasksForm from '../../compnents/tasks/TasksForm';
-import { getTasks } from '../../compnents/tasks/api';
 import { OptionType, TaskProps } from '../../compnents/tasks/types';
-import { getUsers } from '../../compnents/users/api';
 
 // Tasks page is used by Admin to Add and Edit Tasks, and Users to view their Tasks and submit them
 

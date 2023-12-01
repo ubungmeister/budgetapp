@@ -1,7 +1,7 @@
 import axios from 'axios';
 
-import { CashFlowProps } from '../cash-flow/types';
-import { TaskProps } from './types';
+import { CashFlowProps } from '../compnents/cash-flow/types';
+import { TaskProps } from '../compnents/tasks/types';
 
 export const getTasks = async (userID: string) => {
   try {
@@ -21,7 +21,7 @@ export const getTasks = async (userID: string) => {
 
 export const getTasksByMonth = async (userID: string, date: Date) => {
   try {
-    const pocketMoney = await axios.get(
+    const tasks = await axios.get(
       'http://localhost:1000/tasks/get-tasks-month',
       {
         params: {
@@ -30,10 +30,20 @@ export const getTasksByMonth = async (userID: string, date: Date) => {
         },
       }
     );
-    return pocketMoney;
+    return tasks;
   } catch (error) {
     console.error(error);
   }
+};
+
+export const getAllTasksByMonth = async (date: Date) => {
+  const tasks = await axios.get('http://localhost:1000/tasks/get-tasks-month', {
+    params: {
+      monthYear: date,
+      userID: window.localStorage.getItem('userID') || '',
+    },
+  });
+  return tasks.data.tasks;
 };
 
 export const editTask = async (data: TaskProps) => {
@@ -59,6 +69,8 @@ export const deleteTask = async (id: string) => {
     console.log(error);
   }
 };
+
+// related to tasks and cash flow, keep it here
 
 export const createReward = async (data: CashFlowProps) => {
   try {

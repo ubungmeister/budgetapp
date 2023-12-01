@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-import { GoalProps } from './types';
+import { GoalProps } from '../compnents/goals/types';
 
 export const getAllGoals = async () => {
   try {
@@ -45,19 +45,15 @@ export const deleteGoal = async (id: string) => {
   }
 };
 
-export const getAllFamalyGoals = async (date: Date) => {
-  try {
-    const goals = await axios.get(
-      'http://localhost:1000/savinggoal/get-goals-family',
-      {
-        params: {
-          userID: window.localStorage.getItem('userID'),
-          monthYear: date,
-        },
-      }
-    );
-    return goals.data;
-  } catch (error) {
-    console.log(error);
-  }
+export const getAllFamilyGoals = async (month: Date) => {
+  const res = await axios.get(
+    'http://localhost:1000/savinggoal/get-goals-family',
+    {
+      params: {
+        userID: window.localStorage.getItem('userID'),
+        monthYear: month,
+      },
+    }
+  );
+  return await res.data;
 };

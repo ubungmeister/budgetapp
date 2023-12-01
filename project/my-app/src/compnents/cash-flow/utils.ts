@@ -1,4 +1,4 @@
-import { getAllGoals } from '../cash-flow/api';
+import { getAllGoals } from '../../api/goals';
 import { CashFlowProps } from '../cash-flow/types';
 
 type FindCategoryProps = {
