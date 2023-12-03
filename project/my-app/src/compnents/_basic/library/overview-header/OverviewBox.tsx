@@ -3,7 +3,7 @@ import { TiInfo } from 'react-icons/ti';
 import { Tooltip as ReactTooltip } from 'react-tooltip';
 
 type OverviewBoxProps = {
-  amount: number;
+  amount: any;
   percentage?: number;
   difference?: number;
   img: string;

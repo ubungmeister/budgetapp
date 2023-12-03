@@ -9,7 +9,7 @@ export interface OverviewControlsProps {
 
 export interface OverviewGraphProps {
   cashFlow: CashFlowProps[];
-  pocketMoney: PmType | null;
+  pocketMoney: number;
 }
 
 export interface OverviewHeaderProps {

@@ -1,12 +1,13 @@
 import checkmark from '../../assets/images/checkmark.png';
 import tasksImg from '../../assets/images/clipboard.png';
+import budgetImg from '../../assets/images/gauge.png';
 import wallet from '../../assets/images/wallet.png';
 import {
   differenceBetweenTwoNumbers,
   goalsCalculation,
   percentageBetweenTwoNumbers,
 } from '../_basic/helpers/utils';
-import OverviewBox from '../_basic/library/overview/OverviewBox';
+import OverviewBox from '../_basic/library/overview-header/OverviewBox';
 import { GoalStatus } from '../goals/types';
 import { TaskStatus } from '../tasks/types';
 import { AdminHeaderProps } from './types';
@@ -17,6 +18,8 @@ const AdminOverviewHeaders = ({
   goals,
   previousMonthGoals,
   tasks,
+  budget,
+  pocketMoney,
 }: AdminHeaderProps) => {
   const savedOnGoalsCurrentMonth = Math.abs(goalsCalculation(cashFlow || []));
   const savedOnGoalsPreviousMonth = goalsCalculation(
@@ -46,6 +49,11 @@ const AdminOverviewHeaders = ({
     'Great! Your team members saved on Goals more than previous month 😄',
     'Buddy, You saved less than in previuse month. No worry, you can do it better next month',
   ];
+  console.log('budget', budget);
+
+  const budgetAllocated = `${
+    budget?.map((item) => item.amount) || 0
+  } \\ ${pocketMoney} `;
 
   return (
     <div className=" pt-2 flex px-5">
@@ -70,13 +78,12 @@ const AdminOverviewHeaders = ({
           text={['']}
           boxType={'Solved Tasks'}
         />
-        {/* <OverviewBox
-          amount={currentMonthIncome}
-          percentage={percentageIncomes}
-          img={plus}
-          text={popUpTextIncome}
-          boxType={'Income'}
-        /> */}
+        <OverviewBox
+          amount={budgetAllocated}
+          img={budgetImg}
+          text={['']}
+          boxType={'Budget vs Allocated'}
+        />
       </div>
     </div>
   );

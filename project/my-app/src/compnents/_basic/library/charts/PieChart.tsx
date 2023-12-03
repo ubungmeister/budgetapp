@@ -2,7 +2,7 @@ import { useState } from 'react';
 import Select from 'react-select';
 import { Cell, Label, Legend, Pie, PieChart } from 'recharts';
 
-import { OverviewGraphProps } from './types';
+import { OverviewGraphProps } from '../../../user-overview/types';
 
 const options = [
   { value: 'Goals', label: 'Goals' },
@@ -10,7 +10,7 @@ const options = [
   { value: 'Income', label: 'Income' },
 ];
 
-const OverviewGraph = ({ cashFlow, pocketMoney }: OverviewGraphProps) => {
+const OverviewPieChart = ({ cashFlow, pocketMoney }: OverviewGraphProps) => {
   const [category, setCategory] = useState({
     value: 'Income',
     label: 'Income',
@@ -41,7 +41,7 @@ const OverviewGraph = ({ cashFlow, pocketMoney }: OverviewGraphProps) => {
   if (category.value === 'Income') {
     categoryTotals.push({
       category: 'Pocket Money',
-      totalAmount: pocketMoney?.amount || 0,
+      totalAmount: pocketMoney,
     });
   }
 
@@ -125,4 +125,4 @@ const OverviewGraph = ({ cashFlow, pocketMoney }: OverviewGraphProps) => {
   );
 };
 
-export default OverviewGraph;
+export default OverviewPieChart;

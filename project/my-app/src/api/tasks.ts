@@ -19,6 +19,15 @@ export const getTasks = async (userID: string) => {
   }
 };
 
+export const getAllTasks = async () => {
+  const tasks = await axios.get('http://localhost:1000/tasks/get-all-tasks', {
+    params: {
+      userID: window.localStorage.getItem('userID') || '',
+    },
+  });
+  return tasks.data.tasks;
+};
+
 export const getTasksByMonth = async (userID: string, date: Date) => {
   try {
     const tasks = await axios.get(

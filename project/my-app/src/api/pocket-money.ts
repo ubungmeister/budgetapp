@@ -38,6 +38,19 @@ export const getPocketMoney = async (userID: string, date: Date) => {
   }
 };
 
+export const getPocketMoneyData = async (date: Date) => {
+  const pocketMoney = await axios.get(
+    'http://localhost:1000/pocketmoney/get-pocket-money',
+    {
+      params: {
+        monthYear: date,
+        userID: window.localStorage.getItem('userID'),
+      },
+    }
+  );
+  return pocketMoney.data.pocketMoney;
+};
+
 export const getPocketMoneyUser = async (userID: string, date: Date) => {
   try {
     const pocketMoney = await axios.get(

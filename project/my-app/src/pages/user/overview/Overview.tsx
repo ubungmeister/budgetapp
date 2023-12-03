@@ -4,14 +4,14 @@ import { getCashFlow } from '../../../api/cash-flow';
 import { getAllGoals } from '../../../api/goals';
 import { getPocketMoneyUser } from '../../../api/pocket-money';
 import { getTasksByMonth } from '../../../api/tasks';
+import OverviewPeroformance from '../../../compnents/_basic/library/charts/Performance';
+import PieChart from '../../../compnents/_basic/library/charts/PieChart';
 import { CashFlowProps } from '../../../compnents/cash-flow/types';
 import { GoalProps } from '../../../compnents/goals/types';
 import { PmType } from '../../../compnents/pocket-money/types';
 import { TaskProps } from '../../../compnents/tasks/types';
 import OverviewControls from '../../../compnents/user-overview/OverviewControls';
-import OverviewGraph from '../../../compnents/user-overview/OverviewGraph';
 import OverviewHeaders from '../../../compnents/user-overview/OverviewHeaders';
-import OverviewPeroformance from '../../../compnents/user-overview/OverviewPeroformance';
 import { UseAuthUser } from '../../../hooks/UseAuth';
 
 const Overview = () => {
@@ -146,7 +146,7 @@ const Overview = () => {
       />
       <div className="felex flex-row space-x-10 pt-2 flex px-5">
         <OverviewPeroformance goals={goals} />
-        <OverviewGraph cashFlow={cashFlow} pocketMoney={pocketMoney} />
+        <PieChart cashFlow={cashFlow} pocketMoney={pocketMoney?.amount || 0} />
       </div>
     </div>
   );
