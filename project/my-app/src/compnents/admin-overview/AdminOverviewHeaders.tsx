@@ -49,7 +49,6 @@ const AdminOverviewHeaders = ({
     'Great! Your team members saved on Goals more than previous month 😄',
     'Buddy, You saved less than in previuse month. No worry, you can do it better next month',
   ];
-  console.log('budget', budget);
 
   const budgetAllocated = `${
     budget?.map((item) => item.amount) || 0
