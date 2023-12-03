@@ -1,5 +1,5 @@
-import { PmType } from '../../compnents/pocket-money/types';
 import { CashFlowProps } from '../cash-flow/types';
+import { PmType } from '../pocket-money/types';
 import { TaskProps } from '../tasks/types';
 
 export interface OverviewControlsProps {
@@ -9,7 +9,7 @@ export interface OverviewControlsProps {
 
 export interface OverviewGraphProps {
   cashFlow: CashFlowProps[];
-  pocketMoney: PmType | null;
+  pocketMoney: number;
 }
 
 export interface OverviewHeaderProps {

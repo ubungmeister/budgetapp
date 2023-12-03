@@ -7,11 +7,11 @@ import { SubmitHandler } from 'react-hook-form/dist/types/form';
 import { toast } from 'react-toastify';
 import { z } from 'zod';
 
+import { getUsers } from '../../api/users';
+import { createUser, deleteUser, updateUser } from '../../api/users';
 import DeleteButton from '../_basic/library/buttons/DeleteButton';
 import EditFormControls from '../_basic/library/controls/EditFormControls';
 import InputField from '../_basic/library/inputs/InputField';
-import { getUsers } from '../users/api';
-import { createUser, deleteUser, updateUser } from './api';
 import { Role } from './types';
 import { EditUserProps, UserData } from './types';
 

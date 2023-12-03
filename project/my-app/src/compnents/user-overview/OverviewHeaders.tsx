@@ -8,7 +8,7 @@ import {
   incomeCalculation,
   percentageBetweenTwoNumbers,
 } from '../_basic/helpers/utils';
-import OverviewBox from '../_basic/library/overview/OverviewBox';
+import OverviewBox from '../_basic/library/overview-header/OverviewBox';
 import { OverviewHeaderProps } from './types';
 
 const OverviewHeaders = ({

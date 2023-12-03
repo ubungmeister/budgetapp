@@ -1,5 +1,6 @@
-import axios from 'axios'
-import { BudgetData } from './types'
+import axios from 'axios';
+
+import { BudgetData } from '../compnents/budget/types';
 
 export const updateBudgets = async (
   monthsAndBudget: Array<BudgetData>,
@@ -12,12 +13,12 @@ export const updateBudgets = async (
         budget: monthsAndBudget,
         userID,
       }
-    )
-    console.log(result)
+    );
+    console.log(result);
   } catch (error) {
-    console.error(error)
+    console.error(error);
   }
-}
+};
 
 export const getBudget = async (date: Date, userID: string) => {
   try {
@@ -26,9 +27,19 @@ export const getBudget = async (date: Date, userID: string) => {
         monthYear: date,
         userID,
       },
-    })
-    return result
+    });
+    return result;
   } catch (error) {
-    console.error(error)
+    console.error(error);
   }
-}
+};
+
+export const getAdminBudget = async (date: Date) => {
+  const result = await axios.get('http://localhost:1000/budget/get-budget', {
+    params: {
+      monthYear: date,
+      userID: window.localStorage.getItem('userID'),
+    },
+  });
+  return result.data.budget;
+};

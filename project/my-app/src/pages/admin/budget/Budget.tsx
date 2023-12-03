@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 
+import { getBudget, updateBudgets } from '../../../api/budget';
 import HeaderControls from '../../../compnents/_basic/library/controls/HeaderControls';
 import BudgetTable from '../../../compnents/budget/BudgetTable';
-import { getBudget, updateBudgets } from '../../../compnents/budget/api';
 import { BudgetData } from '../../../compnents/budget/types';
 import { UseAuth } from '../../../hooks/UseAuth';
 

@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-import { UserData } from './types';
+import { UserData } from '../compnents/users/types';
 
 export const updateUser = async (userForm: UserData) => {
   if (!userForm.username || !userForm.email) {

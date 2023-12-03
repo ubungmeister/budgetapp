@@ -1,6 +1,7 @@
 import express from "express"
-import { PrismaClient } from "@prisma/client"
+import { PrismaClient, GoalStatus } from "@prisma/client"
 import { monthFunction } from "../utils/helpers"
+import e from "express";
 
 const router = express.Router();
 
@@ -88,6 +89,7 @@ router.post('/update-goal-amount', async (req, res) => {
             data: {
             currentAmount: updatedAmount,
             isActive: false,
+            status: GoalStatus.COMPLETED, // when goal is completed, end_date is set to current date
             },
         });
         return res.status(222).json({ message: 'Goal reached!' });
@@ -112,7 +114,7 @@ router.post('/update-goal-amount', async (req, res) => {
 })
 
 router.post('/edit-goal', async (req, res) => {
-  const { name, description, goalAmount, userId, start_date, end_date, isActive, id, currentAmount } = req.body;
+  const { name, description, goalAmount, userId, start_date, end_date, isActive, id, currentAmount, status } = req.body;
   
   if (!userId) {
     return res.status(400).json({ message: 'User id is required' });
@@ -132,6 +134,7 @@ router.post('/edit-goal', async (req, res) => {
           start_date,
           end_date,
           isActive,
+          status
         }
       });
       res.status(200).json({ message: 'Goal updated successfully', goal: updatedGoal });
@@ -147,6 +150,7 @@ router.post('/edit-goal', async (req, res) => {
           start_date,
           end_date,
           isActive,
+          status: GoalStatus.PENDING
         }
       });
       res.status(201).json({ message: 'Goal added successfully', goal: newGoal });

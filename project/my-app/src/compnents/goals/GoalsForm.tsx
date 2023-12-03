@@ -7,13 +7,13 @@ import Toggle from 'react-toggle';
 import 'react-toggle/style.css';
 import { z } from 'zod';
 
+import { deleteGoal } from '../../api/goals';
+import { editGoal } from '../../api/goals';
 import DeleteButton from '../_basic/library/buttons/DeleteButton';
 import EditFormControls from '../_basic/library/controls/EditFormControls';
 import DatePickerField from '../_basic/library/date-picker/DatePickerField';
 import InputField from '../_basic/library/inputs/InputField';
 import ProgressLine from '../_basic/library/progress-line/ProgressLine';
-import { deleteGoal } from './api';
-import { editGoal } from './api';
 import { GoalFormProps } from './types';
 
 const FormSchema = z.object({

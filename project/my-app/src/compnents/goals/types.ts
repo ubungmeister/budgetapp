@@ -10,6 +10,7 @@ export interface GoalProps {
   start_date: Date;
   end_date: Date;
   isActive: boolean;
+  status?: GoalStatus;
 }
 
 export interface GoalListProps {
@@ -33,4 +34,10 @@ export interface GoalFormProps {
   formOpen: boolean;
   setFormOpen: (value: React.SetStateAction<boolean>) => void;
   selectedGoal: GoalProps | null;
+}
+
+export enum GoalStatus {
+  COMPLETED = 'COMPLETED',
+  PENDING = 'PENDING',
+  CLOSED = 'CLOSED',
 }

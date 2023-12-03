@@ -8,14 +8,6 @@ export interface PmType {
   id?: string;
 }
 
-export interface PmData {
-  id?: string;
-  userID?: string;
-  username?: string;
-  amount?: number;
-  month?: string;
-}
-
 export interface PmTableProps {
   users: Array<UserData>;
   monthsAndBudget: Array<BudgetData>;

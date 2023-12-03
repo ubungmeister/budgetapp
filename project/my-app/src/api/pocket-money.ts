@@ -1,5 +1,7 @@
-import { PmType } from './types'
-import axios from 'axios'
+import axios from 'axios';
+
+import { PmType } from '../compnents/pocket-money/types';
+
 export const editPocketMoney = async (
   pocketMoney: Array<PmType>,
   userID: string
@@ -11,13 +13,13 @@ export const editPocketMoney = async (
         pocketMoney,
         userID,
       }
-    )
+    );
 
-    return result.status
+    return result.status;
   } catch (error) {
-    console.error(error)
+    console.error(error);
   }
-}
+};
 
 export const getPocketMoney = async (userID: string, date: Date) => {
   try {
@@ -29,12 +31,25 @@ export const getPocketMoney = async (userID: string, date: Date) => {
           userID: userID,
         },
       }
-    )
-    return pocketMoney
+    );
+    return pocketMoney;
   } catch (error) {
-    console.error(error)
+    console.error(error);
   }
-}
+};
+
+export const getPocketMoneyData = async (date: Date) => {
+  const pocketMoney = await axios.get(
+    'http://localhost:1000/pocketmoney/get-pocket-money',
+    {
+      params: {
+        monthYear: date,
+        userID: window.localStorage.getItem('userID'),
+      },
+    }
+  );
+  return pocketMoney.data.pocketMoney;
+};
 
 export const getPocketMoneyUser = async (userID: string, date: Date) => {
   try {
@@ -46,9 +61,9 @@ export const getPocketMoneyUser = async (userID: string, date: Date) => {
           userID: userID,
         },
       }
-    )
-    return pocketMoney
+    );
+    return pocketMoney;
   } catch (error) {
-    console.error(error)
+    console.error(error);
   }
-}
+};

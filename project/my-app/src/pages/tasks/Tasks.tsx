@@ -1,11 +1,12 @@
 import { useEffect, useState } from 'react';
+import { useLocation } from 'react-router-dom';
 
+import { getTasks } from '../../api/tasks';
+import { getUsers } from '../../api/users';
 import AddItemControls from '../../compnents/_basic/library/controls/AddItemControls';
 import ItemsList from '../../compnents/_basic/library/list/ItemsList';
 import TasksForm from '../../compnents/tasks/TasksForm';
-import { getTasks } from '../../compnents/tasks/api';
 import { OptionType, TaskProps } from '../../compnents/tasks/types';
-import { getUsers } from '../../compnents/users/api';
 
 // Tasks page is used by Admin to Add and Edit Tasks, and Users to view their Tasks and submit them
 
@@ -21,19 +22,20 @@ const Tasks = () => {
   const [filteredTasks, setFilteredTasks] = useState<TaskProps[]>([]);
   const [users, setUsers] = useState<OptionType[]>([]); // TODO: type this
 
+  const location = useLocation();
+
   useEffect(() => {
     if (!userID) return;
-
     const userRole = window.localStorage.getItem('userRole');
     if (userRole !== 'ADMIN') {
       setIsAdmin(false);
     } else {
       setIsAdmin(true);
     }
-
     const getData = async () => {
       const fetchedTasks = await getTasks(userID);
       setTasks(fetchedTasks?.data.tasks);
+
       const fetchedUsers = await getUsers();
       if (!fetchedUsers) return;
       const mappedUsers = fetchedUsers.map((user: any) => ({
@@ -44,6 +46,25 @@ const Tasks = () => {
     };
     getData();
   }, [formOpen, tasks]);
+
+  useEffect(() => {
+    const queryParams = new URLSearchParams(location.search);
+    const taskId = queryParams.get('taskId');
+
+    const getData = async () => {
+      const fetchedTasks = await getTasks(userID || '');
+      setTasks(fetchedTasks?.data.tasks);
+
+      if (taskId) {
+        // Fetch the task details and open the form
+        setSelectedTask(
+          fetchedTasks?.data.tasks.find((task: TaskProps) => task.id === taskId)
+        );
+        setFormOpen(true);
+      }
+    };
+    getData();
+  }, [location]);
 
   useEffect(() => {
     if (search === '') {

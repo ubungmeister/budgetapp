@@ -1,8 +1,8 @@
 import { useCallback, useEffect, useState } from 'react';
 import Select, { OptionProps } from 'react-select';
 
+import { getAllGoals } from '../../api/goals';
 import no_image from '../../assets/images/no_image.png';
-import { getAllGoals } from '../../compnents/cash-flow/api';
 import { optionsExpense, optionsIncome } from './options';
 import { CategotyTypeProps } from './types';
 import { optionsGoalsProps } from './types';

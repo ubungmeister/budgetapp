@@ -1,13 +1,13 @@
 import { useEffect, useState } from 'react';
 
+import { getBudget } from '../../../api/budget';
+import { editPocketMoney } from '../../../api/pocket-money';
+import { getPocketMoney } from '../../../api/pocket-money';
+import { getUsers } from '../../../api/users';
 import HeaderControls from '../../../compnents/_basic/library/controls/HeaderControls';
-import { getBudget } from '../../../compnents/budget/api';
 import { BudgetData } from '../../../compnents/budget/types';
 import PmTable from '../../../compnents/pocket-money/PmTable';
-import { editPocketMoney } from '../../../compnents/pocket-money/api';
-import { getPocketMoney } from '../../../compnents/pocket-money/api';
 import { PmType } from '../../../compnents/pocket-money/types';
-import { getUsers } from '../../../compnents/users/api';
 import { UserData } from '../../../compnents/users/types';
 import { UseAuth } from '../../../hooks/UseAuth';
 

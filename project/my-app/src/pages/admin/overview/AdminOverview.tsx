@@ -1,9 +1,18 @@
 import { useEffect, useState } from 'react';
 
+import OverviewGraph from '../../../compnents/_basic/library/charts/PieChart';
 import AdminOverviewHeaders from '../../../compnents/admin-overview/AdminOverviewHeaders';
-import OverviewControls from '../../../compnents/overview/OverviewControls';
+import PendingTasks from '../../../compnents/admin-overview/PendingTasks';
+import OverviewControls from '../../../compnents/user-overview/OverviewControls';
 import { UseAuth } from '../../../hooks/UseAuth';
-import { useAdminCashFlow, useAdminGoals } from '../../../hooks/UseQueryAdmin';
+import {
+  useAdminBudget,
+  useAdminCashFlow,
+  useAdminGoals,
+  useAdminPocketMoney,
+  useAdminTasks,
+  useTasks,
+} from '../../../hooks/UseQueryAdmin';
 
 const AdminPage = () => {
   UseAuth();
@@ -23,6 +32,31 @@ const AdminPage = () => {
   const { data: previousMonthCashFlow } = useAdminCashFlow(
     'previousMonthCashFlow',
     previousMonthDate
+  );
+
+  const { data: tasks } = useAdminTasks('tasks', month);
+  const { data: tasksAllMonths } = useTasks();
+
+  const tasksInProgress = tasksAllMonths?.filter(
+    (task) => task.status !== 'APPROVED'
+  );
+
+  const { data: budget } = useAdminBudget('budget', month);
+
+  const budgetCurrentMonth = budget?.filter(
+    (budget) => new Date(budget.month).getMonth() === month.getMonth()
+  );
+  const { data: pocketMoney } = useAdminPocketMoney('pocketMoney', month);
+
+  const pocketMoneyCurrentMonth = pocketMoney?.filter(
+    (pocketMoney) => new Date(pocketMoney.month).getMonth() === month.getMonth()
+  );
+  const amountPocketMoney = pocketMoneyCurrentMonth?.map(
+    (item) => item.amount
+  ) || [0];
+  const calculatedPocketMoney = amountPocketMoney.reduce(
+    (acc, current) => acc + current,
+    0
   );
 
   useEffect(() => {
@@ -56,7 +90,17 @@ const AdminPage = () => {
         previousMonthCashFlow={previousMonthCashFlow}
         goals={goals}
         previousMonthGoals={previousMonthGoals}
+        tasks={tasks}
+        budget={budgetCurrentMonth}
+        pocketMoney={calculatedPocketMoney}
       />
+      <div className="felex flex-row space-x-10 pt-2 flex px-5">
+        <PendingTasks tasksInProgress={tasksInProgress} />
+        <OverviewGraph
+          cashFlow={cashFlow || []}
+          pocketMoney={calculatedPocketMoney}
+        />
+      </div>
     </div>
   );
 };
