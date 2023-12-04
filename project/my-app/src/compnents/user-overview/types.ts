@@ -15,7 +15,7 @@ export interface OverviewGraphProps {
 export interface OverviewHeaderProps {
   cashFlow: CashFlowProps[];
   previousMonthCashFlow: CashFlowProps[];
-  pocketMoney: PmType | null;
-  previousMonthPocketMoney: PmType | null;
+  pocketMoney: PmType | undefined;
+  previousMonthPocketMoney: PmType | undefined;
   tasks: TaskProps[] | null;
 }

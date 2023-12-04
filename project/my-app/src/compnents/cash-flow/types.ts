@@ -2,7 +2,7 @@ import { PmType } from '../../compnents/pocket-money/types';
 
 export interface CashFlowControlsProps {
   setIsMonthChange: React.Dispatch<React.SetStateAction<string>>;
-  pocketMoney: PmType | null; //why is this undefined?
+  pocketMoney: PmType | undefined;
   setFormOpen: React.Dispatch<React.SetStateAction<boolean>>;
   setSelectedCashFlow: React.Dispatch<
     React.SetStateAction<CashFlowProps | null>
@@ -34,7 +34,7 @@ export interface CashFlowFormProps {
   setFormOpen: React.Dispatch<React.SetStateAction<boolean>>;
   selectedCashFlow: CashFlowProps | null;
   cashFlow: CashFlowProps[];
-  pocketMoney: PmType | null;
+  pocketMoney: PmType | undefined;
   setCashFlowDeleted: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
@@ -57,7 +57,7 @@ export interface optionsGoalsProps {
 }
 
 export interface cashflowHeaderProps {
-  pocketMoney: PmType | null;
+  pocketMoney: PmType | undefined;
   cashFlow: CashFlowProps[];
 }
 

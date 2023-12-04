@@ -19,7 +19,7 @@ const Sidebar = () => {
   const navigate = useNavigate();
 
   const adminMenu = [
-    { title: 'Admin', src: <FiHome />, navigate: '/admin' },
+    { title: 'Overview', src: <FiHome />, navigate: '/admin/overview' },
     { title: 'Budget', src: <TbMoneybag />, navigate: '/admin/budget' },
     {
       title: 'Pocket money planning',

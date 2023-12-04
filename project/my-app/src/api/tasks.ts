@@ -28,21 +28,14 @@ export const getAllTasks = async () => {
   return tasks.data.tasks;
 };
 
-export const getTasksByMonth = async (userID: string, date: Date) => {
-  try {
-    const tasks = await axios.get(
-      'http://localhost:1000/tasks/get-tasks-month',
-      {
-        params: {
-          monthYear: date,
-          userID,
-        },
-      }
-    );
-    return tasks;
-  } catch (error) {
-    console.error(error);
-  }
+export const getTasksByMonthForUser = async (date: Date) => {
+  const tasks = await axios.get('http://localhost:1000/tasks/get-tasks-month', {
+    params: {
+      monthYear: date,
+      userID: window.localStorage.getItem('userID') || '',
+    },
+  });
+  return tasks.data.tasks;
 };
 
 export const getAllTasksByMonth = async (date: Date) => {

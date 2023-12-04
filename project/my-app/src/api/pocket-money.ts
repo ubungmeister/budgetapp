@@ -1,6 +1,7 @@
 import axios from 'axios';
 
 import { PmType } from '../compnents/pocket-money/types';
+import PocketMoney from './../pages/admin/pocket-money/PocketMoney';
 
 export const editPocketMoney = async (
   pocketMoney: Array<PmType>,
@@ -51,19 +52,39 @@ export const getPocketMoneyData = async (date: Date) => {
   return pocketMoney.data.pocketMoney;
 };
 
-export const getPocketMoneyUser = async (userID: string, date: Date) => {
+export const getPocketMoneyForUser = async (date: Date) => {
   try {
-    const pocketMoney = await axios.get(
+    const result = await axios.get(
       'http://localhost:1000/pocketmoney/get-pocket-money-user',
       {
         params: {
           monthYear: date,
-          userID: userID,
+          userID: window.localStorage.getItem('userID'),
         },
       }
     );
-    return pocketMoney;
+    // if null or undefined return 0
+    if (
+      result.data.pocketMoney === null ||
+      result.data.pocketMoney === undefined
+    ) {
+      const year = date.getFullYear();
+      const month = date.getMonth() + 1;
+
+      const newDate = new Date(year, month, 1);
+      newDate.setUTCHours(0, 0, 0, 0);
+      return {
+        amount: 0,
+        month: newDate,
+        userId: window.localStorage.getItem('userID') as string,
+      };
+    } else {
+      return {
+        ...result.data.pocketMoney,
+        month: new Date(result.data.pocketMoney.month),
+      };
+    }
   } catch (error) {
-    console.error(error);
+    return 0;
   }
 };

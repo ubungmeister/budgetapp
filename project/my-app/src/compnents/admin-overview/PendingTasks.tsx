@@ -1,4 +1,5 @@
 import { BiPencil } from 'react-icons/bi';
+import { FiEye } from 'react-icons/fi';
 import { Link } from 'react-router-dom';
 
 import { capitalizeFirstLetter } from '../../compnents/_basic/helpers/utils';
@@ -67,7 +68,10 @@ const PendingTasks = ({ tasksInProgress }: Props) => {
           to="/tasks"
           className="absolute bottom-5 right-5 text-gray-500 semibold text-[18px] hover:text-gray-700"
         >
-          <p>See all</p>
+          <div className="flex flex-row justify-center items-center space-x-2">
+            <FiEye size={'20px'} />
+            <p>See all</p>
+          </div>
         </Link>
       </div>
     </div>

@@ -19,7 +19,7 @@ import { GoalFormProps } from './types';
 const FormSchema = z.object({
   name: z.string().trim().min(1, { message: 'Name is required' }),
   description: z.string().trim().min(1, { message: 'Description is required' }),
-  goalAmount: z.number(),
+  goalAmount: z.number().min(1, { message: 'Goal amount must be positive' }),
   start_date: z.date(),
   end_date: z.date(),
 });
@@ -93,10 +93,10 @@ const GoalsForm = ({ formOpen, setFormOpen, selectedGoal }: GoalFormProps) => {
 
       if (shouldDelete) {
         await deleteGoal(value);
+        toast.success('Goal deleted ');
       }
     }
     setFormOpen(false);
-    toast.success('Goal deleted ');
   };
 
   //handle click on submit button
