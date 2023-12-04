@@ -1,39 +1,47 @@
 import { useEffect, useState } from 'react';
 
-import { getCashFlow } from '../../../api/cash-flow';
-import { getAllGoals } from '../../../api/goals';
-import { getPocketMoneyUser } from '../../../api/pocket-money';
-import { getTasksByMonth } from '../../../api/tasks';
 import OverviewPeroformance from '../../../compnents/_basic/library/charts/Performance';
 import PieChart from '../../../compnents/_basic/library/charts/PieChart';
-import { CashFlowProps } from '../../../compnents/cash-flow/types';
-import { GoalProps } from '../../../compnents/goals/types';
-import { PmType } from '../../../compnents/pocket-money/types';
 import { TaskProps } from '../../../compnents/tasks/types';
 import OverviewControls from '../../../compnents/user-overview/OverviewControls';
 import OverviewHeaders from '../../../compnents/user-overview/OverviewHeaders';
 import { UseAuthUser } from '../../../hooks/UseAuth';
+import {
+  useCashFlow,
+  useGoalsUsers,
+  usePocketMoney,
+  useTasksUsers,
+} from '../../../hooks/UseQueryAdmin';
 
 const Overview = () => {
   UseAuthUser();
 
   const [isMonthChange, setIsMonthChange] = useState('');
-  const [pocketMoney, setPocketMoney] = useState<PmType | null>(null);
-  const [previousMonthPocketMoney, setPreviousMonthPocketMoney] =
-    useState<PmType | null>(null);
   const [currentMonth, setCurrentMonth] = useState<Date>(new Date());
-  const [cashFlow, setCashFlow] = useState<Array<CashFlowProps>>([]);
-  const [previousMonthCashFlow, setPreviousMonthCashFlow] = useState<
-    Array<CashFlowProps>
-  >([]);
-  const [goals, setGoals] = useState<Array<GoalProps>>([]);
-  const [tasks, setTasks] = useState<Array<TaskProps>>([]);
 
-  const userID = window.localStorage.getItem('userID');
+  const previousMonth = new Date(currentMonth || new Date());
+  previousMonth.setMonth(previousMonth.getMonth() - 1);
+
+  const { data: pocketMoneyCurrent } = usePocketMoney(
+    'pocketMoney',
+    currentMonth
+  );
+  const { data: pocketMoneyPreviousMonth } = usePocketMoney(
+    'pocketMoney',
+    previousMonth
+  );
+  const { data: cashFlow } = useCashFlow('cashFlow', currentMonth);
+
+  const { data: cashFlowPreviousMonth } = useCashFlow(
+    'cashFlow',
+    previousMonth
+  );
+  const { data: tasks } = useTasksUsers('tasks', currentMonth);
+  const { data: goals } = useGoalsUsers();
+
+  console.log(cashFlow);
 
   useEffect(() => {
-    if (!userID) return;
-
     const date = new Date(currentMonth || new Date());
     const previousMonthDate = new Date(currentMonth || new Date());
     previousMonthDate.setMonth(previousMonthDate.getMonth() - 1);
@@ -49,104 +57,34 @@ const Overview = () => {
     }
 
     setIsMonthChange('');
-    const fetchData = async () => {
-      const pocketMoney = await getPocketMoneyUser(userID, date);
-      const data = await pocketMoney?.data.pocketMoney;
-      //bug here
-      if (!data) {
-        const year = currentMonth.getFullYear();
-        const month = currentMonth.getMonth() + 1;
-
-        const newDate = new Date(year, month, 1);
-        newDate.setUTCHours(0, 0, 0, 0);
-
-        setPocketMoney({
-          amount: 0,
-          month: newDate,
-          userId: userID as string,
-        });
-      } else {
-        setPocketMoney({
-          id: data.id,
-          amount: data.amount,
-          month: new Date(data.month),
-          userId: data.userId,
-        });
-      }
-
-      const previousMonthPocketMoney = await getPocketMoneyUser(
-        userID,
-        previousMonthDate
-      );
-      const previousMonthData = await previousMonthPocketMoney?.data
-        .pocketMoney;
-      if (!previousMonthData) {
-        const year = previousMonthDate.getFullYear();
-        const month = previousMonthDate.getMonth() + 1;
-
-        const newDate = new Date(year, month, 1);
-        newDate.setUTCHours(0, 0, 0, 0);
-
-        setPreviousMonthPocketMoney({
-          amount: 0,
-          month: newDate,
-          userId: userID as string,
-        });
-      } else {
-        setPreviousMonthPocketMoney({
-          id: previousMonthData.id,
-          amount: previousMonthData.amount,
-          month: new Date(previousMonthData.month),
-          userId: previousMonthData.userId,
-        });
-      }
-
-      const cashFlow = await getCashFlow(userID, date);
-      setCashFlow(cashFlow || []);
-
-      const previousMonthCashFlow = await getCashFlow(
-        userID,
-        previousMonthDate
-      );
-      setPreviousMonthCashFlow(previousMonthCashFlow || []);
-
-      const tasks = await getTasksByMonth(userID, date);
-      const filteredTasks = tasks?.data.tasks.filter(
-        (task: TaskProps) => task.status === 'APPROVED'
-      );
-      setTasks(filteredTasks);
-    };
-
-    fetchData();
   }, [isMonthChange]);
 
-  useEffect(() => {
-    const fetchGoals = async () => {
-      const data = await getAllGoals();
-      setGoals(data || []);
-    };
-    fetchGoals();
-  }, []);
+  const filteredTasks = tasks?.filter(
+    (task: TaskProps) => task.status === 'APPROVED'
+  );
 
   return (
     <div className="pt-8 pl-6 space-y-3">
       <OverviewControls
         setIsMonthChange={setIsMonthChange}
-        month={pocketMoney?.month || null}
+        month={pocketMoneyCurrent?.month || null}
       />
       <div className="px-5 pt-2">
         <hr />
       </div>
       <OverviewHeaders
-        cashFlow={cashFlow}
-        previousMonthCashFlow={previousMonthCashFlow}
-        pocketMoney={pocketMoney}
-        previousMonthPocketMoney={previousMonthPocketMoney}
-        tasks={tasks}
+        cashFlow={cashFlow || []}
+        previousMonthCashFlow={cashFlowPreviousMonth || []}
+        pocketMoney={pocketMoneyCurrent}
+        previousMonthPocketMoney={pocketMoneyPreviousMonth}
+        tasks={filteredTasks || []}
       />
       <div className="felex flex-row space-x-10 pt-2 flex px-5">
-        <OverviewPeroformance goals={goals} />
-        <PieChart cashFlow={cashFlow} pocketMoney={pocketMoney?.amount || 0} />
+        <OverviewPeroformance goals={goals || []} />
+        <PieChart
+          cashFlow={cashFlow || []}
+          pocketMoney={pocketMoneyCurrent?.amount || 0}
+        />
       </div>
     </div>
   );

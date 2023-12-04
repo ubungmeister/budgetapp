@@ -1,10 +1,14 @@
 import { useQuery } from '@tanstack/react-query';
 
 import { getAdminBudget } from '../api/budget';
-import { getCashFamilyCashFlow } from '../api/cash-flow';
-import { getAllFamilyGoals } from '../api/goals';
-import { getPocketMoneyData } from '../api/pocket-money';
-import { getAllTasks, getAllTasksByMonth } from '../api/tasks';
+import { getCashFamilyCashFlow, getCashFlowForUsers } from '../api/cash-flow';
+import { getAllFamilyGoals, getGoalsForUsers } from '../api/goals';
+import { getPocketMoneyData, getPocketMoneyForUser } from '../api/pocket-money';
+import {
+  getAllTasks,
+  getAllTasksByMonth,
+  getTasksByMonthForUser,
+} from '../api/tasks';
 import { BudgetData } from '../compnents/budget/types';
 import { CashFlowProps } from '../compnents/cash-flow/types';
 import { GoalProps } from '../compnents/goals/types';
@@ -50,4 +54,24 @@ export function useAdminPocketMoney(key: string, month: Date) {
 
 export function useTasks() {
   return useQuery<TaskProps[]>(['tasks'], () => getAllTasks());
+}
+
+export function usePocketMoney(key: string, month: Date) {
+  return useQuery<PmType>([key, month], () => getPocketMoneyForUser(month));
+}
+
+export function useCashFlow(key: string, month: Date) {
+  return useQuery<CashFlowProps[]>([key, month], () =>
+    getCashFlowForUsers(month)
+  );
+}
+
+export function useTasksUsers(key: string, month: Date) {
+  return useQuery<TaskProps[]>([key, month], () =>
+    getTasksByMonthForUser(month)
+  );
+}
+
+export function useGoalsUsers() {
+  return useQuery<GoalProps[]>(['goals'], () => getGoalsForUsers());
 }

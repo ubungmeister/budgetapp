@@ -1,41 +1,32 @@
 import { useEffect, useState } from 'react';
 
-import { getAllGoals } from '../../../api/goals';
 import AddItemControls from '../../../compnents/_basic/library/controls/AddItemControls';
 import ItemsList from '../../../compnents/_basic/library/list/ItemsList';
 import GoalsForm from '../../../compnents/goals/GoalsForm';
 import { GoalProps } from '../../../compnents/goals/types';
 import { UseAuthUser } from '../../../hooks/UseAuth';
+import { useGoalsUsers } from '../../../hooks/UseQueryAdmin';
 
 const Goals = () => {
-  const userID = window.localStorage.getItem('userID');
-  const [goals, setGoals] = useState<GoalProps[]>([]);
+  UseAuthUser();
   const [filteredGoals, setFilteredGoals] = useState<GoalProps[]>([]);
   const [isActive, setIsActive] = useState(true);
   const [formOpen, setFormOpen] = useState(false);
   const [search, setSearch] = useState<string>('');
   const [selectedGoal, setSelectedGoal] = useState<GoalProps | null>(null);
-  UseAuthUser();
 
-  useEffect(() => {
-    if (!userID) return;
-    const fetchData = async () => {
-      const data = await getAllGoals();
-      setGoals(data);
-    };
-    fetchData();
-  }, [formOpen, goals]);
+  const { data: goals } = useGoalsUsers();
 
   useEffect(() => {
     if (search === '') {
-      setFilteredGoals(goals); // Reset filtered users to original list
+      setFilteredGoals(goals || []); // Reset filtered users to original list
       return;
     }
-    const filteredGoals = goals.filter((goal) => {
+    const filteredGoals = goals?.filter((goal) => {
       return goal.name.toLowerCase().includes(search.toLowerCase());
     });
 
-    setFilteredGoals(filteredGoals);
+    setFilteredGoals(filteredGoals || []);
   }, [search, goals, isActive]);
 
   //filter goals by active or inactive status

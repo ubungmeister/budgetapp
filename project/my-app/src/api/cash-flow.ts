@@ -19,6 +19,19 @@ export const getCashFlow = async (userID: string, date: Date) => {
   }
 };
 
+export const getCashFlowForUsers = async (date: Date) => {
+  const result = await axios.get(
+    'http://localhost:1000/cashflow/get-cash-flow',
+    {
+      params: {
+        monthYear: date,
+        userID: window.localStorage.getItem('userID'),
+      },
+    }
+  );
+  return result.data.cashFlow;
+};
+
 export const editCashFlow = async (data: CashFlowProps) => {
   try {
     const result = await axios.post(
