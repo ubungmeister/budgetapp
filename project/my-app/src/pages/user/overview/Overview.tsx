@@ -39,8 +39,6 @@ const Overview = () => {
   const { data: tasks } = useTasksUsers('tasks', currentMonth);
   const { data: goals } = useGoalsUsers();
 
-  console.log(cashFlow);
-
   useEffect(() => {
     const date = new Date(currentMonth || new Date());
     const previousMonthDate = new Date(currentMonth || new Date());
