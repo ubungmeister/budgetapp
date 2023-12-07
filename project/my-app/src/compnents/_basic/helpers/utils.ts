@@ -84,3 +84,17 @@ export const statusLabel = (status: TaskStatus) => {
       return 'Pending';
   }
 };
+
+export const getSixMonths = (currentMonth: Date) => {
+  const month = currentMonth.getMonth() + 1;
+  const year = currentMonth.getFullYear();
+  const monthArray = [] as Array<any>;
+
+  const NUM_MONTHS = 6;
+  for (let i = 0; i < NUM_MONTHS; i++) {
+    const newDate = new Date(year, month + i, 1);
+    newDate.setUTCHours(0, 0, 0, 0);
+    monthArray.push(newDate.toISOString());
+  }
+  return monthArray;
+};

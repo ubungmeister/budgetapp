@@ -1,39 +1,18 @@
 import axios from 'axios';
 
 import { PmType } from '../compnents/pocket-money/types';
-import PocketMoney from './../pages/admin/pocket-money/PocketMoney';
 
-export const editPocketMoney = async (
-  pocketMoney: Array<PmType>,
-  userID: string
-) => {
+export const editPocketMoney = async (pocketMoney: Array<PmType>) => {
   try {
     const result = await axios.post(
       `http://localhost:1000/pocketmoney/add-pocket-money`,
       {
         pocketMoney,
-        userID,
+        userID: window.localStorage.getItem('userID') as string,
       }
     );
 
     return result.status;
-  } catch (error) {
-    console.error(error);
-  }
-};
-
-export const getPocketMoney = async (userID: string, date: Date) => {
-  try {
-    const pocketMoney = await axios.get(
-      'http://localhost:1000/pocketmoney/get-pocket-money',
-      {
-        params: {
-          monthYear: date,
-          userID: userID,
-        },
-      }
-    );
-    return pocketMoney;
   } catch (error) {
     console.error(error);
   }
