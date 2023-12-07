@@ -1,95 +1,85 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
 import { getBudget } from '../../../api/budget';
 import { editPocketMoney } from '../../../api/pocket-money';
-import { getPocketMoney } from '../../../api/pocket-money';
 import { getUsers } from '../../../api/users';
+import { getSixMonths } from '../../../compnents/_basic/helpers/utils';
 import HeaderControls from '../../../compnents/_basic/library/controls/HeaderControls';
 import { BudgetData } from '../../../compnents/budget/types';
 import PmTable from '../../../compnents/pocket-money/PmTable';
 import { PmType } from '../../../compnents/pocket-money/types';
 import { UserData } from '../../../compnents/users/types';
 import { UseAuth } from '../../../hooks/UseAuth';
+import { useUsers } from '../../../hooks/UseQueryAdmin';
+import {
+  useAdminBudget,
+  useAdminPocketMoney,
+} from '../../../hooks/UseQueryAdmin';
 
 const PocketMoney = () => {
-  const [currentMonth, setCurrentMonth] = useState('');
+  const [currentMonth, setCurrentMonth] = useState<Date>(new Date());
   const [isMonthChange, setIsMonthChange] = useState('');
   const [monthsAndBudget, setMonthsAndBudget] = useState<Array<BudgetData>>([]);
   const [pocketMoney, setPocketMoney] = useState<Array<PmType>>([]);
   const [isChangeCancel, setChangeCancel] = useState<boolean>(false);
-  const [users, setUsers] = useState<Array<UserData>>([]);
-  const userID = window.localStorage.getItem('userID');
   const [saveDiasbled, setSaveDisabled] = useState<boolean>(false);
   const [sussessAlert, setSuccessAlert] = useState<boolean>(false);
 
   UseAuth();
 
+  const { data: users } = useUsers();
+
+  const { data: budget } = useAdminBudget('budget', currentMonth);
+  const { data: pocketMoneyData } = useAdminPocketMoney(
+    'pocketMoney',
+    currentMonth
+  );
+
+  // defiune the current month and the next 5 months
+  const monthArray = getSixMonths(currentMonth);
+
+  // compare months in monthArray and result.data, if there a month in monthArray that is not in result.data, then create an object contains that date and amount 0
+  const monthsAndBudgetArray = useMemo(() => {
+    const computedArray = [] as Array<any>;
+    for (let i = 0; i < monthArray.length; i++) {
+      const date = monthArray[i];
+      const found = budget?.find((item: any) => item.month === date);
+      if (!found) {
+        computedArray.push({ month: date, amount: 0 });
+      } else {
+        computedArray.push(found);
+      }
+    }
+    return computedArray;
+  }, [monthArray, budget]);
+
+  // set the monthsAndBudgetArray to monthsAndBudget
   useEffect(() => {
-    if (!userID) return;
+    setMonthsAndBudget(monthsAndBudgetArray);
+  }, [monthsAndBudgetArray]);
 
-    const getData = async () => {
-      const date = new Date(currentMonth || new Date());
+  // set the pocketMoneyData to pocketMoney
+  useEffect(() => {
+    setPocketMoney(pocketMoneyData || []);
+  }, [pocketMoneyData]);
 
-      if (isMonthChange) {
-        if (isMonthChange === 'next') {
-          date.setMonth(date.getMonth() + 1);
-          setCurrentMonth(date.toISOString());
-        } else {
-          date.setMonth(date.getMonth() - 1);
-          setCurrentMonth(date.toISOString());
-        }
+  useEffect(() => {
+    const date = new Date(currentMonth || new Date());
+    if (isMonthChange) {
+      if (isMonthChange === 'next') {
+        date.setMonth(date.getMonth() + 1);
+        setCurrentMonth(date);
+      } else {
+        date.setMonth(date.getMonth() - 1);
+        setCurrentMonth(date);
       }
-
-      const month = date.getMonth() + 1;
-      const year = date.getFullYear();
-      const monthArray = [] as Array<any>;
-
-      const NUM_MONTHS = 6;
-      for (let i = 0; i < NUM_MONTHS; i++) {
-        const newDate = new Date(year, month + i, 1);
-        newDate.setUTCHours(0, 0, 0, 0);
-        monthArray.push(newDate.toISOString());
-      }
-
-      try {
-        const budget = await getBudget(date, userID);
-        //compare arrayofMonth and result.data and if there is no data for that month,
-        // then create an object contains that date and amount 0
-
-        const data = budget?.data.budget;
-
-        const monthsAndBudgetArray = [] as Array<any>;
-
-        for (let i = 0; i < monthArray.length; i++) {
-          const date = monthArray[i];
-          const found = data.find((item: any) => item.month === date);
-          if (!found) {
-            monthsAndBudgetArray.push({ month: date, amount: 0 });
-          } else {
-            monthsAndBudgetArray.push(found);
-          }
-        }
-        setMonthsAndBudget(monthsAndBudgetArray);
-      } catch (error) {
-        console.error(error);
-      }
-
-      const pocketMoney = await getPocketMoney(userID, date);
-      setPocketMoney(pocketMoney?.data.pocketMoney);
-
-      const users = await getUsers();
-      setUsers(users);
-    };
-
-    getData();
-
+    }
     setIsMonthChange('');
     setChangeCancel(false);
   }, [isMonthChange, isChangeCancel]);
 
   const handleSave = async () => {
-    if (!userID) return;
-    const result = await editPocketMoney(pocketMoney, userID);
+    const result = await editPocketMoney(pocketMoney);
     if (result === 200) {
       setSuccessAlert(true);
     }
@@ -111,7 +101,7 @@ const PocketMoney = () => {
         <PmTable
           monthsAndBudget={monthsAndBudget}
           pocketMoney={pocketMoney}
-          users={users}
+          users={users || []}
           setPocketMoney={setPocketMoney}
           setSaveDisabled={setSaveDisabled}
           setSuccessAlert={setSuccessAlert}

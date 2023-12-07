@@ -1,12 +1,12 @@
+import { useQueryClient } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 
-import { getTasks } from '../../api/tasks';
-import { getUsers } from '../../api/users';
 import AddItemControls from '../../compnents/_basic/library/controls/AddItemControls';
 import ItemsList from '../../compnents/_basic/library/list/ItemsList';
 import TasksForm from '../../compnents/tasks/TasksForm';
-import { OptionType, TaskProps } from '../../compnents/tasks/types';
+import { TaskProps } from '../../compnents/tasks/types';
+import { useTasks, useUsers } from '../../hooks/UseQueryAdmin';
 
 // Tasks page is used by Admin to Add and Edit Tasks, and Users to view their Tasks and submit them
 
@@ -14,15 +14,17 @@ const Tasks = () => {
   const userID = window.localStorage.getItem('userID');
 
   const [isAdmin, setIsAdmin] = useState(false);
-  const [tasks, setTasks] = useState<TaskProps[]>([]);
   const [isActive, setIsActive] = useState(true);
   const [formOpen, setFormOpen] = useState(false);
   const [selectedTask, setSelectedTask] = useState<TaskProps | null>(null);
   const [search, setSearch] = useState<string>('');
-  const [filteredTasks, setFilteredTasks] = useState<TaskProps[]>([]);
-  const [users, setUsers] = useState<OptionType[]>([]); // TODO: type this
 
   const location = useLocation();
+
+  const { data: tasks } = useTasks();
+  const { data: users } = useUsers();
+
+  const queryClient = useQueryClient();
 
   useEffect(() => {
     if (!userID) return;
@@ -32,55 +34,33 @@ const Tasks = () => {
     } else {
       setIsAdmin(true);
     }
-    const getData = async () => {
-      const fetchedTasks = await getTasks(userID);
-      setTasks(fetchedTasks?.data.tasks);
-
-      const fetchedUsers = await getUsers();
-      if (!fetchedUsers) return;
-      const mappedUsers = fetchedUsers.map((user: any) => ({
-        label: user.username,
-        value: user.id,
-      }));
-      setUsers(mappedUsers);
-    };
-    getData();
-  }, [formOpen, tasks]);
+    queryClient.invalidateQueries(['tasks']);
+  }, [setFormOpen, formOpen, tasks]);
 
   useEffect(() => {
     const queryParams = new URLSearchParams(location.search);
     const taskId = queryParams.get('taskId');
 
-    const getData = async () => {
-      const fetchedTasks = await getTasks(userID || '');
-      setTasks(fetchedTasks?.data.tasks);
-
-      if (taskId) {
-        // Fetch the task details and open the form
-        setSelectedTask(
-          fetchedTasks?.data.tasks.find((task: TaskProps) => task.id === taskId)
-        );
-        setFormOpen(true);
-      }
-    };
-    getData();
+    if (taskId) {
+      // Fetch the task details and open the form
+      const selectedTask = tasks?.find((task: TaskProps) => task.id === taskId);
+      setSelectedTask(selectedTask || null);
+      setFormOpen(true);
+    }
   }, [location]);
 
-  useEffect(() => {
-    if (search === '') {
-      setFilteredTasks(tasks); // Reset filtered users to original list
-      return;
-    }
-    const filteredTasks = tasks.filter((task) => {
-      return task.name.toLowerCase().includes(search.toLowerCase());
-    });
-
-    setFilteredTasks(filteredTasks);
-  }, [search, tasks, isActive]);
+  const filteredTasks = tasks?.filter((task) => {
+    return task.name.toLowerCase().includes(search.toLowerCase());
+  });
 
   const activeTasks = isActive
-    ? filteredTasks.filter((task) => task.isActive)
+    ? filteredTasks?.filter((task) => task.isActive)
     : filteredTasks;
+
+  const optionsUsers = users?.map((user: any) => ({
+    label: user.username,
+    value: user.id,
+  }));
 
   return (
     <div className="pt-8 pl-6 space-y-3">
@@ -108,7 +88,7 @@ const Tasks = () => {
           setFormOpen={setFormOpen}
           selectedTask={selectedTask}
           isAdmin={isAdmin}
-          users={users}
+          users={optionsUsers || []}
         />
       </div>
     </div>

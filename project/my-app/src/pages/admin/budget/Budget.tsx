@@ -1,72 +1,59 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
-import { getBudget, updateBudgets } from '../../../api/budget';
+import { updateBudgets } from '../../../api/budget';
+import { getSixMonths } from '../../../compnents/_basic/helpers/utils';
 import HeaderControls from '../../../compnents/_basic/library/controls/HeaderControls';
 import BudgetTable from '../../../compnents/budget/BudgetTable';
 import { BudgetData } from '../../../compnents/budget/types';
 import { UseAuth } from '../../../hooks/UseAuth';
+import { useAdminBudget } from '../../../hooks/UseQueryAdmin';
 
 const Budget = () => {
   UseAuth();
 
   const [isMonthChange, setIsMonthChange] = useState('');
-  const [currentMonth, setCurrentMonth] = useState('');
+  const [currentMonth, setCurrentMonth] = useState<Date>(new Date());
   const [monthsAndBudget, setMonthsAndBudget] = useState<Array<BudgetData>>([]);
   const [isChangeCancel, setChangeCancel] = useState<boolean>(false);
 
   const userID = window.localStorage.getItem('userID');
 
+  const { data: budget } = useAdminBudget('budget', currentMonth);
+
+  // defiune the current month and the next 5 months
+  const monthArray = getSixMonths(currentMonth);
+
+  // compare months in monthArray and result.data, if there a month in monthArray that is not in result.data, then create an object contains that date and amount 0
+  const monthsAndBudgetArray = useMemo(() => {
+    const computedArray = [] as Array<any>;
+    for (let i = 0; i < monthArray.length; i++) {
+      const date = monthArray[i];
+      const found = budget?.find((item: any) => item.month === date);
+      if (!found) {
+        computedArray.push({ month: date, amount: 0 });
+      } else {
+        computedArray.push(found);
+      }
+    }
+    return computedArray;
+  }, [monthArray, budget]);
+
+  // set the monthsAndBudgetArray to monthsAndBudget
   useEffect(() => {
-    if (!userID) return;
-    const getData = async () => {
-      const date = new Date(currentMonth || new Date());
+    setMonthsAndBudget(monthsAndBudgetArray);
+  }, [monthsAndBudgetArray]);
 
-      if (isMonthChange) {
-        if (isMonthChange === 'next') {
-          date.setMonth(date.getMonth() + 1);
-          setCurrentMonth(date.toISOString());
-        } else {
-          date.setMonth(date.getMonth() - 1);
-          setCurrentMonth(date.toISOString());
-        }
+  useEffect(() => {
+    const date = new Date(currentMonth || new Date());
+    if (isMonthChange) {
+      if (isMonthChange === 'next') {
+        date.setMonth(date.getMonth() + 1);
+        setCurrentMonth(date);
+      } else {
+        date.setMonth(date.getMonth() - 1);
+        setCurrentMonth(date);
       }
-
-      const month = date.getMonth() + 1;
-      const year = date.getFullYear();
-      const monthArray = [] as Array<any>;
-
-      const NUM_MONTHS = 6;
-      for (let i = 0; i < NUM_MONTHS; i++) {
-        const newDate = new Date(year, month + i, 1);
-        newDate.setUTCHours(0, 0, 0, 0);
-        monthArray.push(newDate.toISOString());
-      }
-
-      try {
-        const budget = await getBudget(date, userID);
-        //compare arrayofMonth and result.data and if there is no data for that month,
-        // then create an object contains that date and amount 0
-
-        const data = await budget?.data.budget;
-
-        const monthsAndBudgetArray = [] as Array<any>;
-
-        for (let i = 0; i < monthArray.length; i++) {
-          const date = monthArray[i];
-          const found = data.find((item: any) => item.month === date);
-          if (!found) {
-            monthsAndBudgetArray.push({ month: date, amount: 0 });
-          } else {
-            monthsAndBudgetArray.push(found);
-          }
-        }
-        setMonthsAndBudget(monthsAndBudgetArray);
-      } catch (error) {
-        console.error(error);
-      }
-    };
-
-    getData();
+    }
     setIsMonthChange('');
   }, [isMonthChange, isChangeCancel]);
 

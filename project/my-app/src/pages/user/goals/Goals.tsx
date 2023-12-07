@@ -1,3 +1,4 @@
+import { useQueryClient } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
 
 import AddItemControls from '../../../compnents/_basic/library/controls/AddItemControls';
@@ -9,29 +10,25 @@ import { useGoalsUsers } from '../../../hooks/UseQueryAdmin';
 
 const Goals = () => {
   UseAuthUser();
-  const [filteredGoals, setFilteredGoals] = useState<GoalProps[]>([]);
   const [isActive, setIsActive] = useState(true);
   const [formOpen, setFormOpen] = useState(false);
   const [search, setSearch] = useState<string>('');
   const [selectedGoal, setSelectedGoal] = useState<GoalProps | null>(null);
 
   const { data: goals } = useGoalsUsers();
+  const queryClient = useQueryClient();
+
+  const filteredGoals = goals?.filter((goal) => {
+    return goal.name.toLowerCase().includes(search.toLowerCase());
+  });
 
   useEffect(() => {
-    if (search === '') {
-      setFilteredGoals(goals || []); // Reset filtered users to original list
-      return;
-    }
-    const filteredGoals = goals?.filter((goal) => {
-      return goal.name.toLowerCase().includes(search.toLowerCase());
-    });
-
-    setFilteredGoals(filteredGoals || []);
-  }, [search, goals, isActive]);
+    queryClient.invalidateQueries(['goals']);
+  }, [formOpen]);
 
   //filter goals by active or inactive status
   const activeGoals = isActive
-    ? filteredGoals.filter((goal) => goal.isActive)
+    ? filteredGoals?.filter((goal) => goal.isActive)
     : filteredGoals;
 
   return (
