@@ -12,7 +12,7 @@ import {
   useAdminPocketMoney,
   useAdminTasks,
   useTasks,
-} from '../../../hooks/UseQueryAdmin';
+} from '../../../hooks/UseQueries';
 
 const AdminPage = () => {
   UseAuth();

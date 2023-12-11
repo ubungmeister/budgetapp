@@ -5,6 +5,7 @@ type DeleteButtonProps = {
   onDelete: (value: string) => void;
   selectedItem: any | null;
   buttonName?: string;
+  type: string;
 };
 
 const DeleteButton = ({

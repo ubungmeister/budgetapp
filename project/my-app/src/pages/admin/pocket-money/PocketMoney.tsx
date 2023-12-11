@@ -1,20 +1,14 @@
 import { useEffect, useMemo, useState } from 'react';
 
-import { getBudget } from '../../../api/budget';
 import { editPocketMoney } from '../../../api/pocket-money';
-import { getUsers } from '../../../api/users';
 import { getSixMonths } from '../../../compnents/_basic/helpers/utils';
 import HeaderControls from '../../../compnents/_basic/library/controls/HeaderControls';
 import { BudgetData } from '../../../compnents/budget/types';
 import PmTable from '../../../compnents/pocket-money/PmTable';
 import { PmType } from '../../../compnents/pocket-money/types';
-import { UserData } from '../../../compnents/users/types';
 import { UseAuth } from '../../../hooks/UseAuth';
-import { useUsers } from '../../../hooks/UseQueryAdmin';
-import {
-  useAdminBudget,
-  useAdminPocketMoney,
-} from '../../../hooks/UseQueryAdmin';
+import { useUsers } from '../../../hooks/UseQueries';
+import { useAdminBudget, useAdminPocketMoney } from '../../../hooks/UseQueries';
 
 const PocketMoney = () => {
   const [currentMonth, setCurrentMonth] = useState<Date>(new Date());

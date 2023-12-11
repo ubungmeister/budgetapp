@@ -6,7 +6,7 @@ import ItemsList from '../../../compnents/_basic/library/list/ItemsList';
 import GoalsForm from '../../../compnents/goals/GoalsForm';
 import { GoalProps } from '../../../compnents/goals/types';
 import { UseAuthUser } from '../../../hooks/UseAuth';
-import { useGoalsUsers } from '../../../hooks/UseQueryAdmin';
+import { useGoalsUsers } from '../../../hooks/UseQueries';
 
 const Goals = () => {
   UseAuthUser();

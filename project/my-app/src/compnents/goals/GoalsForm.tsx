@@ -1,6 +1,6 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useEffect, useRef, useState } from 'react';
-import { useForm } from 'react-hook-form';
+import { set, useForm } from 'react-hook-form';
 import { SubmitHandler } from 'react-hook-form/dist/types/form';
 import { toast } from 'react-toastify';
 import Toggle from 'react-toggle';
@@ -13,6 +13,7 @@ import DeleteButton from '../_basic/library/buttons/DeleteButton';
 import EditFormControls from '../_basic/library/controls/EditFormControls';
 import DatePickerField from '../_basic/library/date-picker/DatePickerField';
 import InputField from '../_basic/library/inputs/InputField';
+import ConfirmPopUp from '../_basic/library/pop-up/ConfirmPopUp';
 import ProgressLine from '../_basic/library/progress-line/ProgressLine';
 import { GoalFormProps } from './types';
 
@@ -39,6 +40,7 @@ const GoalsForm = ({ formOpen, setFormOpen, selectedGoal }: GoalFormProps) => {
   const formRef = useRef<HTMLFormElement | null>(null);
 
   const [isActive, setIsActive] = useState(false);
+  const [isDeleteGoal, setIsDeleteGoal] = useState(false);
 
   useEffect(() => {
     //reset all input fields on Goal change
@@ -87,16 +89,11 @@ const GoalsForm = ({ formOpen, setFormOpen, selectedGoal }: GoalFormProps) => {
 
   const onDelete = async (value: string) => {
     if (value) {
-      const shouldDelete = window.confirm(
-        'Are you sure you want to delete this Goal?'
-      );
-
-      if (shouldDelete) {
-        await deleteGoal(value);
-        toast.success('Goal deleted ');
-      }
+      await deleteGoal(value);
     }
     setFormOpen(false);
+    setIsDeleteGoal(false);
+    toast.success('Goal deleted ');
   };
 
   //handle click on submit button
@@ -157,7 +154,8 @@ const GoalsForm = ({ formOpen, setFormOpen, selectedGoal }: GoalFormProps) => {
               )}
               {selectedGoal?.id && (
                 <DeleteButton
-                  onDelete={onDelete}
+                  type="button"
+                  onDelete={() => setIsDeleteGoal(true)}
                   selectedItem={selectedGoal}
                   buttonName={'Delete Goal'}
                 />
@@ -190,6 +188,14 @@ const GoalsForm = ({ formOpen, setFormOpen, selectedGoal }: GoalFormProps) => {
                   onChange={() => setIsActive(!isActive)}
                 />
               </div>
+              {isDeleteGoal && (
+                <ConfirmPopUp
+                  title={'Delete Task'}
+                  onConfirm={() => onDelete(selectedGoal?.id || '')}
+                  onCancel={() => setIsDeleteGoal(false)}
+                  isVisible={isDeleteGoal}
+                />
+              )}
             </div>
           </div>
         </div>

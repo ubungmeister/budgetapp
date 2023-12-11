@@ -11,7 +11,7 @@ import {
   useGoalsUsers,
   usePocketMoney,
   useTasksUsers,
-} from '../../../hooks/UseQueryAdmin';
+} from '../../../hooks/UseQueries';
 
 const Overview = () => {
   UseAuthUser();

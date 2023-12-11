@@ -6,7 +6,7 @@ import CashFlowHeader from '../../../compnents/cash-flow/CashFlowHeader';
 import CashFlowList from '../../../compnents/cash-flow/CashFlowList';
 import { CashFlowProps } from '../../../compnents/cash-flow/types';
 import { UseAuthUser } from '../../../hooks/UseAuth';
-import { useCashFlow, usePocketMoney } from '../../../hooks/UseQueryAdmin';
+import { useCashFlow, usePocketMoney } from '../../../hooks/UseQueries';
 
 const CashFlow = () => {
   UseAuthUser();

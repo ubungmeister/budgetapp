@@ -6,7 +6,7 @@ import HeaderControls from '../../../compnents/_basic/library/controls/HeaderCon
 import BudgetTable from '../../../compnents/budget/BudgetTable';
 import { BudgetData } from '../../../compnents/budget/types';
 import { UseAuth } from '../../../hooks/UseAuth';
-import { useAdminBudget } from '../../../hooks/UseQueryAdmin';
+import { useAdminBudget } from '../../../hooks/UseQueries';
 
 const Budget = () => {
   UseAuth();
