@@ -6,7 +6,7 @@ import AddUser from '../../../compnents/users/AddUser';
 import EditUser from '../../../compnents/users/EditUser';
 import { UserData } from '../../../compnents/users/types';
 import { UseAuth } from '../../../hooks/UseAuth';
-import { useUsers } from '../../../hooks/UseQueryAdmin';
+import { useUsers } from '../../../hooks/UseQueries';
 
 const Users = () => {
   UseAuth();

@@ -12,6 +12,7 @@ export const UnauthenticatedRoutes = () => {
         <Route path="/auth/signIn" element={<SignIn />} />
         <Route path="/" element={<SignIn />} />
         <Route path="/reset-password" element={<RecoveryProvider />} />
+        <Route path="*" element={<SignIn />} />
       </Routes>
     </>
   );

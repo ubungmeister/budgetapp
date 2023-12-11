@@ -10,6 +10,7 @@ import Goals from '../../../../pages/user/goals/Goals';
 import Overview from '../../../../pages/user/overview/Overview';
 import Header from '../../../layout/Header';
 import Sidebar from '../../../layout/Sidebar';
+import NotFound from '../routes/NotFound';
 
 export const AuthenticatedRoutes = () => {
   return (
@@ -28,6 +29,7 @@ export const AuthenticatedRoutes = () => {
             <Route path="/goals" element={<Goals />} />
             <Route path="/overview" element={<Overview />} />
             <Route path="/tasks" element={<Tasks />} />
+            <Route path="*" element={<NotFound />} />
           </Routes>
         </div>
       </div>

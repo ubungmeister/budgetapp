@@ -15,6 +15,7 @@ import DeleteButton from '../_basic/library/buttons/DeleteButton';
 import EditFormControls from '../_basic/library/controls/EditFormControls';
 import DatePickerField from '../_basic/library/date-picker/DatePickerField';
 import InputField from '../_basic/library/inputs/InputField';
+import ConfirmPopUp from '../_basic/library/pop-up/ConfirmPopUp';
 import TaskReviewControl from './TaskReviewControl';
 import {
   OptionStateType,
@@ -75,6 +76,7 @@ const TasksForm = ({
   const [selectedUser, setSelectedUser] = useState<OptionType | null>();
   const [selectedStatus, setSelectedStatus] =
     useState<OptionStateType | null>();
+  const [isDeleteTask, setIsDeleteTask] = useState<boolean>(false);
 
   useEffect(() => {
     const startDate = new Date(selectedTask?.start_date || new Date());
@@ -179,15 +181,11 @@ const TasksForm = ({
 
   const onDelete = async (value: string) => {
     if (value) {
-      const shouldDelete = window.confirm(
-        'Are you sure you want to delete this Goal?'
-      );
-
-      if (shouldDelete) {
-        await deleteTask(value);
-      }
+      await deleteTask(value);
     }
     setFormOpen(false);
+    setIsDeleteTask(false);
+    toast.success('Task deleted');
   };
 
   //task status handle for user
@@ -269,9 +267,10 @@ const TasksForm = ({
               )}
               {selectedTask?.id && isAdmin && (
                 <DeleteButton
-                  onDelete={onDelete}
+                  onDelete={() => setIsDeleteTask(true)}
                   selectedItem={selectedTask}
                   buttonName={'Delete Task'}
+                  type="button"
                 />
               )}
             </div>
@@ -317,6 +316,14 @@ const TasksForm = ({
                   onChange={() => setIsActive(!isActive)}
                 />
               </div>
+              {isDeleteTask && (
+                <ConfirmPopUp
+                  title={'Delete Task'}
+                  onConfirm={() => onDelete(selectedTask?.id || '')}
+                  onCancel={() => setIsDeleteTask(false)}
+                  isVisible={isDeleteTask}
+                />
+              )}
             </div>
           </div>
         </div>

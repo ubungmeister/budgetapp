@@ -6,13 +6,11 @@ import AddItemControls from '../../compnents/_basic/library/controls/AddItemCont
 import ItemsList from '../../compnents/_basic/library/list/ItemsList';
 import TasksForm from '../../compnents/tasks/TasksForm';
 import { TaskProps } from '../../compnents/tasks/types';
-import { useTasks, useUsers } from '../../hooks/UseQueryAdmin';
+import { useTasks, useUsers } from '../../hooks/UseQueries';
 
 // Tasks page is used by Admin to Add and Edit Tasks, and Users to view their Tasks and submit them
 
 const Tasks = () => {
-  const userID = window.localStorage.getItem('userID');
-
   const [isAdmin, setIsAdmin] = useState(false);
   const [isActive, setIsActive] = useState(true);
   const [formOpen, setFormOpen] = useState(false);
@@ -27,7 +25,6 @@ const Tasks = () => {
   const queryClient = useQueryClient();
 
   useEffect(() => {
-    if (!userID) return;
     const userRole = window.localStorage.getItem('userRole');
     if (userRole !== 'ADMIN') {
       setIsAdmin(false);

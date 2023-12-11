@@ -44,22 +44,22 @@ router.post("/signup", async (req, res) => {
 router.post("/signin", async (req, res) => {
     const {email, password} = req.body;
 
-    const existingUserWithEmail = await prisma.user.findUnique({where: {email}});
+    const user = await prisma.user.findUnique({where: {email}});
 
-    if (!existingUserWithEmail) {
+    if (!user) {
     res.status(400).json({message: "Email or password is incorrect"})
     return;
 }
 
-    const isPasswordCorrect = await bcrypt.compare(password, existingUserWithEmail.password);
+    const isPasswordCorrect = await bcrypt.compare(password, user.password);
 
     if (!isPasswordCorrect) {
     res.status(400).json({message: "Email or password is incorrect"})
     return;
 }
-    const token =  jwt.sign({email: existingUserWithEmail.email, id: existingUserWithEmail.id}, "test", {expiresIn: "1h"})
+    const token =  jwt.sign({email: user.email, id: user.id}, "test", {expiresIn: "1h"})
 
-    res.json({userID:existingUserWithEmail.id, userRole:existingUserWithEmail.role, token})
+    res.json({userID:user.id, userRole:user.role, username: user.username , token})
 
 })
 

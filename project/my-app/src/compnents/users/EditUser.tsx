@@ -7,11 +7,12 @@ import { SubmitHandler } from 'react-hook-form/dist/types/form';
 import { toast } from 'react-toastify';
 import { z } from 'zod';
 
-import { getUsers } from '../../api/users';
+import { getAllUsers } from '../../api/users';
 import { createUser, deleteUser, updateUser } from '../../api/users';
 import DeleteButton from '../_basic/library/buttons/DeleteButton';
 import EditFormControls from '../_basic/library/controls/EditFormControls';
 import InputField from '../_basic/library/inputs/InputField';
+import ConfirmPopUp from '../_basic/library/pop-up/ConfirmPopUp';
 import { Role } from './types';
 import { EditUserProps, UserData } from './types';
 
@@ -32,6 +33,7 @@ const EditUser = ({ userForm, formOpen, setFormOpen }: EditUserProps) => {
   });
 
   const [errorNotification, setErrorNotification] = useState<string>('');
+  const [isDeleteUser, setIsDeleteUser] = useState<boolean>(false);
 
   const formRef = useRef<HTMLFormElement | null>(null);
 
@@ -51,7 +53,7 @@ const EditUser = ({ userForm, formOpen, setFormOpen }: EditUserProps) => {
   }, [isDirty]);
 
   const isEmailExist = async (userForm: UserData) => {
-    const allUsers = await getUsers();
+    const allUsers = await getAllUsers();
 
     if (allUsers.some((user: UserData) => user.email === userForm.email)) {
       if (userForm.id) {
@@ -60,7 +62,6 @@ const EditUser = ({ userForm, formOpen, setFormOpen }: EditUserProps) => {
           return false;
         }
       }
-
       setErrorNotification('Email already exists');
 
       return true;
@@ -102,18 +103,13 @@ const EditUser = ({ userForm, formOpen, setFormOpen }: EditUserProps) => {
     return null;
   }
 
-  const onDelete = async (value: string) => {
-    if (value) {
-      const shouldDelete = window.confirm(
-        'Are you sure you want to delete this user?'
-      );
-
-      if (shouldDelete) {
-        await deleteUser(value);
-      }
+  const deleteUserHandler = async (userId: string) => {
+    if (userId) {
+      await deleteUser(userId);
     }
-    toast.success('User deleted');
+    setIsDeleteUser(false);
     setFormOpen(false);
+    toast.success('User deleted');
   };
 
   const submitForm = () => {
@@ -158,9 +154,18 @@ const EditUser = ({ userForm, formOpen, setFormOpen }: EditUserProps) => {
             />
             {userForm?.id && (
               <DeleteButton
-                onDelete={onDelete}
+                onDelete={() => setIsDeleteUser(true)}
                 selectedItem={userForm}
                 buttonName={'Delete User'}
+                type="button"
+              />
+            )}
+            {isDeleteUser && (
+              <ConfirmPopUp
+                title={'Delete User'}
+                onConfirm={() => deleteUserHandler(userForm?.id || '')}
+                onCancel={() => setIsDeleteUser(false)}
+                isVisible={isDeleteUser}
               />
             )}
           </div>
