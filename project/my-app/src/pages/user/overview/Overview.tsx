@@ -20,6 +20,7 @@ const Overview = () => {
   const [isMonthChange, setIsMonthChange] = useState('');
   const [currentMonth, setCurrentMonth] = useState<Date>(new Date());
 
+  // catch the month change
   useMonthChange({
     currentMonth,
     setCurrentMonth,
@@ -46,24 +47,6 @@ const Overview = () => {
   );
   const { data: tasks } = useTasksUsers('tasks', currentMonth);
   const { data: goals } = useGoalsUsers();
-
-  // useEffect(() => {
-  //   const date = new Date(currentMonth || new Date());
-  //   const previousMonthDate = new Date(currentMonth || new Date());
-  //   previousMonthDate.setMonth(previousMonthDate.getMonth() - 1);
-
-  //   if (isMonthChange) {
-  //     if (isMonthChange === 'next') {
-  //       date.setMonth(date.getMonth() + 1);
-  //       setCurrentMonth(date);
-  //     } else {
-  //       date.setMonth(date.getMonth() - 1);
-  //       setCurrentMonth(date);
-  //     }
-  //   }
-
-  //   setIsMonthChange('');
-  // }, [isMonthChange]);
 
   const filteredTasks = tasks?.filter(
     (task: TaskProps) => task.status === 'APPROVED'

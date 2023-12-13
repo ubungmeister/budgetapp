@@ -21,6 +21,7 @@ const AdminPage = () => {
   const [isMonthChange, setIsMonthChange] = useState('');
   const [currentMonth, setCurrentMonth] = useState<Date>(new Date());
 
+  // catch the month change
   useMonthChange({
     currentMonth,
     setCurrentMonth,

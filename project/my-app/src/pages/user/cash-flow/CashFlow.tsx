@@ -22,6 +22,7 @@ const CashFlow = () => {
 
   const { data: cashFlow } = useCashFlow('cashFlow', currentMonth);
 
+  // catch the month change, formOpen and cashFlowDeleted
   useMonthChange({
     currentMonth,
     setCurrentMonth,

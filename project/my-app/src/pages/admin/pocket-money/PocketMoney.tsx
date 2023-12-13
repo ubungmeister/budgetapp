@@ -30,7 +30,7 @@ const PocketMoney = () => {
     currentMonth
   );
 
-  // defiune the current month and the next 5 months
+  // defiune the current month and the next 5 months on month change
   useMonthChange({
     currentMonth,
     setCurrentMonth,
