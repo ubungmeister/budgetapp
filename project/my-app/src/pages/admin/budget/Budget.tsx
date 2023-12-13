@@ -1,11 +1,11 @@
 import { useEffect, useMemo, useState } from 'react';
 
 import { updateBudgets } from '../../../api/budget';
-import { getSixMonths } from '../../../compnents/_basic/helpers/utils';
 import HeaderControls from '../../../compnents/_basic/library/controls/HeaderControls';
 import BudgetTable from '../../../compnents/budget/BudgetTable';
 import { BudgetData } from '../../../compnents/budget/types';
 import { UseAuth } from '../../../hooks/UseAuth';
+import { useMonthChange } from '../../../hooks/UseMonthChange';
 import { useAdminBudget } from '../../../hooks/UseQueries';
 
 const Budget = () => {
@@ -14,14 +14,21 @@ const Budget = () => {
   const [isMonthChange, setIsMonthChange] = useState('');
   const [currentMonth, setCurrentMonth] = useState<Date>(new Date());
   const [monthsAndBudget, setMonthsAndBudget] = useState<Array<BudgetData>>([]);
+  const [monthArray, setMonthArray] = useState<Date[]>([]); // [currentMonth, nextMonth, nextNextMonth, ..
   const [isChangeCancel, setChangeCancel] = useState<boolean>(false);
 
   const userID = window.localStorage.getItem('userID');
 
   const { data: budget } = useAdminBudget('budget', currentMonth);
 
-  // defiune the current month and the next 5 months
-  const monthArray = getSixMonths(currentMonth);
+  // defiune the current month and the next 5 months on month change
+  useMonthChange({
+    currentMonth,
+    setCurrentMonth,
+    isMonthChange,
+    setIsMonthChange,
+    setMonthArray,
+  });
 
   // compare months in monthArray and result.data, if there a month in monthArray that is not in result.data, then create an object contains that date and amount 0
   const monthsAndBudgetArray = useMemo(() => {
@@ -42,20 +49,6 @@ const Budget = () => {
   useEffect(() => {
     setMonthsAndBudget(monthsAndBudgetArray);
   }, [monthsAndBudgetArray]);
-
-  useEffect(() => {
-    const date = new Date(currentMonth || new Date());
-    if (isMonthChange) {
-      if (isMonthChange === 'next') {
-        date.setMonth(date.getMonth() + 1);
-        setCurrentMonth(date);
-      } else {
-        date.setMonth(date.getMonth() - 1);
-        setCurrentMonth(date);
-      }
-    }
-    setIsMonthChange('');
-  }, [isMonthChange, isChangeCancel]);
 
   const handleSave = async () => {
     if (!userID) return;
