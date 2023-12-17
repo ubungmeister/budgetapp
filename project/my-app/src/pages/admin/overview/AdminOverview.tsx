@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 import OverviewGraph from '../../../compnents/_basic/library/charts/PieChart';
 import AdminOverviewHeaders from '../../../compnents/admin-overview/AdminOverviewHeaders';

@@ -8,8 +8,8 @@ import Tasks from '../../../../pages/tasks/Tasks';
 import CashFlow from '../../../../pages/user/cash-flow/CashFlow';
 import Goals from '../../../../pages/user/goals/Goals';
 import Overview from '../../../../pages/user/overview/Overview';
-import Header from '../../../layout/Header';
-import Sidebar from '../../../layout/Sidebar';
+import Header from '../../../layout/header/Header';
+import Sidebar from '../../../layout/sidebar/Sidebar';
 import NotFound from '../routes/NotFound';
 
 export const AuthenticatedRoutes = () => {

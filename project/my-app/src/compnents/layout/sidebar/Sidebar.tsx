@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { IconContext } from 'react-icons';
 import {
   FiBarChart2,
@@ -12,8 +12,10 @@ import {
 import { TbMoneybag } from 'react-icons/tb';
 import { useNavigate } from 'react-router-dom';
 
+import { LayoutContext } from '../LayoutProvider';
+
 const Sidebar = () => {
-  const [open, setOpen] = useState(false);
+  const { isSidebarExpanded, setSidebarExpanded } = useContext(LayoutContext);
   const [isAdmin, setIsAdmin] = useState(false);
 
   const navigate = useNavigate();
@@ -50,7 +52,7 @@ const Sidebar = () => {
   return (
     <div
       className={` ${
-        open ? 'w-72' : 'w-20 '
+        isSidebarExpanded ? 'w-72' : 'w-20 '
       } bg-gray-200 h-screen p-5  pt-8 relative duration-300`}
     >
       <IconContext.Provider
@@ -61,8 +63,8 @@ const Sidebar = () => {
         }}
       >
         <FiChevronLeft
-          className={`${!open && 'rotate-180'}`}
-          onClick={() => setOpen(!open)}
+          className={`${!isSidebarExpanded && 'rotate-180'}`}
+          onClick={() => setSidebarExpanded(!isSidebarExpanded)}
         />
       </IconContext.Provider>
 
@@ -82,7 +84,11 @@ const Sidebar = () => {
             >
               {Menu.src}
             </IconContext.Provider>
-            <span className={`${!open && 'hidden'} origin-left duration-200`}>
+            <span
+              className={`${
+                !isSidebarExpanded && 'hidden'
+              } origin-left duration-200`}
+            >
               {Menu.title}
             </span>
           </li>
