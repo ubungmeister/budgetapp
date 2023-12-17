@@ -6,6 +6,7 @@ import CashFlowHeader from '../../../compnents/cash-flow/CashFlowHeader';
 import CashFlowList from '../../../compnents/cash-flow/CashFlowList';
 import { CashFlowProps } from '../../../compnents/cash-flow/types';
 import { UseAuthUser } from '../../../hooks/UseAuth';
+import { useMonthChange } from '../../../hooks/UseMonthChange';
 import { useCashFlow, usePocketMoney } from '../../../hooks/UseQueries';
 
 const CashFlow = () => {
@@ -21,20 +22,15 @@ const CashFlow = () => {
 
   const { data: cashFlow } = useCashFlow('cashFlow', currentMonth);
 
-  useEffect(() => {
-    const date = new Date(currentMonth || new Date());
-
-    if (isMonthChange) {
-      if (isMonthChange === 'next') {
-        date.setMonth(date.getMonth() + 1);
-        setCurrentMonth(date);
-      } else {
-        date.setMonth(date.getMonth() - 1);
-        setCurrentMonth(date);
-      }
-    }
-    setIsMonthChange('');
-  }, [isMonthChange, formOpen, cashFlowDeleted]);
+  // catch the month change, formOpen and cashFlowDeleted
+  useMonthChange({
+    currentMonth,
+    setCurrentMonth,
+    isMonthChange,
+    setIsMonthChange,
+    formOpen,
+    cashFlowDeleted,
+  });
 
   return (
     <div className="pt-8 pl-6 space-y-3 ">

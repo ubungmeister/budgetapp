@@ -50,7 +50,6 @@ const PmTable = ({
           <div className="  min-w-[4rem] md:min-w-[7rem] lg:min-w-[10rem] text-center">
             <input
               key={index}
-              defaultValue={amount ?? 0}
               value={amount ?? 0}
               type="number"
               min={0}
@@ -113,10 +112,9 @@ const PmTable = ({
   const isAnyMonthExceeded = monthsAndBudget.some((monthEntry) => {
     const month = new Date(monthEntry.month);
     const spendAmount = groupedData[month.toISOString()];
+    setSaveDisabled(spendAmount > monthEntry.amount);
     return spendAmount > monthEntry.amount;
   });
-
-  setSaveDisabled(isAnyMonthExceeded);
 
   return (
     <div className="flex flex-col w-full pt-7">

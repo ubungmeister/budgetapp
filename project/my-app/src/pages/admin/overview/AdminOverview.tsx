@@ -1,10 +1,11 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 import OverviewGraph from '../../../compnents/_basic/library/charts/PieChart';
 import AdminOverviewHeaders from '../../../compnents/admin-overview/AdminOverviewHeaders';
 import PendingTasks from '../../../compnents/admin-overview/PendingTasks';
 import OverviewControls from '../../../compnents/user-overview/OverviewControls';
 import { UseAuth } from '../../../hooks/UseAuth';
+import { useMonthChange } from '../../../hooks/UseMonthChange';
 import {
   useAdminBudget,
   useAdminCashFlow,
@@ -18,38 +19,50 @@ const AdminPage = () => {
   UseAuth();
 
   const [isMonthChange, setIsMonthChange] = useState('');
-  const [month, setMonth] = useState<Date>(new Date());
+  const [currentMonth, setCurrentMonth] = useState<Date>(new Date());
 
-  const previousMonthDate = new Date(month || new Date());
+  // catch the month change
+  useMonthChange({
+    currentMonth,
+    setCurrentMonth,
+    isMonthChange,
+    setIsMonthChange,
+  });
+
+  const previousMonthDate = new Date(currentMonth || new Date());
   previousMonthDate.setMonth(previousMonthDate.getMonth() - 1);
 
-  const { data: goals } = useAdminGoals('allGoals', month);
+  const { data: goals } = useAdminGoals('allGoals', currentMonth);
   const { data: previousMonthGoals } = useAdminGoals(
     'allGoalsPreviousMonth',
     previousMonthDate
   );
-  const { data: cashFlow } = useAdminCashFlow('cashFlow', month);
+  const { data: cashFlow } = useAdminCashFlow('cashFlow', currentMonth);
   const { data: previousMonthCashFlow } = useAdminCashFlow(
     'previousMonthCashFlow',
     previousMonthDate
   );
 
-  const { data: tasks } = useAdminTasks('tasks', month);
+  const { data: tasks } = useAdminTasks('tasks', currentMonth);
   const { data: tasksAllMonths } = useTasks();
 
   const tasksInProgress = tasksAllMonths?.filter(
     (task) => task.status !== 'APPROVED'
   );
 
-  const { data: budget } = useAdminBudget('budget', month);
+  const { data: budget } = useAdminBudget('budget', currentMonth);
 
   const budgetCurrentMonth = budget?.filter(
-    (budget) => new Date(budget.month).getMonth() === month.getMonth()
+    (budget) => new Date(budget.month).getMonth() === currentMonth.getMonth()
   );
-  const { data: pocketMoney } = useAdminPocketMoney('pocketMoney', month);
+  const { data: pocketMoney } = useAdminPocketMoney(
+    'pocketMoney',
+    currentMonth
+  );
 
   const pocketMoneyCurrentMonth = pocketMoney?.filter(
-    (pocketMoney) => new Date(pocketMoney.month).getMonth() === month.getMonth()
+    (pocketMoney) =>
+      new Date(pocketMoney.month).getMonth() === currentMonth.getMonth()
   );
   const amountPocketMoney = pocketMoneyCurrentMonth?.map(
     (item) => item.amount
@@ -59,28 +72,11 @@ const AdminPage = () => {
     0
   );
 
-  useEffect(() => {
-    const date = new Date(month || new Date());
-    const previousMonthDate = new Date(month || new Date());
-    previousMonthDate.setMonth(previousMonthDate.getMonth() - 1);
-
-    if (isMonthChange) {
-      if (isMonthChange === 'next') {
-        date.setMonth(date.getMonth() + 1);
-        setMonth(date);
-      } else {
-        date.setMonth(date.getMonth() - 1);
-        setMonth(date);
-      }
-    }
-    setIsMonthChange('');
-  }, [isMonthChange, setIsMonthChange]);
-
   return (
     <div className="pt-8 pl-6 space-y-3">
       <OverviewControls
         setIsMonthChange={setIsMonthChange}
-        month={month || null}
+        month={currentMonth || null}
       />
       <div className="px-5 pt-2">
         <hr />

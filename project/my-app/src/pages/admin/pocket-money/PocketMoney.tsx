@@ -1,12 +1,12 @@
 import { useEffect, useMemo, useState } from 'react';
 
 import { editPocketMoney } from '../../../api/pocket-money';
-import { getSixMonths } from '../../../compnents/_basic/helpers/utils';
 import HeaderControls from '../../../compnents/_basic/library/controls/HeaderControls';
 import { BudgetData } from '../../../compnents/budget/types';
 import PmTable from '../../../compnents/pocket-money/PmTable';
 import { PmType } from '../../../compnents/pocket-money/types';
 import { UseAuth } from '../../../hooks/UseAuth';
+import { useMonthChange } from '../../../hooks/UseMonthChange';
 import { useUsers } from '../../../hooks/UseQueries';
 import { useAdminBudget, useAdminPocketMoney } from '../../../hooks/UseQueries';
 
@@ -18,6 +18,7 @@ const PocketMoney = () => {
   const [isChangeCancel, setChangeCancel] = useState<boolean>(false);
   const [saveDiasbled, setSaveDisabled] = useState<boolean>(false);
   const [sussessAlert, setSuccessAlert] = useState<boolean>(false);
+  const [monthArray, setMonthArray] = useState<Date[]>([]); // [currentMonth, nextMonth, nextNextMonth, ..
 
   UseAuth();
 
@@ -29,8 +30,14 @@ const PocketMoney = () => {
     currentMonth
   );
 
-  // defiune the current month and the next 5 months
-  const monthArray = getSixMonths(currentMonth);
+  // defiune the current month and the next 5 months on month change
+  useMonthChange({
+    currentMonth,
+    setCurrentMonth,
+    isMonthChange,
+    setIsMonthChange,
+    setMonthArray,
+  });
 
   // compare months in monthArray and result.data, if there a month in monthArray that is not in result.data, then create an object contains that date and amount 0
   const monthsAndBudgetArray = useMemo(() => {
@@ -56,21 +63,6 @@ const PocketMoney = () => {
   useEffect(() => {
     setPocketMoney(pocketMoneyData || []);
   }, [pocketMoneyData]);
-
-  useEffect(() => {
-    const date = new Date(currentMonth || new Date());
-    if (isMonthChange) {
-      if (isMonthChange === 'next') {
-        date.setMonth(date.getMonth() + 1);
-        setCurrentMonth(date);
-      } else {
-        date.setMonth(date.getMonth() - 1);
-        setCurrentMonth(date);
-      }
-    }
-    setIsMonthChange('');
-    setChangeCancel(false);
-  }, [isMonthChange, isChangeCancel]);
 
   const handleSave = async () => {
     const result = await editPocketMoney(pocketMoney);
