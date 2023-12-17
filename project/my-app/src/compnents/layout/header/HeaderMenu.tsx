@@ -1,10 +1,21 @@
 import { Menu } from '@headlessui/react';
+import { useCookies } from 'react-cookie';
 import { IoMdContact } from 'react-icons/io';
+import { useNavigate } from 'react-router-dom';
 
 const HeaderMenu = () => {
+  const [cookies, setCookie] = useCookies(['token']);
+  const navigate = useNavigate();
+
   const userRole = window.localStorage.getItem('userRole');
   const username = window.localStorage.getItem('username');
 
+  const logout = () => {
+    setCookie('token', '');
+    window.localStorage.removeItem('userID');
+    window.localStorage.removeItem('userRole');
+    navigate('/auth/signin');
+  };
   return (
     <div className="z-50 text-right">
       <Menu
@@ -38,13 +49,14 @@ const HeaderMenu = () => {
           <div className="py-4 px-2">
             <Menu.Item>
               {({ active }) => (
-                <div
+                <button
+                  onClick={logout}
                   className={`${
                     active ? 'hover:bg-fuchsia-600  ' : ''
                   }   text-sm bg-fuchsia-500 text-white rounded-md justify-center flex w-full py-2`}
                 >
                   Log Out
-                </div>
+                </button>
               )}
             </Menu.Item>
           </div>
