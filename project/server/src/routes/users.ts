@@ -72,17 +72,14 @@ router.get('/get-user', async (req, res) => {
 router.put('/update-user/:id', async (req, res) => {
      const { userForm } = req.body;
    const { id, username, email, avatar, token } = userForm;
-      console.log('here1', id, username, email, avatar, token)
-
+ 
    if (!id || !username || !email) {
       return res.status(400).json({ message: 'Some data missing' });
    }
-   console.log('here')
-   const userFormDB = await prisma.user.findFirst({ where: { id: id }});
+    const userFormDB = await prisma.user.findFirst({ where: { id: id }});
    const isTokenValid =  userFormDB.loginToken === token;
    const isTimeValid = new Date(Date.now()) <  new Date(userFormDB?.loginTokenExpiry)
-    console.log('isTokenValid',isTokenValid, 'isTimeValid', isTimeValid)
-
+ 
    if( !isTokenValid || !isTimeValid) return res.status(400).json({ message: 'Token is invalid' });
    try {
       const user = await prisma.user.update({

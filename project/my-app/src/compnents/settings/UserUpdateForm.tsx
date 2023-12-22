@@ -49,7 +49,6 @@ const UserUpdateForm = ({ userData }: SettingsProps) => {
       };
 
       const result = await updateUser(formData);
-      console.log('geeg', result);
       if (result && 'status' in result && result.status === 200) {
         toast.success('User updated successfully');
       }

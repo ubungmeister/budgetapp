@@ -8,7 +8,6 @@ export type SettingsPropsData = {
   token: string;
 };
 export const updateUser = async (userForm: SettingsPropsData) => {
-  console.log('userForm', userForm);
   if (!userForm.username || !userForm.email) {
     return { message: 'Some data missing' };
   }

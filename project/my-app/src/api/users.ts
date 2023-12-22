@@ -46,7 +46,6 @@ export const getAllUsers = async () => {
     },
   });
   const users = response.data.users;
-  console.log('users', users);
   return users;
 };
 
