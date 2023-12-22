@@ -1,6 +1,6 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useEffect, useRef, useState } from 'react';
-import { set, useForm } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { SubmitHandler } from 'react-hook-form/dist/types/form';
 import { toast } from 'react-toastify';
 import Toggle from 'react-toggle';
@@ -37,7 +37,7 @@ const GoalsForm = ({ formOpen, setFormOpen, selectedGoal }: GoalFormProps) => {
     resolver: zodResolver(FormSchema),
   });
 
-  const formRef = useRef<HTMLFormElement | null>(null);
+  const formRef = useRef<HTMLFormElement | null>(null); // it is used to submit form on button click
 
   const [isActive, setIsActive] = useState(false);
   const [isDeleteGoal, setIsDeleteGoal] = useState(false);

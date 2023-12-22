@@ -32,6 +32,7 @@ model User {
   username  String   @unique 
   password  String
   familyID  String  
+  avatar    String?
   role      Role     @default(USER)
   pocketMoney PocketMoney[]
   incomeOutcome  IncomeOutcome[]
@@ -40,6 +41,8 @@ model User {
   task    Task[]
   resetToken       String?         @unique
   resetTokenExpiry DateTime?
+  loginToken       String?         @unique
+  loginTokenExpiry DateTime?
 }
 
  model PocketMoney {

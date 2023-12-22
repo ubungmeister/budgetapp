@@ -70,7 +70,7 @@ const TasksForm = ({
     resolver: zodResolver(FormSchema),
   });
 
-  const formRef = useRef<HTMLFormElement | null>(null);
+  const formRef = useRef<HTMLFormElement | null>(null); // it is used to submit form on button click
 
   const [isActive, setIsActive] = useState(false);
   const [selectedUser, setSelectedUser] = useState<OptionType | null>();

@@ -1,9 +1,6 @@
-import { useContext, useState } from 'react';
-import { useCookies } from 'react-cookie';
-import { IoMdContact } from 'react-icons/io';
+import { useContext } from 'react';
 import { TbCoins } from 'react-icons/tb';
 import { Link } from 'react-router-dom';
-import { useNavigate } from 'react-router-dom';
 
 import { LayoutContext } from '../LayoutProvider';
 import HeaderMenu from './HeaderMenu';
@@ -35,7 +32,6 @@ const Header = () => {
       </Link>
       <div className="flex flex-row items-center justify-center space-x-5 md:space-x-10 md:px-10 px-5 ">
         <div className="md:text-xl text-sm">{username}</div>
-
         <button className="text-5xl">
           <HeaderMenu />
         </button>

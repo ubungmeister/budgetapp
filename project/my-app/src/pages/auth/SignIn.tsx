@@ -49,6 +49,7 @@ const SignIn = () => {
       window.localStorage.setItem('userID', response.data.userID);
       window.localStorage.setItem('userRole', response.data.userRole);
       window.localStorage.setItem('username', response.data.username);
+      window.localStorage.setItem('token', response.data.token);
       navigate('/');
     } catch (error: any) {
       toast.error(error.response.data.message);

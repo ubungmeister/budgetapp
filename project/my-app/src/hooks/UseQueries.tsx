@@ -5,7 +5,7 @@ import { getCashFamilyCashFlow, getCashFlowForUsers } from '../api/cash-flow';
 import { getAllFamilyGoals, getGoalsForUsers } from '../api/goals';
 import { getPocketMoneyData, getPocketMoneyForUser } from '../api/pocket-money';
 import { getAllTasks, getAllTasksByMonth } from '../api/tasks';
-import { getAllUsers } from '../api/users';
+import { getAllUsers, getUser } from '../api/users';
 import { BudgetData } from '../compnents/budget/types';
 import { CashFlowProps } from '../compnents/cash-flow/types';
 import { GoalProps } from '../compnents/goals/types';
@@ -74,4 +74,8 @@ export function useGoalsUsers() {
 
 export function useUsers() {
   return useQuery<UserData[]>(['users'], () => getAllUsers());
+}
+
+export function useUser() {
+  return useQuery<UserData>(['user'], () => getUser());
 }

@@ -8,6 +8,9 @@ export interface UserData {
   familtyID: string;
   username: string;
   role: Role;
+  avatar?: string;
+  loginToken?: string;
+  loginTokenExpiry?: Date;
 }
 
 export const initialUserData = {

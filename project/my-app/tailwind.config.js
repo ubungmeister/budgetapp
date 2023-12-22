@@ -11,6 +11,9 @@ module.exports = {
         'info-green': '#27c662',
         'info-red': '#ef4949',
       },
+      boxShadow: {
+        '3xl': '0 4px 60px -15px rgba(0, 0, 0, 0.3)',
+      },
     },
   },
   plugins: [],

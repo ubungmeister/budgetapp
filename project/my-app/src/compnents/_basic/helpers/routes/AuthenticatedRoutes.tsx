@@ -4,6 +4,7 @@ import Budget from '../../../../pages/admin/budget/Budget';
 import AdminPage from '../../../../pages/admin/overview/AdminOverview';
 import PocketMoney from '../../../../pages/admin/pocket-money/PocketMoney';
 import Users from '../../../../pages/admin/users/Users';
+import Settings from '../../../../pages/settings/Settings';
 import Tasks from '../../../../pages/tasks/Tasks';
 import CashFlow from '../../../../pages/user/cash-flow/CashFlow';
 import Goals from '../../../../pages/user/goals/Goals';
@@ -29,6 +30,7 @@ export const AuthenticatedRoutes = () => {
             <Route path="/goals" element={<Goals />} />
             <Route path="/overview" element={<Overview />} />
             <Route path="/tasks" element={<Tasks />} />
+            <Route path="/settings" element={<Settings />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </div>
