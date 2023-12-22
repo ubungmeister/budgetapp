@@ -46,6 +46,15 @@ export const getAllUsers = async () => {
     },
   });
   const users = response.data.users;
-  console.log('users', users);
   return users;
+};
+
+export const getUser = async () => {
+  const userID = window.localStorage.getItem('userID');
+  const response = await axios.get('http://localhost:1000/users/get-user', {
+    params: {
+      userID: userID,
+    },
+  });
+  return response.data.user;
 };

@@ -69,9 +69,36 @@ router.get('/get-user', async (req, res) => {
   }
 });
 
+router.put('/update-user/:id', async (req, res) => {
+     const { userForm } = req.body;
+   const { id, username, email, avatar, token } = userForm;
+ 
+   if (!id || !username || !email) {
+      return res.status(400).json({ message: 'Some data missing' });
+   }
+    const userFormDB = await prisma.user.findFirst({ where: { id: id }});
+   const isTokenValid =  userFormDB.loginToken === token;
+   const isTimeValid = new Date(Date.now()) <  new Date(userFormDB?.loginTokenExpiry)
+ 
+   if( !isTokenValid || !isTimeValid) return res.status(400).json({ message: 'Token is invalid' });
+   try {
+      const user = await prisma.user.update({
+         where: { id: String(id) },
+         data: {
+            username,
+            email,
+            avatar: avatar || null, 
+         }
+      });
+      res.status(200).json({ user });
+   } catch (error) {
+      res.status(500).json({ message: 'An error occurred' });
+      console.log(error);
+   }
+});
+
 router.put('/edit-user/:id', async (req, res) => {
    const { userForm } = req.body;
-   console.log(userForm);
    const { id, username, email } = userForm;
    if (!id || !username || !email) {
       return res.status(400).json({ message: 'Some data missing' });

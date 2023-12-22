@@ -57,9 +57,18 @@ router.post("/signin", async (req, res) => {
     res.status(400).json({message: "Email or password is incorrect"})
     return;
 }
-    const token =  jwt.sign({email: user.email, id: user.id}, "test", {expiresIn: "1h"})
+    const token =  jwt.sign({email: user.email, id: user.id}, "test", {expiresIn: "1h"}) as string;
+    const otpExpiry = new Date(Date.now()  + 120 * 60 * 1000); // 60 minutes from now
 
-    res.json({userID:user.id, userRole:user.role, username: user.username , token})
+    await prisma.user.update({
+        where: {email: email},
+        data: {
+            loginToken: token,
+            loginTokenExpiry: otpExpiry
+        }
+    })
+
+    res.json({userID:user.id, userRole:user.role, username: user.username , token, email: user.email })
 
 })
 
