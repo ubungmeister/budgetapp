@@ -51,6 +51,8 @@ const UserUpdateForm = ({ userData }: SettingsProps) => {
       const result = await updateUser(formData);
       if (result && 'status' in result && result.status === 200) {
         toast.success('User updated successfully');
+        window.localStorage.setItem('avatar', avatar as string);
+        window.location.reload();
       }
     } catch (error) {
       console.log(error);

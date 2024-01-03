@@ -10,6 +10,7 @@ const HeaderMenu = () => {
 
   const userRole = window.localStorage.getItem('userRole');
   const username = window.localStorage.getItem('username');
+  const avatar = window.localStorage.getItem('avatar');
 
   const logout = () => {
     navigate('/auth/signin');
@@ -26,7 +27,20 @@ const HeaderMenu = () => {
       >
         <div>
           <Menu.Button className="inline-flex w-full justify-center py-2">
-            <IoMdContact />
+            {avatar ? (
+              <div className="w-14 h-14">
+                <img
+                  className=" rounded-full "
+                  src={
+                    avatar ||
+                    'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2c/Default_pfp.svg/560px-Default_pfp.svg.png'
+                  }
+                  alt="Avatar"
+                />
+              </div>
+            ) : (
+              <IoMdContact />
+            )}
           </Menu.Button>
         </div>
 
