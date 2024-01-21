@@ -4,6 +4,10 @@ import { IoMdContact } from 'react-icons/io';
 import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 
+import avatarNotFound from '../../../assets/images/avatar.png';
+import { useUser } from '../../../hooks/UseQueries';
+import { updateBudgets } from './../../../api/budget';
+
 const HeaderMenu = () => {
   const navigate = useNavigate();
   const [cookies, setCookie] = useCookies(['token']);
@@ -11,6 +15,8 @@ const HeaderMenu = () => {
   const userRole = window.localStorage.getItem('userRole');
   const username = window.localStorage.getItem('username');
   const avatar = window.localStorage.getItem('avatar');
+
+  const { data: userData } = useUser();
 
   const logout = () => {
     navigate('/auth/signin');
@@ -27,20 +33,16 @@ const HeaderMenu = () => {
       >
         <div>
           <Menu.Button className="inline-flex w-full justify-center py-2">
-            {avatar ? (
-              <div className="w-14 h-14">
-                <img
-                  className=" rounded-full "
-                  src={
-                    avatar ||
-                    'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2c/Default_pfp.svg/560px-Default_pfp.svg.png'
-                  }
-                  alt="Avatar"
-                />
-              </div>
-            ) : (
-              <IoMdContact />
-            )}
+            <div className="w-14 h-14">
+              <img
+                className=" rounded-full "
+                src={
+                  userData?.avatar ||
+                  'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2c/Default_pfp.svg/560px-Default_pfp.svg.png'
+                }
+                alt="Avatar"
+              />
+            </div>
           </Menu.Button>
         </div>
 
