@@ -43,7 +43,7 @@ export default function ResetPassword() {
     };
     try {
       const result = await axios.post(
-        'http://localhost:1000/auth/reset-password',
+        `http://38.180.48.116/auth/reset-password`,
         formData
       );
       if (result.status === 200) {

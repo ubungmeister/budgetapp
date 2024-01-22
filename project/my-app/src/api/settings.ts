@@ -13,7 +13,7 @@ export const updateUser = async (userForm: SettingsPropsData) => {
   }
   try {
     const result = await axios.put(
-      `http://localhost:1000/users/update-user/${userForm.id}`,
+      `http://38.180.48.116/users/update-user/${userForm.id}`,
       {
         userForm,
       }

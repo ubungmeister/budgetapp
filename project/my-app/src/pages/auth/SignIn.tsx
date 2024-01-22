@@ -42,7 +42,7 @@ const SignIn = () => {
   const onSubmit: SubmitHandler<FormSchemaType> = async (data) => {
     try {
       const response = await axios.post(
-        'http://localhost:1000/auth/signin',
+        `http://38.180.48.116/auth/signin`,
         data
       );
       setCookie('token', response.data.token);

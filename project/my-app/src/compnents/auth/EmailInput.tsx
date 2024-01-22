@@ -26,7 +26,7 @@ export default function EmailInput() {
 
   const onSubmit: SubmitHandler<FormSchemaType> = async (data) => {
     try {
-      await axios.post('http://localhost:1000/auth/request-otp', data);
+      await axios.post(`http://38.180.48.116/auth/request-otp`, data);
       setPage('otp');
       setEmail(data.email);
     } catch (error: any) {

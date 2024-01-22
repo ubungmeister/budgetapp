@@ -22,7 +22,7 @@ const FormSchema = z
         async (email) => {
           try {
             const response = await axios.get(
-              `http://localhost:1000/users/get-user-email?email=${email}`
+              `http://38.180.48.116/users/get-user-email?email=${email}`
             );
             const status = response.status;
             if (status === 200) {
@@ -63,10 +63,7 @@ const SignUp = () => {
 
   const onSubmit: SubmitHandler<FormSchemaType> = async (data) => {
     try {
-      const result = await axios.post(
-        'http://localhost:1000/auth/signup',
-        data
-      );
+      const result = await axios.post(`http://38.180.48.116/auth/signup`, data);
       if (result.status === 200) {
         toast.success('User created successfully');
         navigate('/auth/signIn');

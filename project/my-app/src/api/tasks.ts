@@ -4,7 +4,7 @@ import { CashFlowProps } from '../compnents/cash-flow/types';
 import { TaskProps } from '../compnents/tasks/types';
 
 export const getAllTasks = async () => {
-  const tasks = await axios.get('http://localhost:1000/tasks/get-all-tasks', {
+  const tasks = await axios.get(`http://38.180.48.116/tasks/get-all-tasks`, {
     params: {
       userID: window.localStorage.getItem('userID') || '',
     },
@@ -13,7 +13,7 @@ export const getAllTasks = async () => {
 };
 
 export const getAllTasksByMonth = async (date: Date) => {
-  const tasks = await axios.get('http://localhost:1000/tasks/get-tasks-month', {
+  const tasks = await axios.get(`http://38.180.48.116/tasks/get-tasks-month`, {
     params: {
       monthYear: date,
       userID: window.localStorage.getItem('userID') || '',
@@ -25,7 +25,7 @@ export const getAllTasksByMonth = async (date: Date) => {
 export const editTask = async (data: TaskProps) => {
   try {
     const result = await axios.post(
-      'http://localhost:1000/tasks/edit-task',
+      `http://38.180.48.116/tasks/edit-task`,
       data
     );
     return result;
@@ -36,7 +36,7 @@ export const editTask = async (data: TaskProps) => {
 
 export const deleteTask = async (id: string) => {
   try {
-    const result = await axios.post('http://localhost:1000/tasks/delete-task', {
+    const result = await axios.post(`http://38.180.48.116/tasks/delete-task`, {
       id,
       userId: window.localStorage.getItem('userID') || '',
     });
@@ -51,7 +51,7 @@ export const deleteTask = async (id: string) => {
 export const createReward = async (data: CashFlowProps) => {
   try {
     const result = await axios.post(
-      'http://localhost:1000/cashflow/add-cash-flow',
+      `http://38.180.48.116/cashflow/add-cash-flow`,
       data
     );
 
