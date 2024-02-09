@@ -5,7 +5,7 @@ import { PmType } from '../compnents/pocket-money/types';
 export const editPocketMoney = async (pocketMoney: Array<PmType>) => {
   try {
     const result = await axios.post(
-      `http://38.180.48.116/pocketmoney/add-pocket-money`,
+      `http://localhost:1000/pocketmoney/add-pocket-money`,
       {
         pocketMoney,
         userID: window.localStorage.getItem('userID') as string,
@@ -20,7 +20,7 @@ export const editPocketMoney = async (pocketMoney: Array<PmType>) => {
 
 export const getPocketMoneyData = async (date: Date) => {
   const pocketMoney = await axios.get(
-    `http://38.180.48.116/pocketmoney/get-pocket-money`,
+    `http://localhost:1000/pocketmoney/get-pocket-money`,
     {
       params: {
         monthYear: date,
@@ -34,7 +34,7 @@ export const getPocketMoneyData = async (date: Date) => {
 export const getPocketMoneyForUser = async (date: Date) => {
   try {
     const result = await axios.get(
-      `http://38.180.48.116/pocketmoney/get-pocket-money-user`,
+      `http://localhost:1000/pocketmoney/get-pocket-money-user`,
       {
         params: {
           monthYear: date,

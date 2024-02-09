@@ -8,13 +8,13 @@ export const updateBudgets = async (
 ) => {
   try {
     const result = await axios.post(
-      `http://38.180.48.116/budget/update-budget`,
+      `http://localhost:1000/budget/update-budget`,
       {
         budget: monthsAndBudget,
         userID,
       }
     );
-    console.log(result);
+    return result;
   } catch (error) {
     console.error(error);
   }
@@ -22,7 +22,7 @@ export const updateBudgets = async (
 
 export const getBudget = async (date: Date, userID: string) => {
   try {
-    const result = await axios.get(`http://38.180.48.116/budget/get-budget`, {
+    const result = await axios.get(`http://localhost:1000/budget/get-budget`, {
       params: {
         monthYear: date,
         userID,
@@ -35,7 +35,7 @@ export const getBudget = async (date: Date, userID: string) => {
 };
 
 export const getAdminBudget = async (date: Date) => {
-  const result = await axios.get(`http://38.180.48.116/budget/get-budget`, {
+  const result = await axios.get(`http://localhost:1000/budget/get-budget`, {
     params: {
       monthYear: date,
       userID: window.localStorage.getItem('userID'),

@@ -59,7 +59,7 @@ export default function OTPInput() {
     };
     try {
       const result = await axios.post(
-        `http://38.180.48.116/auth/verify-otp`,
+        `http://localhost:1000/auth/verify-otp`,
         formData
       );
       if (result.status === 200) {
