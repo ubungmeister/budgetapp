@@ -14,7 +14,6 @@ const Header = () => {
 
   //prevent refresh on link click in admin mode
   const handleLinkClick: MouseEventHandler<HTMLAnchorElement> = (event) => {
-    console.log(location.pathname);
     if (location.pathname === '/admin/overview') {
       event.preventDefault();
     }
