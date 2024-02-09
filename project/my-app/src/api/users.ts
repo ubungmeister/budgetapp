@@ -8,7 +8,7 @@ export const updateUser = async (userForm: UserData) => {
   }
   try {
     const result = await axios.put(
-      `http://38.180.48.116/users/edit-user/${userForm.id}`,
+      `http://localhost:1000/users/edit-user/${userForm.id}`,
       {
         userForm,
       }
@@ -21,7 +21,7 @@ export const updateUser = async (userForm: UserData) => {
 
 export const createUser = async (userForm: UserData, userID: string) => {
   try {
-    await axios.post(`http://38.180.48.116/users/create-user`, {
+    await axios.post(`http://localhost:1000/users/create-user`, {
       userForm,
       userID,
     });
@@ -32,7 +32,7 @@ export const createUser = async (userForm: UserData, userID: string) => {
 
 export const deleteUser = async (userID: string) => {
   try {
-    await axios.delete(`http://38.180.48.116/users/delete-user/${userID}`);
+    await axios.delete(`http://localhost:1000/users/delete-user/${userID}`);
   } catch (error) {
     console.log(error);
   }
@@ -40,7 +40,7 @@ export const deleteUser = async (userID: string) => {
 
 export const getAllUsers = async () => {
   const userID = window.localStorage.getItem('userID');
-  const response = await axios.get(`http://38.180.48.116/users/get-users`, {
+  const response = await axios.get(`http://localhost:1000/users/get-users`, {
     params: {
       userID: userID,
     },
@@ -51,7 +51,7 @@ export const getAllUsers = async () => {
 
 export const getUser = async () => {
   const userID = window.localStorage.getItem('userID');
-  const response = await axios.get(`http://38.180.48.116/users/get-user`, {
+  const response = await axios.get(`http://localhost:1000/users/get-user`, {
     params: {
       userID: userID,
     },

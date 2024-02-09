@@ -5,7 +5,7 @@ import { GoalProps } from '../compnents/goals/types';
 export const getAllGoals = async () => {
   try {
     const goals = await axios.get(
-      `http://38.180.48.116/savinggoal/get-all-goals`,
+      `http://localhost:1000/savinggoal/get-all-goals`,
       {
         params: {
           userID: window.localStorage.getItem('userID'),
@@ -20,7 +20,7 @@ export const getAllGoals = async () => {
 
 export const getGoalsForUsers = async () => {
   const goals = await axios.get(
-    `http://38.180.48.116/savinggoal/get-all-goals`,
+    `http://localhost:1000/savinggoal/get-all-goals`,
     {
       params: {
         userID: window.localStorage.getItem('userID'),
@@ -33,7 +33,7 @@ export const getGoalsForUsers = async () => {
 export const editGoal = async (data: GoalProps) => {
   try {
     const result = await axios.post(
-      `http://38.180.48.116/savinggoal/edit-goal`,
+      `http://localhost:1000/savinggoal/edit-goal`,
       data
     );
     return result;
@@ -45,7 +45,7 @@ export const editGoal = async (data: GoalProps) => {
 export const deleteGoal = async (id: string) => {
   try {
     const result = await axios.post(
-      `http://38.180.48.116/savinggoal/delete-goal`,
+      `http://localhost:1000/savinggoal/delete-goal`,
       {
         id,
         userId: window.localStorage.getItem('userID') || '',
@@ -59,7 +59,7 @@ export const deleteGoal = async (id: string) => {
 
 export const getAllFamilyGoals = async (month: Date) => {
   const res = await axios.get(
-    `http://38.180.48.116/savinggoal/get-goals-family`,
+    `http://localhost:1000/savinggoal/get-goals-family`,
     {
       params: {
         userID: window.localStorage.getItem('userID'),

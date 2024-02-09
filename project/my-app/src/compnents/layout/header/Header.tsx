@@ -1,6 +1,6 @@
-import { useContext } from 'react';
+import { MouseEventHandler, useContext } from 'react';
 import { TbCoins } from 'react-icons/tb';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 
 import { LayoutContext } from '../LayoutProvider';
 import HeaderMenu from './HeaderMenu';
@@ -10,6 +10,16 @@ const Header = () => {
 
   const username = window.localStorage.getItem('username');
 
+  const location = useLocation();
+
+  //prevent refresh on link click in admin mode
+  const handleLinkClick: MouseEventHandler<HTMLAnchorElement> = (event) => {
+    console.log(location.pathname);
+    if (location.pathname === '/admin/overview') {
+      event.preventDefault();
+    }
+  };
+
   return (
     <header className=" px-0 font-mono text-white bolder  flex h-10 w-full flex-row items-center justify-center md:justify-between bg-[#3a909c]  md:h-20 md:min-h-[5rem]">
       <Link
@@ -17,6 +27,7 @@ const Header = () => {
         className={`flex h-full ${
           isSidebarExpanded ? 'w-72' : 'w-20 '
         }  items-center justify-center bg-[#28828f] p-4 `}
+        onClick={handleLinkClick}
       >
         {' '}
         {isSidebarExpanded ? (

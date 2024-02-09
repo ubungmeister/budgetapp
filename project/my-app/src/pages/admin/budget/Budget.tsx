@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
+import { toast } from 'react-toastify';
 
 import { updateBudgets } from '../../../api/budget';
 import HeaderControls from '../../../compnents/_basic/library/controls/HeaderControls';
@@ -52,7 +53,12 @@ const Budget = () => {
 
   const handleSave = async () => {
     if (!userID) return;
-    await updateBudgets(monthsAndBudget, userID);
+    const result = await updateBudgets(monthsAndBudget, userID);
+    if (result?.status === 200) {
+      toast.success('Budget updated');
+    } else {
+      toast.error('Error updating budget');
+    }
   };
 
   return (
