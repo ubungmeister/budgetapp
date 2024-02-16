@@ -44,18 +44,16 @@ const AvatarInputField = ({ name, avatar, setAvatar }: InputFieldProps) => {
   };
 
   return (
-    <div className="flex flex-row  space-x-4 pb-5">
-      <div className="w-20 h-20">
-        <img
-          className=" rounded-full "
-          src={
-            avatar ||
-            'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2c/Default_pfp.svg/560px-Default_pfp.svg.png'
-          }
-          alt="Avatar"
-          ref={profilePreviewRef}
-        />
-      </div>
+    <div className="flex flex-row space-x-4 pb-5 ">
+      <img
+        className="rounded-full w-[100px] h-[80px]  object-cover"
+        src={
+          avatar ||
+          'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2c/Default_pfp.svg/560px-Default_pfp.svg.png'
+        }
+        alt="Avatar"
+        ref={profilePreviewRef}
+      />
       <label className="flex w-full h-20 border rounded-md justify-center items-center text-center">
         <div className="flex flex-col justify-center items-center ">
           <FiUploadCloud className="text-[#459ca7] text-2xl border rounded-full p-1 hover:bg-gray-50" />
