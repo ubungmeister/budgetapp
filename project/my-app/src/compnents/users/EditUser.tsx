@@ -77,11 +77,6 @@ const EditUser = ({ userForm, formOpen, setFormOpen }: EditUserProps) => {
         id: userForm?.id || '',
         role: userForm?.role || Role.USER,
       };
-      // reset all inputs fields on submit to triger isDirty useEffect if userEmailValidation is true
-      reset({
-        username: data.username,
-        email: data.email,
-      });
 
       const userEmailValidation = await isEmailExist(formData);
       if (userEmailValidation) {
@@ -94,6 +89,11 @@ const EditUser = ({ userForm, formOpen, setFormOpen }: EditUserProps) => {
       }
       toast.success('User updated');
       setFormOpen(false);
+      // reset all inputs fields on submit to triger isDirty useEffect if userEmailValidation is true
+      reset({
+        username: '',
+        email: '',
+      });
     } catch (error) {
       console.log(error);
     }
