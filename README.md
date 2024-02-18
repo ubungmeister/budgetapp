@@ -6,6 +6,7 @@ A family-friendly web app for kids and parents! It helps children learn about se
 <!--ts-->
    * [Tech Stack](#tech-stack)
    * [Key Features](#key-features)
+      * [Code structure](#code-structure)
       * [Navigation on the App](#navigation-on-the-app)
          * [Administrator Mode](#administrator-mode)
             * [Overview](#overview)
@@ -29,6 +30,36 @@ Here's a brief overview of the tech stack the app uses:
 - Frontend is built using React and incorporates Tailwind for enhanced styling.
 - On the server side, NodeJs and Express handle backend operations, while Postgres, coupled with the Prisma library, manages the database interactions. 
 ### Key features
+
+## Code structure
+
+### Client-side code structure:
+
+Admin pages
+- src/pages/admin - Pages related to admin functionalities
+
+User pages
+- src/pages/user - Pages related to user functionalities
+
+Shared pages
+- src/pages/settings - Shared pages for settings functionalities
+- src/pages/tasks - Shared pages for tasks functionalities
+- src/pages/auth - Shared pages for authentication functionalities
+
+Reusable components
+- src/components/_basic/library - Reusable components for the application
+
+Utilities and routes
+- src/components/_basic/helpers - Utilities and helper functions
+
+API and Hooks
+- src/api - API related functionalities
+- src/api/hooks/UseQueries - Hooks for API queries, used in conjunction with the `api` directory
+### Server-side code structure:
+
+- Schema: server/prisma 
+- Roures: server/src/routes
+- Utilities: server/src/utils
 
 ## Navigation on the app 
 Create an account. After SignIn you'll be able to log in as an Administrator.
