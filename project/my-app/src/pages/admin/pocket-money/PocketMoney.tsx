@@ -64,6 +64,14 @@ const PocketMoney = () => {
     setPocketMoney(pocketMoneyData || []);
   }, [pocketMoneyData]);
 
+  // return pocket money amount on cancel
+  useEffect(() => {
+    if (isChangeCancel) {
+      setCurrentMonth(new Date());
+    }
+    setChangeCancel(false);
+  }, [isChangeCancel]);
+
   const handleSave = async () => {
     const result = await editPocketMoney(pocketMoney);
     if (result === 200) {
