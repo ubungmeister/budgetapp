@@ -7,7 +7,7 @@ const OverviewControls = ({
   month,
 }: OverviewControlsProps) => {
   return (
-    <div className="flex flex-row justify-start ">
+    <div className="flex flex-row justify-start">
       <MonthChangeButton setIsMonthChange={setIsMonthChange} />
       <MonthButton month={month} />
     </div>

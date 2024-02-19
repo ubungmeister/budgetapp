@@ -55,8 +55,8 @@ const AdminOverviewHeaders = ({
   } \\ ${pocketMoney} `;
 
   return (
-    <div className=" pt-2 flex px-5">
-      <div className="flex flex-row space-x-10">
+    <div className=" pt-2 flex md:px-5 justify-center md:justify-start">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-10">
         <OverviewBox
           amount={savedOnGoalsCurrentMonth}
           percentage={percentageGoals}

@@ -20,7 +20,7 @@ const Header = () => {
   };
 
   return (
-    <header className=" px-0 font-mono text-white bolder  flex h-10 w-full flex-row items-center justify-center md:justify-between bg-[#3a909c]  md:h-20 md:min-h-[5rem]">
+    <header className=" px-0 font-mono text-white bolder  flex h-10 w-full flex-row items-center justify-between md:justify-between bg-[#3a909c]  md:h-20 md:min-h-[5rem]">
       <Link
         to="/"
         className={`flex h-full ${
@@ -41,7 +41,7 @@ const Header = () => {
         )}
       </Link>
       <div className="flex flex-row items-center justify-center space-x-5 md:space-x-10 md:px-10 px-5 ">
-        <div className="md:text-xl text-sm">{username}</div>
+        <div className="md:text-xl text-sm hidden md:block">{username}</div>
         <button className="text-5xl">
           <HeaderMenu />
         </button>

@@ -83,5 +83,5 @@ code {
   @apply flex flex-col bg-gray-100 p-4 w-44 h-48 rounded-xl;
 }
 .overview-performance {
-  @apply flex flex-col bg-gray-100 p-4 rounded-xl w-[24.5rem] h-[23rem];
+  @apply flex flex-col bg-gray-100 p-4 rounded-xl md:w-[24.5rem] w-[22.6rem] h-[23rem];
 }
