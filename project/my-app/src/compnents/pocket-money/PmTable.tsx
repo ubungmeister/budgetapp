@@ -70,8 +70,8 @@ const PmTable = ({
       });
 
       return (
-        <div className="flex  flex-row justify-stretch hover:bg-gray-50 py-4">
-          <p className="px-5 overflow-x-hidden text-ellipsis min-w-[10rem] max-w-[10rem] overflow-hidden">
+        <div className="flex flex-row justify-stretch hover:bg-gray-50 py-4 pl-6">
+          <p className="px-5 overflow-x-hidden text-ellipsis w-[7.5em] overflow-hidden">
             {user.username}
           </p>
           <div className="flex flex-row space-x-4 position-center">
@@ -117,10 +117,10 @@ const PmTable = ({
   });
 
   return (
-    <div className="flex flex-col w-full pt-7">
-      <div className="flex flex-row ">
-        <div className="pl-5 overflow-x-hidden text-ellipsis min-w-[10rem] max-w-[10rem] space-y-2 my-4 divide-y">
-          <p className="font-semibold pb-4">Month</p>
+    <div className="flex flex-col w-full">
+      <div className="flex md:flex-row flex-col items-center justify-center md:justify-start md:items-start pt-7 w-full pl-2">
+        <div className="budget-header">
+          <p className="budget-table-month">Month</p>
           <p className="pt-6">Budget</p>
         </div>
         <div className="flex flex-row ">

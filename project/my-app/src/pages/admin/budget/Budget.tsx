@@ -63,23 +63,23 @@ const Budget = () => {
 
   return (
     <div>
-      <div className="pt-8 pl-6 space-y-3">
-        <HeaderControls
-          setIsMonthChange={setIsMonthChange}
-          handleSave={handleSave}
-          setChangeCancel={setChangeCancel}
-          saveDiasbled={false}
-          sussessAlert={false}
-        />
-        <div className="px-5 pt-2">
-          <hr />
-        </div>
-        <BudgetTable
-          monthsAndBudget={monthsAndBudget}
-          setMonthsAndBudget={setMonthsAndBudget}
-        />
+      {/* <div className="pt-8 pl-6 space-y-3"> */}
+      <HeaderControls
+        setIsMonthChange={setIsMonthChange}
+        handleSave={handleSave}
+        setChangeCancel={setChangeCancel}
+        saveDiasbled={false}
+        sussessAlert={false}
+      />
+      <div className="hr">
+        <hr />
       </div>
+      <BudgetTable
+        monthsAndBudget={monthsAndBudget}
+        setMonthsAndBudget={setMonthsAndBudget}
+      />
     </div>
+    // </div>
   );
 };
 
