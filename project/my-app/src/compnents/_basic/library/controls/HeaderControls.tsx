@@ -25,9 +25,9 @@ const HeaderControls = ({
 }: ControlsProps) => {
   return (
     <div>
-      <div className="flex flex-row justify-start">
+      <div className="flex flex-row justify-start pt-8 pl-6  mb-3">
         <MonthChangeButton setIsMonthChange={setIsMonthChange} />
-        <div className="flex space-x-3 px-10">
+        <div className="flex gap-2">
           <SaveButton
             saveDiasbled={saveDiasbled}
             handleSave={handleSave}

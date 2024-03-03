@@ -25,6 +25,22 @@ const HeaderMenu = () => {
     window.localStorage.removeItem('userID');
     window.localStorage.removeItem('userRole');
   };
+
+  const menu = [
+    { path: '/admin/overview', label: 'Overview', roles: ['ADMIN'] },
+    { path: '/admin/budget', label: 'Budget', roles: ['ADMIN'] },
+    { path: '/admin/pocket-money', label: 'Pocket Money', roles: ['ADMIN'] },
+    { path: '/admin/users', label: 'Users', roles: ['ADMIN'] },
+    { path: '/', label: 'Overview', roles: ['USER'] },
+    { path: '/cash-flow', label: 'Cash Flow', roles: ['USER'] },
+    {
+      path: '/goals',
+      label: 'Goals',
+      roles: ['USER'],
+    },
+    { path: '/tasks', label: 'Tasks', roles: ['ADMIN', 'USER'] },
+  ];
+
   return (
     <div className="z-50 text-right">
       <Menu
@@ -51,20 +67,34 @@ const HeaderMenu = () => {
             <p>user: {username}</p>
             <p>role: {userRole}</p>
           </div>
-          <div className="">
-            <Menu.Item>
-              {({ active }) => (
-                <Link
-                  to="/settings"
-                  className={`${
-                    active ? 'bg-[#80b7bd]' : ''
-                  }  flex w-full  px-4 py-6 text-sm text-gray-700`}
-                >
-                  Settings
-                </Link>
-              )}
-            </Menu.Item>
-          </div>
+          {menu
+            .filter((item) => item.roles.includes(userRole || '')) // Filter items based on the user's role
+            .map((item, index) => (
+              <Menu.Item key={index}>
+                {({ active }) => (
+                  <Link
+                    to={item.path}
+                    className={`${
+                      active ? 'bg-[#80b7bd]' : ''
+                    } flex w-full px-4 py-2 text-sm text-gray-700 md:hidden`}
+                  >
+                    {item.label}
+                  </Link>
+                )}
+              </Menu.Item>
+            ))}
+          <Menu.Item>
+            {({ active }) => (
+              <Link
+                to="/settings"
+                className={`${
+                  active ? 'bg-[#80b7bd]' : ''
+                }  flex w-full  px-4 py-4 text-sm text-gray-700`}
+              >
+                Settings
+              </Link>
+            )}
+          </Menu.Item>
           <div className="py-4 px-2">
             <Menu.Item>
               {({ active }) => (

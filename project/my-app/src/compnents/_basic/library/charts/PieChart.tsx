@@ -70,7 +70,7 @@ const OverviewPieChart = ({ cashFlow, pocketMoney }: OverviewGraphProps) => {
     '#0000FF',
   ];
   return (
-    <div className="overview-performance">
+    <div className="overview-performance mb-5">
       <div className="flex justify-between">
         <p className="pt-1">Pie-Chart</p>
         <Select

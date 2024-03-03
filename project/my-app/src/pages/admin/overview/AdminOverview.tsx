@@ -73,12 +73,12 @@ const AdminPage = () => {
   );
 
   return (
-    <div className="pt-8 pl-6 space-y-3">
+    <div className="pt-5 pl-2 md:pt-8 md:pl-6 space-y-3 ">
       <OverviewControls
         setIsMonthChange={setIsMonthChange}
         month={currentMonth || null}
       />
-      <div className="px-5 pt-2">
+      <div className="md:px-5 md:pt-2 hidden md:block">
         <hr />
       </div>
       <AdminOverviewHeaders
@@ -90,7 +90,7 @@ const AdminPage = () => {
         budget={budgetCurrentMonth}
         pocketMoney={calculatedPocketMoney}
       />
-      <div className="felex flex-row space-x-10 pt-2 flex px-5">
+      <div className="felex flex-col md:flex-row gap-3 md:gap-10 pt-2 flex md:px-5 items-center md:items-start">
         <PendingTasks tasksInProgress={tasksInProgress} />
         <OverviewGraph
           cashFlow={cashFlow || []}

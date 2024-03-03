@@ -36,7 +36,9 @@ code {
   border-bottom: 1px solid #d3d3d3;
   padding-top: 1rem;
 }
-
+.hr {
+  @apply pt-2 pl-11 hidden md:block;
+}
 .auth {
   @apply md:max-w-[30rem]  relative top-7 flex w-auto min-w-[25rem] flex-col rounded-xl bg-white p-8 shadow-xl font-mono;
 }
@@ -83,5 +85,17 @@ code {
   @apply flex flex-col bg-gray-100 p-4 w-44 h-48 rounded-xl;
 }
 .overview-performance {
-  @apply flex flex-col bg-gray-100 p-4 rounded-xl w-[24.5rem] h-[23rem];
+  @apply flex flex-col bg-gray-100 p-4 rounded-xl md:w-[24.5rem] w-[22.6rem] h-[23rem];
+}
+.budget-header {
+  @apply overflow-x-hidden text-ellipsis w-[10em] md:w-[9.5em] md:space-y-2 space-y-0  md:divide-y  space-x-2 items-center text-center md:space-x-0  flex md:flex-col flex-row mb-5;
+}
+.budget-table-month {
+  @apply text-center items-center pb-0 md:pb-4 w-[6em];
+}
+.pocket-money-table {
+  @apply flex md:flex-row flex-col justify-start items-start w-full;
+}
+.pocket-header {
+  @apply overflow-x-hidden text-ellipsis w-[10em] md:w-[9.5em] md:space-y-2 space-y-0  md:divide-y  space-x-2 items-start md:items-center text-start md:text-center md:space-x-0  flex md:flex-col flex-row mb-5;
 }

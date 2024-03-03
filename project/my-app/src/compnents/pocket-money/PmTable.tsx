@@ -47,14 +47,14 @@ const PmTable = ({
         const amount = pocketMoneyEntry ? pocketMoneyEntry.amount : 0;
 
         return (
-          <div className="  min-w-[4rem] md:min-w-[7rem] lg:min-w-[10rem] text-center">
+          <div className="  w-[9.5em] text-center ">
             <input
               key={index}
               value={amount ?? 0}
               type="number"
               min={0}
               max={1000000}
-              className=" min-w-[4rem] max-w-[4rem] md:max-w-[5rem] md:min-w-[5rem] border-2 border-info-content-light  p-1"
+              className=" min-w-[4rem] max-w-[4rem] md:max-w-[5rem] md:min-w-[5rem] border-2 border-info-content-light  p-1 "
               onChange={(e) => {
                 handleInputChange(
                   parseFloat(e.target.value) || 0,
@@ -70,13 +70,11 @@ const PmTable = ({
       });
 
       return (
-        <div className="flex  flex-row justify-stretch hover:bg-gray-50 py-4">
-          <p className="px-5 overflow-x-hidden text-ellipsis min-w-[10rem] max-w-[10rem] overflow-hidden">
-            {user.username}
+        <div className="pocket-money-table pt-2 items-center md:items-start">
+          <p className="pocket-header">{user.username}</p>
+          <p className="flex flex-col md:flex-row items-center gap-1.5 md:gap-0">
+            {inputs}
           </p>
-          <div className="flex flex-row space-x-4 position-center">
-            <p className="flex ">{inputs}</p>
-          </div>
         </div>
       );
     });
@@ -117,13 +115,13 @@ const PmTable = ({
   });
 
   return (
-    <div className="flex flex-col w-full pt-7">
-      <div className="flex flex-row ">
-        <div className="pl-5 overflow-x-hidden text-ellipsis min-w-[10rem] max-w-[10rem] space-y-2 my-4 divide-y">
-          <p className="font-semibold pb-4">Month</p>
-          <p className="pt-6">Budget</p>
+    <div className="flex flex-row md:flex-col w-full items-center md:items-start">
+      <div className="pocket-money-table pt-7">
+        <div className="budget-header">
+          <p className="budget-table-month">Month</p>
+          <p className="md:pt-6 pt-0 pl-2 md:pl-0">Budget</p>
         </div>
-        <div className="flex flex-row ">
+        <div className="flex flex-col md:flex-row ">
           {monthsAndBudget.map((monthEntry, index) => {
             const month = new Date(monthEntry.month);
             const monthName = month.toLocaleString('default', {
@@ -131,14 +129,11 @@ const PmTable = ({
             });
             const spendAmount = groupedData[month.toISOString()];
             return (
-              <div
-                key={index}
-                className="flex flex-col text-center space-y-2 min-w-[4rem] md:min-w-[7rem] lg:min-w-[10rem] my-4 divide-y"
-              >
-                <div className="center items-start pb-4 ">
+              <div key={index} className="budget-header">
+                <div className="budget-table-month">
                   {capitalizeFirstLetter(monthName)}
                 </div>
-                <div className="pt-6">
+                <div className="md:pt-6 pt-0 ">
                   <span
                     className={`${
                       spendAmount > monthEntry.amount && 'text-red-600'
@@ -153,7 +148,9 @@ const PmTable = ({
           })}
         </div>
       </div>
-      <div>{renderPocketMoneyInputs()}</div>
+      <div className="flex flex-row md:flex-col p-0">
+        {renderPocketMoneyInputs()}
+      </div>
     </div>
   );
 };

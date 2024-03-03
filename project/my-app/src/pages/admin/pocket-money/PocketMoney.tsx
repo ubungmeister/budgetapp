@@ -81,26 +81,24 @@ const PocketMoney = () => {
 
   return (
     <div>
-      <div className="pt-8 pl-6 space-y-3">
-        <HeaderControls
-          setIsMonthChange={setIsMonthChange}
-          handleSave={handleSave}
-          setChangeCancel={setChangeCancel}
-          saveDiasbled={saveDiasbled}
-          sussessAlert={sussessAlert}
-        />
-        <div className="px-5 pt-2">
-          <hr />
-        </div>
-        <PmTable
-          monthsAndBudget={monthsAndBudget}
-          pocketMoney={pocketMoney}
-          users={users || []}
-          setPocketMoney={setPocketMoney}
-          setSaveDisabled={setSaveDisabled}
-          setSuccessAlert={setSuccessAlert}
-        />
+      <HeaderControls
+        setIsMonthChange={setIsMonthChange}
+        handleSave={handleSave}
+        setChangeCancel={setChangeCancel}
+        saveDiasbled={saveDiasbled}
+        sussessAlert={sussessAlert}
+      />
+      <div className="hr">
+        <hr />
       </div>
+      <PmTable
+        monthsAndBudget={monthsAndBudget}
+        pocketMoney={pocketMoney}
+        users={users || []}
+        setPocketMoney={setPocketMoney}
+        setSaveDisabled={setSaveDisabled}
+        setSuccessAlert={setSuccessAlert}
+      />
     </div>
   );
 };

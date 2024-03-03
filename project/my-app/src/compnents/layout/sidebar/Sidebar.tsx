@@ -53,7 +53,7 @@ const Sidebar = () => {
     <div
       className={` ${
         isSidebarExpanded ? 'w-72' : 'w-20 '
-      } bg-gray-200 h-screen p-5  pt-8 relative duration-300`}
+      } bg-gray-200 h-screen p-5  pt-8 relative duration-300  hidden md:block`}
     >
       <IconContext.Provider
         value={{
